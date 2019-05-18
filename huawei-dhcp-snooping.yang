@@ -1,0 +1,100 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-dhcp-snooping {
+  belongs-to huawei-dhcp {
+    prefix dhcp;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  include huawei-dhcp-type;
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "test.Description FOR submodule";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  grouping dhcpSnooping_type {
+    description
+      "";
+    container dhcpSnpGlobal {
+      description
+        "Global configuration of DHCP SNOOPING.";
+      leaf dhcpSnpEnable {
+        type boolean;
+      default "false";
+        description
+          "Enable DHCP SNOOPING globally.";
+      }
+    }
+    container dhcpSnpVlanCarCfgs {
+      description
+        "Configuration information of DHCP SNOOPING car in a VLAN.";
+      list dhcpSnpVlanCarCfg {
+        key "vlanId";
+        description
+          "Configuration of DHCP SNOOPING car in a VLAN.";
+        leaf vlanId {
+          type uint16 {
+            range "1..4094";
+          }
+          description
+            "VLAN ID.";
+        }
+        leaf carCir {
+          type uint32 {
+            range "1..100000000";
+          }
+          mandatory true;
+          description
+            "VLAN Car CIR Value.";
+          ext:allowDelete "false";
+        }
+        leaf carCbs {
+          type uint32 {
+            range "1..536870912";
+          }
+          description
+            "VLAN Car CBS Value.";
+          ext:allowDelete "true";
+        }
+      }
+    }
+    container dhcpSnpGlobalCarCfg {
+      description
+        "Global configuration of DHCP SNOOPING car.";
+      leaf carCir {
+        type uint32 {
+          range "1..100000000";
+        }
+        description
+          "Car CIR Value.";
+        ext:allowDelete "true";
+      }
+      leaf carCbs {
+        type uint32 {
+          range "1..536870912";
+        }
+        description
+          "Car CBS Value.";
+        ext:allowDelete "true";
+      }
+    }
+  }
+}

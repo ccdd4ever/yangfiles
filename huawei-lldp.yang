@@ -1,0 +1,1238 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-lldp {
+  namespace "http://www.huawei.com/netconf/vrp/huawei-lldp";
+  prefix lldp;
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import ietf-yang-types {
+    prefix yang;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  include huawei-lldp-action;
+  include huawei-lldp-type;
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "Link layer discovery protocol.";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  container lldp {
+    description
+      "Link layer discovery protocol.";
+    container lldpSys {
+      description
+        "Global LLDP parameters.";
+      leaf lldpEnable {
+        type lldpGlobalStatus;
+        default "disabled";
+        description
+          "LLDP status.";
+      }
+      leaf mdnStatus {
+        type mdnGlobalStatus;
+        default "disabled";
+        description
+          "MDN status.";
+      }
+      container lldpSysInformation {
+        config false;
+        description
+          "Global dynamic LLDP information.";
+        leaf chassisIdSubtype {
+          type chassisIdSubtype;
+          config false;
+          description
+            "Chassis type.";
+        }
+        leaf chassisId {
+          type string {
+            length "1..765";
+          }
+          config false;
+          description
+            "Chassis ID.";
+        }
+        leaf sysName {
+          type string {
+            length "0..256";
+          }
+          config false;
+          description
+            "System name.";
+        }
+        leaf sysDesc {
+          type string {
+            length "0..256";
+          }
+          config false;
+          description
+            "System description.";
+        }
+        leaf sysCapEnabled {
+          type string {
+            length "0..90";
+          }
+          config false;
+          description
+            "System capabilities supported.";
+        }
+        leaf sysCapSupported {
+          type string {
+            length "0..90";
+          }
+          config false;
+          description
+            "System capabilities enabled.";
+        }
+        leaf manAddrSubtype {
+          type manAddrSubtype;
+          config false;
+          description
+            "Management address subtype.";
+        }
+        leaf manAddr {
+          type string {
+            length "1..93";
+          }
+          config false;
+          description
+            "Management address.";
+        }
+        leaf manAddrLen {
+          type int32 {
+            range "0..2147483647";
+          }
+          config false;
+          description
+            "Management address length.";
+        }
+        leaf manAddrIfSubtype {
+          type manAddrIfSubtype;
+          config false;
+          description
+            "Management address interface subtype.";
+        }
+        leaf manAddrIfId {
+          type int32 {
+            range "0..2147483647";
+          }
+          config false;
+          description
+            "Management address interface ID.";
+        }
+        leaf manAddrOid {
+          type string {
+            length "1..640";
+          }
+          config false;
+          description
+            "Management address OID.";
+        }
+        leaf lldpUpTime {
+          type yang:date-and-time;
+          config false;
+          description
+            "LLDP enable time.";
+        }
+      }
+      container lldpSysParameter {
+        description
+          "Global LLDP configuration.";
+        leaf messageTxInterval {
+          type int32 {
+            range "5..32768";
+          }
+          default "30";
+          description
+            "Interval at which LLDP messages are transmitted. The default value is 30.";
+          ext:allowDelete "true";
+        }
+        leaf messageTxHoldMultiplier {
+          type int32 {
+            range "2..10";
+          }
+          default "4";
+          description
+            "Multiplier on the message transmission interval that determines the actual TTL value used in an LLDPDU. The default value is 4.";
+          ext:allowDelete "true";
+        }
+        leaf reinitDelay {
+          type int32 {
+            range "1..10";
+          }
+          default "2";
+          description
+            "Delay from when LLDP interface status becomes disabled until re-initialization will be attempted. The default value is 2.";
+          ext:allowDelete "true";
+        }
+        leaf txDelay {
+          type int32 {
+            range "1..8192";
+          }
+          default "2";
+          description
+            "Time between two successive LLDP messages. The default value is 2.";
+          ext:allowDelete "true";
+        }
+        leaf notificationInterval {
+          type int32 {
+            range "5..3600";
+          }
+          default "5";
+          description
+            "LLDP trap notification interval. The default value is 5.";
+          ext:allowDelete "true";
+        }
+        leaf notificationEnable {
+          type lldpGlobalStatus;
+          default "enabled";
+          config false;
+          description
+            "Enable the LLDP neighbor change trap function.";
+        }
+        leaf fastMessageCount {
+          type int32 {
+            range "1..8";
+          }
+          default "4";
+          description
+            "Number of rapidly transmitted LLDP messages. The default value is 4.";
+          ext:allowDelete "true";
+        }
+        leaf mdnNotificationInterval {
+          type int32 {
+            range "5..3600";
+          }
+          default "5";
+          description
+            "MDN trap notification interval. The default value is 5.";
+          ext:allowDelete "true";
+        }
+        leaf mdnNotificationEnable {
+          type lldpGlobalStatus;
+          default "disabled";
+          config false;
+          description
+            "Enable the MDN neighbor change trap function.";
+        }
+        leaf configManAddr {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ipv4Config/ifm:am4CfgAddrs/ifm:am4CfgAddr/ifm:ifIpAddr";
+          }
+          description
+            "IP address for network management, which must exist in the device.";
+          ext:allowDelete "true";
+        }
+        leaf bindifName {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          description
+            "Name of a bound interface.";
+          ext:allowDelete "true";
+        }
+      }
+      container mdnSysStatistics {
+        config false;
+        description
+          "Global MDN remote table statistics.";
+        leaf remTablesLastChangeTime {
+          type string {
+            length "0..64";
+          }
+          config false;
+          description
+            "Time when the remote table last changed.";
+        }
+        leaf remTablesInserts {
+          type uint32 {
+            range "0..4294967295";
+          }
+          config false;
+          description
+            "Number of remote neighbors added.";
+        }
+        leaf remTablesDeletes {
+          type uint32 {
+            range "0..4294967295";
+          }
+          config false;
+          description
+            "Number of remote neighbors deleted.";
+        }
+        leaf remTablesDrops {
+          type uint32 {
+            range "0..4294967295";
+          }
+          config false;
+          description
+            "Number of remote neighbors dropped.";
+        }
+        leaf remTablesAgeouts {
+          type uint32 {
+            range "0..4294967295";
+          }
+          config false;
+          description
+            "Number of remote neighbors aged.";
+        }
+        leaf totalNeighbors {
+          type uint32 {
+            range "0..4294967295";
+          }
+          config false;
+          description
+            "Total number of neighbors.";
+        }
+      }
+      container lldpSysStatistics {
+        config false;
+        description
+          "Global LLDP remote table statistics.";
+        leaf remTablesLastChangeTime {
+          type string {
+            length "0..64";
+          }
+          config false;
+          description
+            "Time when the remote table last changed.";
+        }
+        leaf remTablesInserts {
+          type uint32 {
+            range "0..4294967295";
+          }
+          config false;
+          description
+            "Number of remote neighbors added.";
+        }
+        leaf remTablesDeletes {
+          type uint32 {
+            range "0..4294967295";
+          }
+          config false;
+          description
+            "Number of remote neighbors deleted.";
+        }
+        leaf remTablesDrops {
+          type uint32 {
+            range "0..4294967295";
+          }
+          config false;
+          description
+            "Number of remote neighbors dropped.";
+        }
+        leaf remTablesAgeouts {
+          type uint32 {
+            range "0..4294967295";
+          }
+          config false;
+          description
+            "Number of remote neighbors aged.";
+        }
+        leaf totalNeighbors {
+          type uint32 {
+            range "0..4294967295";
+          }
+          config false;
+          description
+            "Total number of neighbors.";
+        }
+      }
+    }
+    container lldpInterfaces {
+      description
+        "LLDP interfaces.";
+      list lldpInterface {
+        key "ifName";
+        description
+          "LLDP interface.";
+        leaf ifName {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          description
+            "Interface name.";
+        }
+        leaf lldpAdminStatus {
+          type portAdminStatus;
+          must "((../lldpAdminStatus='txOnly' or ../lldpAdminStatus='rxOnly' or ../lldpAdminStatus='txAndRx' or ../lldpAdminStatus='disabled') )";
+          mandatory true;
+          description
+            "LLDP enable status.";
+        }
+        container lldpIfInformation {
+          config false;
+          description
+            "Interface information.";
+          leaf portIdSubtype {
+            type portIdSubtype;
+            config false;
+            description
+              "Interface ID subtype.";
+          }
+          leaf portId {
+            type string {
+              length "1..765";
+            }
+            config false;
+            description
+              "Interface ID.";
+          }
+          leaf portDescription {
+            type string {
+              length "0..255";
+            }
+            config false;
+            description
+              "Interface description.";
+          }
+          leaf portVlanId {
+            type int32 {
+              range "0..4094";
+            }
+            config false;
+            description
+              "Interface VLAN ID.";
+          }
+          leaf protoVlanSupported {
+            type lldpSupportStatus;
+            config false;
+            description
+              "Whether the interface supports protocol VLAN.";
+          }
+          leaf protoVlanEnabled {
+            type lldpEnableStatus;
+            config false;
+            description
+              "Whether protocol VLAN is enabled on the interface.";
+          }
+          leaf protoVlanId {
+            type int32 {
+              range "0..4094";
+            }
+            config false;
+            description
+              "Protocol VLAN ID.";
+          }
+          leaf vlanNameId {
+            type int32 {
+              range "0..4094";
+            }
+            config false;
+            description
+              "VLAN ID.";
+          }
+          leaf vlanName {
+            type string {
+              length "1..32";
+            }
+            config false;
+            description
+              "VLAN name.";
+          }
+          leaf protocolIdentity {
+            type string {
+              length "1..64";
+            }
+            config false;
+            description
+              "Protocol supported by the device.";
+          }
+          leaf autoNegSupported {
+            type lldpSupportStatus;
+            config false;
+            description
+              "Whether the interface supports auto-negotiation.";
+          }
+          leaf autoNegEnabled {
+            type lldpEnableStatus;
+            config false;
+            description
+              "Whether auto-negotiation is enabled on the interface.";
+          }
+          leaf autoNegAdvertisedCap {
+            type string {
+              length "1..192";
+            }
+            config false;
+            description
+              "Auto-negotiation capability of the interface.";
+          }
+          leaf operMauType {
+            type operMauType;
+            config false;
+            description
+              "Operational MAU type.";
+          }
+          leaf linkAggregationSupported {
+            type lldpSupportStatus;
+            config false;
+            description
+              "Whether the interface supports link aggregation.";
+          }
+          leaf linkAggregationEnabled {
+            type lldpEnableStatus;
+            config false;
+            description
+              "Whether link aggregation is enabled on the interface.";
+          }
+          leaf aggregationPortId {
+            type int32 {
+              range "0..2147483647";
+            }
+            config false;
+            description
+              "If link aggregation is disabled, the value is 0.";
+          }
+          leaf maximumFrameSize {
+            type int32 {
+              range "0..65535";
+            }
+            config false;
+            description
+              "Maximum frame size supported by an interface.";
+          }
+        }
+        container lldpErrPkt {
+          config false;
+          description
+            "LLDP error packet.";
+          leaf errPktRecvTime {
+            type yang:date-and-time;
+            config false;
+            description
+              "Time when error packets are received.";
+          }
+          leaf errPktInfo {
+            type string {
+              length "0..4600";
+            }
+            config false;
+            description
+              "Information about error packets.";
+          }
+        }
+        container tlvTxEnable {
+          when "not(../lldpAdminStatus='disabled')";
+          description
+            "Enable the LLDP TLV configuration.";
+          leaf manAddrTxEnable {
+            type boolean;
+            default "true";
+            description
+              "Enable the device to send the management address TLV.";
+          }
+          leaf portDescTxEnable {
+            type boolean;
+            default "true";
+            description
+              "Enable the device to send the interface description TLV.";
+          }
+          leaf sysCapTxEnable {
+            type boolean;
+            default "true";
+            description
+              "Enable the device to send the system capability TLV.";
+          }
+          leaf sysDescTxEnable {
+            type boolean;
+            default "true";
+            description
+              "Enable the device to send the system description TLV.";
+          }
+          leaf sysNameTxEnable {
+            type boolean;
+            default "true";
+            description
+              "Enable the device to send the system name TLV.";
+          }
+          leaf portVlanTxEnable {
+            type boolean;
+            default "true";
+            description
+              "Enable the device to send the interface VLAN ID TLV.";
+          }
+          leaf protoVlanTxEnable {
+            type boolean;
+            default "true";
+            description
+              "Enable the device to send the protocol VLAN ID TLV.";
+          }
+          leaf txProtocolVlanId {
+            when "not(../protoVlanTxEnable='false')";
+            type int32 {
+              range "1..4094";
+            }
+            description
+              "The protocol VLAN ID is sent.";
+            ext:allowDelete "true";
+          }
+          leaf vlanNameTxEnable {
+            type boolean;
+            default "true";
+            description
+              "Enable the device to send the VLAN name TLV.";
+          }
+          leaf txVlanNameId {
+            when "not(../vlanNameTxEnable='false')";
+            type int32 {
+              range "1..4094";
+            }
+            description
+              "The VLAN ID of the VLAN name TLV is sent.";
+            ext:allowDelete "true";
+          }
+          leaf protoIdTxEnable {
+            type boolean;
+            default "true";
+            description
+              "Enable the device to send the protocol identity TLV.";
+          }
+          leaf macPhyTxEnable {
+            type boolean;
+            default "true";
+            description
+              "Enable the device to send the MAC/PHY TLV.";
+          }
+          leaf linkAggreTxEnable {
+            type boolean;
+            default "true";
+            description
+              "Enable the device to send the link aggregation TLV.";
+          }
+          leaf maxFrameTxEnable {
+            type boolean;
+            default "true";
+            description
+              "Enable the device to send the maximum frame size TLV.";
+          }
+          leaf eee {
+            type boolean;
+            default "true";
+            description
+              "Enable the device to send the EEE TLV.";
+          }
+          leaf dcbx {
+            type boolean;
+            default "false";
+            description
+              "Enable the device to send the DCBX TLV.";
+          }
+        }
+        container msgInterval {
+          description
+            "Packet interval information on the interface.";
+          leaf txInterval {
+            type uint16 {
+              range "1..32768";
+            }
+            description
+              "LLDP send packet interval";
+            ext:allowDelete "true";
+          }
+        }
+        container lldpStatistics {
+          config false;
+          description
+            "LLDP statistics.";
+          leaf totalNeighbors {
+            type uint32 {
+              range "0..4294967295";
+            }
+            config false;
+            description
+              "Total number of neighbors.";
+          }
+          leaf transmittedFrames {
+            type uint32 {
+              range "0..4294967295";
+            }
+            config false;
+            description
+              "Total number of transmitted frames.";
+          }
+          leaf receivedFrames {
+            type uint32 {
+              range "0..4294967295";
+            }
+            config false;
+            description
+              "Total number of received frames.";
+          }
+          leaf discardedFrames {
+            type uint32 {
+              range "0..4294967295";
+            }
+            config false;
+            description
+              "Total number of discarded frames.";
+          }
+          leaf errorFrames {
+            type uint32 {
+              range "0..4294967295";
+            }
+            config false;
+            description
+              "Total number of error frames.";
+          }
+          leaf discardedTlvs {
+            type uint32 {
+              range "0..4294967295";
+            }
+            config false;
+            description
+              "Total number of discarded TLVs.";
+          }
+          leaf unrecognizedTlvs {
+            type uint32 {
+              range "0..4294967295";
+            }
+            config false;
+            description
+              "Total number of unrecognized TLVs.";
+          }
+          leaf expiredNeighbors {
+            type uint32 {
+              range "0..4294967295";
+            }
+            config false;
+            description
+              "Total number of expired neighbors.";
+          }
+          leaf transmittedDcbxTlvs {
+            type uint32 {
+              range "0..4294967295";
+            }
+            config false;
+            description
+              "Total number of transmitted DCBX TLVs.";
+          }
+          leaf receivedDcbxTlvs {
+            type uint32 {
+              range "0..4294967295";
+            }
+            config false;
+            description
+              "Total number of received DCBX TLVs.";
+          }
+          leaf lastClearedTime {
+            type yang:date-and-time;
+            config false;
+            description
+              "Time when LLDP statistics were last cleared.";
+          }
+          leaf receivedNetCardIdTlvs {
+            type uint32 {
+              range "0..4294967295";
+            }
+            config false;
+            description
+              "Total number of received Network Card ID TLVs.";
+          }
+        }
+        container lldpNeighbors {
+          config false;
+          description
+            "Information about LLDP neighbors.";
+          list lldpNeighbor {
+            key "nbIndex";
+            config false;
+            description
+              "Information about an LLDP neighbor.";
+            leaf nbIndex {
+              type uint32 {
+                range "0..4294967295";
+              }
+              config false;
+              description
+                "Neighbor index.";
+            }
+            leaf chassisIdSubtype {
+              type chassisIdSubtype;
+              config false;
+              description
+                "Chassis type.";
+            }
+            leaf chassisId {
+              type string {
+                length "1..765";
+              }
+              config false;
+              description
+                "Chassis ID.";
+            }
+            leaf portIdSubtype {
+              type portIdSubtype;
+              config false;
+              description
+                "Interface ID subtype.";
+            }
+            leaf portId {
+              type string {
+                length "1..765";
+              }
+              config false;
+              description
+                "Interface ID.";
+            }
+            leaf portDescription {
+              type string {
+                length "0..256";
+              }
+              config false;
+              description
+                "Interface description.";
+            }
+            leaf systemName {
+              type string {
+                length "0..256";
+              }
+              config false;
+              description
+                "System name.";
+            }
+            leaf systemDescription {
+              type string {
+                length "0..256";
+              }
+              config false;
+              description
+                "System description.";
+            }
+            leaf systemCapabilitiesEnabled {
+              type string {
+                length "0..90";
+              }
+              config false;
+              description
+                "System capabilities supported.";
+            }
+            leaf systemCapabilitiesSupported {
+              type string {
+                length "0..90";
+              }
+              config false;
+              description
+                "System capabilities enabled.";
+            }
+            leaf expiredTime {
+              type int32 {
+                range "0..65535";
+              }
+              config false;
+              description
+                "Expired time.";
+            }
+            leaf portVlanId {
+              type int32 {
+                range "0..4094";
+              }
+              config false;
+              description
+                "Interface VLAN ID.";
+            }
+            leaf protocolIdentity {
+              type string {
+                length "1..64";
+              }
+              config false;
+              description
+                "Protocol supported by the device.";
+            }
+            leaf autoNegSupported {
+              type lldpSupportStatus;
+              config false;
+              description
+                "Whether the interface supports auto-negotiation.";
+            }
+            leaf autoNegEnabled {
+              type lldpEnableStatus;
+              config false;
+              description
+                "Whether auto-negotiation is enabled on the interface.";
+            }
+            leaf autoNegAdvertisedCap {
+              type string {
+                length "1..192";
+              }
+              config false;
+              description
+                "Auto-negotiation capability of the interface.";
+            }
+            leaf operMauType {
+              type operMauType;
+              config false;
+              description
+                "Operational MAU type.";
+            }
+            leaf linkAggregationSupported {
+              type lldpSupportStatus;
+              config false;
+              description
+                "Whether the interface supports link aggregation.";
+            }
+            leaf linkAggregationEnabled {
+              type lldpEnableStatus;
+              config false;
+              description
+                "Whether link aggregation is enabled on the interface.";
+            }
+            leaf aggregationPortId {
+              type int32 {
+                range "0..2147483647";
+              }
+              config false;
+              description
+                "If link aggregation is disabled, the value is 0.";
+            }
+            leaf maximumFrameSize {
+              type int32 {
+                range "0..65535";
+              }
+              config false;
+              description
+                "Maximum frame size supported by an interface.";
+            }
+            leaf discoveredTime {
+              type yang:date-and-time;
+              config false;
+              description
+                "Time when the neighbor was discovered.";
+            }
+            container managementAddresss {
+              config false;
+              description
+                "Management addresses of LLDP neighbors.";
+              list managementAddress {
+                key "manAddrSubtype manAddr manAddrLen";
+                config false;
+                description
+                  "Management address of an LLDP neighbor.";
+                leaf manAddrSubtype {
+                  type manAddrSubtype;
+                  config false;
+                  description
+                    "Management address type of an LLDP neighbor.";
+                }
+                leaf manAddr {
+                  type string {
+                    length "1..93";
+                  }
+                  config false;
+                  description
+                    "Management address of an LLDP neighbor.";
+                }
+                leaf manAddrLen {
+                  type int32 {
+                    range "0..2147483647";
+                  }
+                  config false;
+                  description
+                    "Management address length of an LLDP neighbor.";
+                }
+                leaf manAddrIfSubtype {
+                  type manAddrIfSubtype;
+                  config false;
+                  description
+                    "Management address interface type of an LLDP neighbor.";
+                }
+                leaf manAddrIfId {
+                  type int32 {
+                    range "0..2147483647";
+                  }
+                  config false;
+                  description
+                    "Management address interface ID of an LLDP neighbor.";
+                }
+                leaf manAddrOid {
+                  type string {
+                    length "1..640";
+                  }
+                  config false;
+                  description
+                    "Management address OID of an LLDP neighbor.";
+                }
+              }
+            }
+            container protoVlans {
+              config false;
+              description
+                "Protocol VLANs of LLDP neighbors.";
+              list protoVlan {
+                key "protoVlanId";
+                config false;
+                description
+                  "Protocol VLAN of an LLDP neighbor.";
+                leaf protoVlanSupported {
+                  type lldpSupportStatus;
+                  config false;
+                  description
+                    "Whether the interface supports protocol VLAN.";
+                }
+                leaf protoVlanEnabled {
+                  type lldpEnableStatus;
+                  config false;
+                  description
+                    "Whether protocol VLAN is enabled on the interface.";
+                }
+                leaf protoVlanId {
+                  type int32 {
+                    range "0..4094";
+                  }
+                  config false;
+                  description
+                    "Protocol VLAN ID.";
+                }
+              }
+            }
+            container vlanNames {
+              config false;
+              description
+                "VLAN names of LLDP neighbors.";
+              list vlanName {
+                key "vlanNameId";
+                config false;
+                description
+                  "VLAN name of an LLDP neighbor.";
+                leaf vlanNameId {
+                  type int32 {
+                    range "0..4094";
+                  }
+                  config false;
+                  description
+                    "VLAN ID.";
+                }
+                leaf vlanName {
+                  type string {
+                    length "1..33";
+                  }
+                  config false;
+                  description
+                    "VLAN name.";
+                }
+              }
+            }
+            container unknownTlvs {
+              config false;
+              description
+                "Unrecognized basic TLVs.";
+              list unknownTlv {
+                key "unknownTlvType";
+                config false;
+                description
+                  "Unrecognized basic TLV.";
+                leaf unknownTlvType {
+                  type int32 {
+                    range "9..126";
+                  }
+                  config false;
+                  description
+                    "Unrecognized TLV type.";
+                }
+                leaf unknownTlvInfo {
+                  type string {
+                    length "0..1600";
+                  }
+                  config false;
+                  description
+                    "Unrecognized TLV information.";
+                }
+              }
+            }
+            container unknownOrgDefTlvs {
+              config false;
+              description
+                "Unrecognized organizationally defined TLVs.";
+              list unknownOrgDefTlv {
+                key "unknownOrgDefInfoOui unknownOrgDefSubtype unknownOrgDefInfoIndex";
+                config false;
+                description
+                  "Unrecognized organizationally defined TLV.";
+                leaf unknownOrgDefInfoOui {
+                  type string {
+                    length "0..12";
+                  }
+                  config false;
+                  description
+                    "OUI of an unrecognized organizationally defined TLV.";
+                }
+                leaf unknownOrgDefSubtype {
+                  type int32 {
+                    range "1..256";
+                  }
+                  config false;
+                  description
+                    "Subtype of an unrecognized organizationally defined TLV.";
+                }
+                leaf unknownOrgDefInfoIndex {
+                  type int32 {
+                    range "0..2147483647";
+                  }
+                  config false;
+                  description
+                    "Index of an unrecognized organizationally defined TLV.";
+                }
+                leaf unknownOrgDefInfo {
+                  type string {
+                    length "0..1600";
+                  }
+                  config false;
+                  description
+                    "Information about an unrecognized organizationally defined TLV.";
+                }
+              }
+            }
+            leaf netCardId {
+              type string {
+                length "0..256";
+              }
+              config false;
+              description
+                "Information about Network Card ID.";
+            }
+          }
+        }
+      }
+    }
+    container mdnInterfaces {
+      description
+        "Information about MDN interfaces.";
+      list mdnInterface {
+        key "ifName";
+        description
+          "Information about an MDN interface.";
+        leaf ifName {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          description
+            "Interface name.";
+        }
+        leaf mdnStatus {
+          type mdnPortAdminStatus;
+          mandatory true;
+          description
+            "MDN enabling status.";
+        }
+        container mdnErrPkt {
+          config false;
+          description
+            "MDN error packet.";
+          leaf errPktRecvTime {
+            type yang:date-and-time;
+            config false;
+            description
+              "Time when error packets were received.";
+          }
+          leaf errPktInfo {
+            type string {
+              length "0..4600";
+            }
+            config false;
+            description
+              "Error packet information.";
+          }
+        }
+        container mdnStatistics {
+          config false;
+          description
+            "MDN statistics on the interface.";
+          leaf totalNeighbors {
+            type uint32 {
+              range "0..4294967295";
+            }
+            config false;
+            description
+              "Total number of neighbors.";
+          }
+          leaf receivedFrames {
+            type uint32 {
+              range "0..4294967295";
+            }
+            config false;
+            description
+              "Total number of received frames.";
+          }
+          leaf discardedFrames {
+            type uint32 {
+              range "0..4294967295";
+            }
+            config false;
+            description
+              "Total number of discarded frames.";
+          }
+          leaf errorFrames {
+            type uint32 {
+              range "0..4294967295";
+            }
+            config false;
+            description
+              "Total number of received error frames.";
+          }
+          leaf lastClearedTime {
+            type yang:date-and-time;
+            config false;
+            description
+              "Time when LLDP statistics were last cleared.";
+          }
+        }
+        container mdnNeighbors {
+          config false;
+          description
+            "Information about MDN neighbors.";
+          list mdnNeighbor {
+            key "nbIndex";
+            config false;
+            description
+              "Information about an MDN neighbor.";
+            leaf nbIndex {
+              type uint32 {
+                range "0..4294967295";
+              }
+              config false;
+              description
+                "Neighbor index.";
+            }
+            leaf remMacAddress {
+              type pub-type:macAddress {
+                length "0..255";
+              }
+              config false;
+              description
+                "MAC address.";
+            }
+            leaf discoveredTime {
+              type yang:date-and-time;
+              config false;
+              description
+                "Time when the MDN neighbor was discovered.";
+            }
+          }
+        }
+      }
+    }
+  }
+}

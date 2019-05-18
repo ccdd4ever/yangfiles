@@ -1,0 +1,48 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-smartlink-action {
+  belongs-to huawei-smartlink {
+    prefix smartlink;
+  }
+  include huawei-smartlink-type;
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "smartlink_action";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  rpc resetFlushPkt {
+    description
+      "Reset Smart Flush packets.";
+  }
+  rpc smlkManualSwitch {
+    description
+      "Switch link between master link and slave link.";
+    input {
+      leaf smlkGrpId {
+        type uint16 {
+          range "1..4094";
+        }
+        mandatory true;
+        description
+          "Smart link group index, ranging from integer 1 to 48.";
+      }
+    }
+  }
+}

@@ -1,0 +1,551 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-nsm-type {
+  belongs-to huawei-nsm {
+    prefix nsm;
+  }
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "nsm type:";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  typedef nsmSamplingMode {
+    type enumeration {
+      enum "fix_packets" {
+        description
+          "Fixed packet sampling mode";
+      }
+      enum "fix_time" {
+        description
+          "Fixed time sampling mode";
+      }
+      enum "random_packets" {
+        description
+          "Random-packets sampling mode";
+      }
+      enum "random_time" {
+        description
+          "Random time sampling mode";
+      }
+    }
+    description
+      "Sampling Mode:";
+  }
+  typedef nsmDIRECTION {
+    type enumeration {
+      enum "inbound" {
+        description
+          "Inbound.";
+      }
+      enum "outbound" {
+        description
+          "Outbound.";
+      }
+    }
+    description
+      "Direction:";
+  }
+  typedef nsmAggType {
+    type enumeration {
+      enum "as" {
+        description
+          "AS aggregation";
+      }
+      enum "as_tos" {
+        description
+          "AS-ToS aggregation";
+      }
+      enum "protocol_port" {
+        description
+          "Protocol-port";
+      }
+      enum "protocol_port_tos" {
+        description
+          "Protocol-port-ToS aggregation";
+      }
+      enum "source_prefix" {
+        description
+          "Source-prefix aggregation. It classifies flows by four key values, that is, the source AS number, source mask length, source prefix, and incoming interface index.";
+      }
+      enum "source_prefix_tos" {
+        description
+          "Source-prefix-ToS aggregation. It classifies flows by five key values, that is, the source AS number, source mask length, source prefix, ToS, and incoming interface index.";
+      }
+      enum "destination_prefix" {
+        description
+          "Destination-prefix aggregation. It classifies flows by four key values, that is, the destination AS number, destination mask length, destination prefix, and outgoing interface index.";
+      }
+      enum "destination_prefix_tos" {
+        description
+          "Destination-prefix-ToS aggregation. It classifies flows by five key values, that is, the destination AS number, destination mask length, destination prefix, ToS, and outgoing interface index.";
+      }
+      enum "prefix" {
+        description
+          "Prefix aggregation. It classifies flows by eight key values, that is, the source AS number, destination AS number, source mask length, destination mask length, source prefix, destination prefix, incoming interface index, and outgoing interface index.";
+      }
+      enum "prefix_tos" {
+        description
+          "Prefix-ToS aggregation. It classifies flows by nine key values, that is, the source AS number, destination AS number, source mask length, destination mask length, source prefix, destination prefix, ToS, incoming interface index, and outgoing interface index.";
+      }
+      enum "mpls_label" {
+        description
+          "MPLS-label aggregation. It classifies flows by six key values, that is, the first layer label, second layer label, third layer label, TopLabelIpAddress, stack bottom symbol of the first layer label, and the EXP value of the first layer label.";
+      }
+      enum "vlan_id" {
+        description
+          "VLAN-ID aggregation. It classifies flows by two key values, that is, the VLAN ID and incoming interface index.";
+      }
+      enum "bgp_nexthop_tos" {
+        description
+          "BGP-nexthop-ToS aggregation. It classifies streams by six key values including the BGP next hop, source AS number, destination AS number, incoming interface index, outgoing interface index, and ToS.";
+      }
+      enum "index_tos" {
+        description
+          "Index-ToS aggregation. It classifies flows by three key values, that is, the incoming interface index, outgoing interface index, and ToS.";
+      }
+      enum "source_index_tos" {
+        description
+          "Source-index-ToS aggregation";
+      }
+      enum "bgp_community" {
+        description
+          "BGP Community Aggregation";
+      }
+    }
+    description
+      "Agg Type:";
+  }
+  typedef nsmStatType {
+    type enumeration {
+      enum "Template" {
+        description
+          "Template statistics";
+      }
+      enum "Pack" {
+        description
+          "Packet statistics";
+      }
+    }
+    description
+      "Stat Type:";
+  }
+  typedef nsmTemplatType {
+    type enumeration {
+      enum "option" {
+        description
+          "Option Statistics";
+      }
+      enum "aggregation" {
+        description
+          "Aggregation Template Statistics";
+      }
+      enum "origin" {
+        description
+          "Origin Template Statistics";
+      }
+    }
+    description
+      "Templat Type:";
+  }
+  typedef nsmEnable {
+    type enumeration {
+      enum "false" {
+        description
+          "Disable";
+      }
+      enum "true" {
+        description
+          "Enable";
+      }
+    }
+    description
+      "Enable:";
+  }
+  typedef nsmEnableLong {
+    type enumeration {
+      enum "false" {
+        description
+          "Disable";
+      }
+      enum "true" {
+        description
+          "Enable";
+      }
+      enum "long" {
+        description
+          "Long Enable.";
+      }
+    }
+    description
+      "Enable Long:";
+  }
+  typedef nsmEnablePeer {
+    type enumeration {
+      enum "false" {
+        description
+          "false:";
+      }
+      enum "true" {
+        description
+          "true:";
+      }
+      enum "peer" {
+        description
+          "peer:";
+      }
+    }
+    description
+      "Enable Peer:";
+  }
+  typedef nsmEnableBgp {
+    type enumeration {
+      enum "false" {
+        description
+          "false:";
+      }
+      enum "true" {
+        description
+          "true:";
+      }
+      enum "bgp" {
+        description
+          "bgp:";
+      }
+    }
+    description
+      "Enable Bgp:";
+  }
+  typedef nsmAggVersion {
+    type enumeration {
+      enum "8" {
+        description
+          "Version 8";
+      }
+      enum "9" {
+        description
+          "Version 9";
+      }
+    }
+    description
+      "Agg Version:";
+  }
+  typedef nsmOriginVersion {
+    type enumeration {
+      enum "5" {
+        description
+          "Version 5";
+      }
+      enum "9" {
+        description
+          "Version 9";
+      }
+    }
+    description
+      "Origin Version:";
+  }
+  typedef nsmAsType {
+    type enumeration {
+      enum "invalid_as" {
+        description
+          "Invalid system ID";
+      }
+      enum "origin_as" {
+        description
+          "Start AS number";
+      }
+      enum "peer_as" {
+        description
+          "Adjacent AS number";
+      }
+    }
+    description
+      "As Type:";
+  }
+  typedef nsmAsmodeIndex {
+    type enumeration {
+      enum "16" {
+        description
+          "16-bit interface index carried in exported NetStream packets.";
+      }
+      enum "32" {
+        description
+          "32-bit interface index carried in exported NetStream packets.";
+      }
+    }
+    description
+      "As ModeIndex:";
+  }
+  typedef nsmMplsAware {
+    type enumeration {
+      enum "ip_only" {
+        description
+          "IP address collection mode";
+      }
+      enum "label_and_ip" {
+        description
+          "Inner IP packet and label collection mode";
+      }
+      enum "label_only" {
+        description
+          "Label collection mode";
+      }
+      enum "invalid_mpls" {
+        description
+          "Invalid_mpls.";
+      }
+    }
+    description
+      "Mpls Aware:";
+  }
+  typedef nsmRstType {
+    type enumeration {
+      enum "statistics" {
+        description
+          "statistics:";
+      }
+      enum "cache" {
+        description
+          "cache:";
+      }
+    }
+    description
+      "Rst Type:";
+  }
+  typedef nsmTalType {
+    type enumeration {
+      enum "mpls" {
+        description
+          "mpls";
+      }
+    }
+    description
+      "Tal Type:";
+  }
+  typedef nsmFLOWTYPE {
+    type enumeration {
+      enum "ip_flow" {
+        description
+          "IPv4.";
+      }
+      enum "ipv6_flow" {
+        description
+          "IPv6.";
+      }
+    }
+    description
+      "Flow Type:";
+  }
+  typedef nsmFLEXFLOWTYPE {
+    type enumeration {
+      enum "ip_flow" {
+        description
+          "IPv4.";
+      }
+      enum "ipv6_flow" {
+        description
+          "IPv6.";
+      }
+      enum "vxlan_flow" {
+        description
+          "vxlan.";
+      }
+    }
+    description
+      "Flex Flow Type:";
+  }
+  typedef nsmINTFFLOWTYPE {
+    type enumeration {
+      enum "ip_flow" {
+        description
+          "IPv4.";
+      }
+      enum "ipv6_flow" {
+        description
+          "IPv6.";
+      }
+      enum "ethernet_flow" {
+        description
+          "Ethernet.";
+      }
+    }
+    description
+      "Intf Flow Type:";
+  }
+  typedef nsmALLFLOWTYPE {
+    type enumeration {
+      enum "ip_flow" {
+        description
+          "IPv4.";
+      }
+      enum "ipv6_flow" {
+        description
+          "IPv6";
+      }
+      enum "ethernet_flow" {
+        description
+          "Ethernet.";
+      }
+      enum "vxlan_flow" {
+        description
+          "vxlan.";
+      }
+    }
+    description
+      "All Flow Type:";
+  }
+  typedef nsmTOPFLOWTYPE {
+    type enumeration {
+      enum "ip_flow" {
+        description
+          "IPv4.";
+      }
+    }
+    description
+      "Top Flow Type:";
+  }
+  typedef nsmDESBOARD {
+    type enumeration {
+      enum "self" {
+        description
+          "To Self.";
+      }
+      enum "main" {
+        description
+          "To Main.";
+      }
+      enum "bak" {
+        description
+          "To Bak.";
+      }
+    }
+    description
+      "Des Board:";
+  }
+  typedef nsmRANDOMTIME {
+    type enumeration {
+      enum "3_0" {
+        description
+          "3.0";
+      }
+      enum "6_0" {
+        description
+          "6.0";
+      }
+      enum "12_0" {
+        description
+          "12.0";
+      }
+      enum "24_0" {
+        description
+          "24.0";
+      }
+      enum "48_0" {
+        description
+          "48.0";
+      }
+      enum "96_0" {
+        description
+          "96.0";
+      }
+      enum "192_0" {
+        description
+          "192.0";
+      }
+      enum "383_5" {
+        description
+          "383.5";
+      }
+      enum "767_0" {
+        description
+          "767.0";
+      }
+      enum "1534_0" {
+        description
+          "1534.0";
+      }
+      enum "3068_0" {
+        description
+          "3068.0";
+      }
+      enum "6136_0" {
+        description
+          "6136.0";
+      }
+    }
+    description
+      "Random Time:";
+  }
+  typedef nsmTOSTYPE {
+    type enumeration {
+      enum "invalid_tos" {
+        description
+          "invalid_tos.";
+      }
+      enum "tos" {
+        description
+          "tos.";
+      }
+      enum "dscp" {
+        description
+          "dscp.";
+      }
+      enum "precedence" {
+        description
+          "precedence.";
+      }
+    }
+    description
+      "Tos Type:";
+  }
+  typedef nsmSORTMODE {
+    type enumeration {
+      enum "bytes" {
+        description
+          "Bytes.";
+      }
+      enum "packets" {
+        description
+          "Packets.";
+      }
+    }
+    description
+      "Sort Mode:";
+  }
+  typedef nsmSampleMode {
+    type enumeration {
+      enum "snoop" {
+        description
+          "Snoop.";
+      }
+    }
+    description
+      "Sample Mode:";
+  }
+  typedef nsmExportType {
+    type enumeration {
+      enum "disable" {
+        description
+          "Disable.";
+      }
+    }
+    description
+      "Export Type:";
+  }
+}

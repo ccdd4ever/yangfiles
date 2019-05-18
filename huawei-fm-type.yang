@@ -1,0 +1,1016 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-fm-type {
+  belongs-to huawei-fm {
+    prefix fm;
+  }
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "The type definition of fault management";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  typedef severityLevel {
+    type enumeration {
+      enum "Critical" {
+        description
+          "Critical alarm.";
+      }
+      enum "Major" {
+        description
+          "Major alarm.";
+      }
+      enum "Minor" {
+        description
+          "Minor alarm.";
+      }
+      enum "Warning" {
+        description
+          "Warning alarm.";
+      }
+      enum "Default" {
+        description
+          "Default value.";
+      }
+    }
+    description
+      "The type of severity level";
+  }
+  typedef DispseverityLevel {
+    type enumeration {
+      enum "Critical" {
+        description
+          "Critical alarm.";
+      }
+      enum "Major" {
+        description
+          "Major alarm.";
+      }
+      enum "Minor" {
+        description
+          "Minor alarm.";
+      }
+      enum "Warning" {
+        description
+          "Warning alarm.";
+      }
+      enum "inconsistent" {
+        description
+          "Inconsistent.";
+      }
+      enum "Default" {
+        description
+          "Default value.";
+      }
+    }
+    description
+      "The type of severity level";
+  }
+  typedef enableFlag {
+    type enumeration {
+      enum "False" {
+        description
+          "Disabled.";
+      }
+      enum "True" {
+        description
+          "Enabled.";
+      }
+    }
+    description
+      "Enable or disable";
+  }
+  typedef trapStatus {
+    type enumeration {
+      enum "on" {
+        description
+          "Whether traps are enabled.";
+      }
+      enum "off" {
+        description
+          "Whether traps are disabled.";
+      }
+    }
+    description
+      "The type of trap status";
+  }
+  typedef rootCauseIndication {
+    type enumeration {
+      enum "Independent" {
+        description
+          "Independent alarm.";
+      }
+      enum "RootCause" {
+        description
+          "Root alarm.";
+      }
+      enum "nonRootCause" {
+        description
+          "Correlative alarm.";
+      }
+    }
+    description
+      "The type of root cause indication";
+  }
+  typedef monitorDispState {
+    type string;
+    description
+      "The type of monitor state";
+  }
+  typedef monitorState {
+    type string;
+    description
+      "The type of monitor state";
+  }
+  typedef reportChannelType {
+    type string;
+    description
+      "The type of report channel";
+  }
+  typedef reportStatus {
+    type string;
+    description
+      "The type of report status";
+  }
+  typedef accessType {
+    type enumeration {
+      enum "SNMP" {
+        description
+          "Simple Network Management Protocol (SNMP) type.";
+      }
+    }
+    description
+      "The access type";
+  }
+  typedef inverseModeType {
+    type string;
+    description
+      "The type of inverse mode";
+  }
+  typedef alarmObjType {
+    type enumeration {
+      enum "BGP_Peer" {
+        description
+          "Border Gateway Protocol (BGP) peer.";
+      }
+      enum "BGP_Instance" {
+        description
+          "Border Gateway Protocol (BGP) instance.";
+      }
+      enum "ISIS_Instance" {
+        description
+          "Intermediate System to Intermediate System (IS-IS) instance.";
+      }
+      enum "ISIS_peer" {
+        description
+          "Intermediate System to Intermediate System (IS-IS) neighbor.";
+      }
+      enum "OSPF_peer" {
+        description
+          "Open Shortest Path First (OSPF) neighbor.";
+      }
+      enum "OSPF_instance" {
+        description
+          "Open Shortest Path First (OSPF) instance.";
+      }
+      enum "OSPFv3_peer" {
+        description
+          "Open Shortest Path First Version 3 (OSPFv3) neighbor.";
+      }
+      enum "OSPFv3_instance" {
+        description
+          "Open Shortest Path First Version 3 (OSPFv3) instance.";
+      }
+      enum "static_LSP" {
+        description
+          "Static label switched path.";
+      }
+      enum "staticCR_LSP" {
+        description
+          "Static constraint-based routed label switched path.";
+      }
+      enum "LDP_session" {
+        description
+          "Label Distribution Protocol (LDP) session.";
+      }
+      enum "TUNNEL" {
+        description
+          "Tunnel.";
+      }
+      enum "MSDP_peer" {
+        description
+          "Multicast Source Discovery Protocol (MSDP) peer.";
+      }
+      enum "MSDP_instance" {
+        description
+          "Multicast Source Discovery Protocol (MSDP) instance.";
+      }
+      enum "PIM_peer" {
+        description
+          "Protocol Independent Multicast (PIM) neighbor.";
+      }
+      enum "PIM_instance" {
+        description
+          "Protocol Independent Multicast (PIM) instance.";
+      }
+      enum "PIM_routing_table" {
+        description
+          "Protocol Independent Multicast (PIM) routing table.";
+      }
+      enum "IGMP_routing_table" {
+        description
+          "Internet Group Management Protocol (IGMP) routing table.";
+      }
+      enum "l3vpn" {
+        description
+          "Layer 3 virtual private network.";
+      }
+      enum "VPN_instance" {
+        description
+          "Virtual routing and forwarding instance.";
+      }
+      enum "RRPP_RingProtectionGroup" {
+        description
+          "Rapid Ring Protection Protocol (RRPP) ring protection group.";
+      }
+      enum "interface" {
+        description
+          "Interface.";
+      }
+      enum "fr_pvc" {
+        description
+          "Frame relay permanent virtual connection.";
+      }
+      enum "mc_trunk" {
+        description
+          "Multi-chassis trunk.";
+      }
+      enum "BFD_Session" {
+        description
+          "Bidirectional Forwarding Detection (BFD) session.";
+      }
+      enum "ethernet_link" {
+        description
+          "Ethernet link.";
+      }
+      enum "L2Multicast_forwardingTable" {
+        description
+          "Layer 2 multicast forwarding table.";
+      }
+      enum "MacAddrRatio" {
+        description
+          "Percentage of used MAC addresses.";
+      }
+      enum "FIB" {
+        description
+          "Forwarding information base.";
+      }
+      enum "CCCVC" {
+        description
+          "Circuit cross connect virtual circuit.";
+      }
+      enum "KompellaVC" {
+        description
+          "Kompella virtual circuit.";
+      }
+      enum "PWVC" {
+        description
+          "Pseudo wire virtual circuit.";
+      }
+      enum "PW" {
+        description
+          "Pseudo wire.";
+      }
+      enum "SVC" {
+        description
+          "Switched virtual circuit.";
+      }
+      enum "VPLSVC" {
+        description
+          "Virtual private LAN service (VPLS) virtual circuit (VC).";
+      }
+      enum "VPLSVSI" {
+        description
+          "Virtual private LAN service (VPLS) virtual switching instance (VSI).";
+      }
+      enum "L2Multicast_ProtectionGroup" {
+        description
+          "Layer 2 multicast protection group.";
+      }
+      enum "NetStreamIndex" {
+        description
+          "NetStream index.";
+      }
+      enum "L2Multicast_Group" {
+        description
+          "Layer 2 multicast group.";
+      }
+      enum "collectionFile" {
+        description
+          "Collection file.";
+      }
+      enum "license" {
+        description
+          "License.";
+      }
+      enum "device" {
+        description
+          "Device.";
+      }
+      enum "packetStatistics" {
+        description
+          "Packet statistics.";
+      }
+      enum "port" {
+        description
+          "Physical port.";
+      }
+      enum "link_layer" {
+        description
+          "Link layer.";
+      }
+      enum "portStatistic" {
+        description
+          "Port statistics.";
+      }
+      enum "Storage_medium" {
+        description
+          "Storage medium.";
+      }
+      enum "deviceLinkLayer" {
+        description
+          "Device link layer.";
+      }
+      enum "CBQoS" {
+        description
+          "Class based quality of service.";
+      }
+      enum "Radius" {
+        description
+          "Remote Authentication Dial In User Service.";
+      }
+      enum "boardsLink" {
+        description
+          "Inter-chassis link.";
+      }
+      enum "addressPool" {
+        description
+          "Address pool.";
+      }
+      enum "DHCP" {
+        description
+          "Dynamic Host Configuration Protocol.";
+      }
+      enum "MACTableItem" {
+        description
+          "MAC table entry.";
+      }
+      enum "cfcard" {
+        description
+          "CF card.";
+      }
+      enum "charging" {
+        description
+          "Charging.";
+      }
+      enum "frame" {
+        description
+          "Frame.";
+      }
+      enum "board" {
+        description
+          "Board.";
+      }
+      enum "card" {
+        description
+          "Card.";
+      }
+      enum "optical_module" {
+        description
+          "Optical module.";
+      }
+      enum "power" {
+        description
+          "Power.";
+      }
+      enum "fan" {
+        description
+          "Fan.";
+      }
+      enum "lcd" {
+        description
+          "Liquid crystal display.";
+      }
+      enum "cmu" {
+        description
+          "Central management unit.";
+      }
+      enum "channel" {
+        description
+          "Channel.";
+      }
+      enum "environment" {
+        description
+          "Environment.";
+      }
+      enum "forwarding_engine" {
+        description
+          "Forwarding engine.";
+      }
+      enum "patch" {
+        description
+          "Patch.";
+      }
+      enum "cpu" {
+        description
+          "Central processing unit.";
+      }
+      enum "memory" {
+        description
+          "Memory.";
+      }
+      enum "process" {
+        description
+          "Process.";
+      }
+      enum "device_routing_table" {
+        description
+          "Device routing table.";
+      }
+      enum "laser" {
+        description
+          "Laser.";
+      }
+      enum "PW_OAM" {
+        description
+          "Pseudo wire operation, administration and maintenance.";
+      }
+      enum "PW_APS" {
+        description
+          "Pseudo wire automatic protection switching.";
+      }
+      enum "trunk" {
+        description
+          "Cross-device link aggregation group members.";
+      }
+      enum "APSTunnelGroup" {
+        description
+          "APS protection group.";
+      }
+      enum "MPLS_RING" {
+        description
+          "MPLS protection ring.";
+      }
+      enum "MEP_RMEP" {
+        description
+          "Maintenance association end point + remote maintenance association end point.";
+      }
+      enum "MEP" {
+        description
+          "Maintenance association end point.";
+      }
+      enum "Remote_device" {
+        description
+          "Remote device.";
+      }
+      enum "BFDsessiondown" {
+        description
+          "BFD session is Down.";
+      }
+      enum "section_OAM" {
+        description
+          "Section OAM.";
+      }
+      enum "NE" {
+        description
+          "Network element.";
+      }
+      enum "LMSP" {
+        description
+          "Linear multiplex section protection.";
+      }
+      enum "relay" {
+        description
+          "Relay.";
+      }
+      enum "VC12" {
+        description
+          "VC12 path.";
+      }
+      enum "VC4" {
+        description
+          "VC4 path.";
+      }
+      enum "exttime" {
+        description
+          "External time.";
+      }
+      enum "sysclock" {
+        description
+          "System clock.";
+      }
+      enum "synsource" {
+        description
+          "Clock source.";
+      }
+      enum "Multi_chassis_Protocol_Channel" {
+        description
+          "Multi-chassis protocol channel.";
+      }
+      enum "INTERFACE_LINKEVENT" {
+        description
+          "Interface+link event.";
+      }
+      enum "CESPW" {
+        description
+          "Pseudo wire of a CES service.";
+      }
+      enum "LAG_MEMBER" {
+        description
+          "Member of a link aggregation group.";
+      }
+      enum "LAG" {
+        description
+          "Link aggregation group.";
+      }
+      enum "ptpport" {
+        description
+          "1588 clock port.";
+      }
+      enum "sdhport" {
+        description
+          "SDH port.";
+      }
+      enum "ethport" {
+        description
+          "Ethernet port.";
+      }
+      enum "NEW_BOARD" {
+        description
+          "New board.";
+      }
+      enum "NEW_SUBCARD" {
+        description
+          "New subcard.";
+      }
+      enum "EFI" {
+        description
+          "External functionality interface.";
+      }
+      enum "LASER_GROUP" {
+        description
+          "Laser group.";
+      }
+      enum "ODU0_PATH" {
+        description
+          "ODU0 path.";
+      }
+      enum "ODU0_TCM1" {
+        description
+          "ODU0 TCM1 path.";
+      }
+      enum "ODU0_TCM2" {
+        description
+          "ODU0 TCM2 path.";
+      }
+      enum "ODU0_TCM3" {
+        description
+          "ODU0 TCM3 path.";
+      }
+      enum "ODU0_TCM4" {
+        description
+          "ODU0 TCM4 path.";
+      }
+      enum "ODU0_TCM5" {
+        description
+          "ODU0 TCM5 path.";
+      }
+      enum "ODU0_TCM6" {
+        description
+          "ODU0 TCM6 path.";
+      }
+      enum "ODU1_PATH" {
+        description
+          "ODU1 path.";
+      }
+      enum "ODU1_TCM1" {
+        description
+          "ODU1 TCM1 path.";
+      }
+      enum "ODU1_TCM2" {
+        description
+          "ODU1 TCM2 path.";
+      }
+      enum "ODU1_TCM3" {
+        description
+          "ODU1 TCM3 path.";
+      }
+      enum "ODU1_TCM4" {
+        description
+          "ODU1 TCM4 path.";
+      }
+      enum "ODU1_TCM5" {
+        description
+          "ODU1 TCM5 path.";
+      }
+      enum "ODU1_TCM6" {
+        description
+          "ODU1 TCM6 path.";
+      }
+      enum "ODU2_PATH" {
+        description
+          "ODU2 path.";
+      }
+      enum "ODU2_TCM1" {
+        description
+          "ODU2 TCM1 path.";
+      }
+      enum "ODU2_TCM2" {
+        description
+          "ODU2 TCM2 path.";
+      }
+      enum "ODU2_TCM3" {
+        description
+          "ODU2 TCM3 path.";
+      }
+      enum "ODU2_TCM4" {
+        description
+          "ODU2 TCM4 path.";
+      }
+      enum "ODU2_TCM5" {
+        description
+          "ODU2 TCM5 path.";
+      }
+      enum "ODU2_TCM6" {
+        description
+          "ODU2 TCM6 path.";
+      }
+      enum "ODU3_PATH" {
+        description
+          "ODU3 path.";
+      }
+      enum "ODU3_TCM1" {
+        description
+          "ODU3 TCM1 path.";
+      }
+      enum "ODU3_TCM2" {
+        description
+          "ODU3 TCM2 path.";
+      }
+      enum "ODU3_TCM3" {
+        description
+          "ODU3 TCM3 path.";
+      }
+      enum "ODU3_TCM4" {
+        description
+          "ODU3 TCM4 path.";
+      }
+      enum "ODU3_TCM5" {
+        description
+          "ODU3 TCM5 path.";
+      }
+      enum "ODU3_TCM6" {
+        description
+          "ODU3 TCM6 path.";
+      }
+      enum "ODU4_PATH" {
+        description
+          "ODU4 path.";
+      }
+      enum "ODU4_TCM1" {
+        description
+          "ODU4 TCM1 path.";
+      }
+      enum "ODU4_TCM2" {
+        description
+          "ODU4 TCM2 path.";
+      }
+      enum "ODU4_TCM3" {
+        description
+          "ODU4 TCM3 path.";
+      }
+      enum "ODU4_TCM4" {
+        description
+          "ODU4 TCM4 path.";
+      }
+      enum "ODU4_TCM5" {
+        description
+          "ODU4 TCM5 path.";
+      }
+      enum "ODU4_TCM6" {
+        description
+          "ODU4 TCM6 path.";
+      }
+      enum "ODUFLEX_PATH" {
+        description
+          "Optical channel data unit flexible path.";
+      }
+      enum "ODUFLEX_TCM1" {
+        description
+          "Optical channel data unit flexible TCM1 path.";
+      }
+      enum "ODUFLEX_TCM2" {
+        description
+          "Optical channel data unit flexible TCM2 path.";
+      }
+      enum "ODUFLEX_TCM3" {
+        description
+          "Optical channel data unit flexible TCM3 path.";
+      }
+      enum "ODUFLEX_TCM4" {
+        description
+          "Optical channel data unit flexible TCM4 path.";
+      }
+      enum "ODUFLEX_TCM5" {
+        description
+          "Optical channel data unit flexible TCM5 path.";
+      }
+      enum "ODUFLEX_TCM6" {
+        description
+          "Optical channel data unit flexible TCM6 path.";
+      }
+      enum "OTU1_PATH" {
+        description
+          "OTU1 path.";
+      }
+      enum "OTU2_PATH" {
+        description
+          "OTU2 path.";
+      }
+      enum "OTU3_PATH" {
+        description
+          "OTU3 path.";
+      }
+      enum "OTU4_PATH" {
+        description
+          "OTU4 path.";
+      }
+      enum "SDH_PATH" {
+        description
+          "SDH path.";
+      }
+      enum "SHELF" {
+        description
+          "Shelf";
+      }
+      enum "SYSCLOCK_OSN" {
+        description
+          "SYSCLOCK_OSN.";
+      }
+      enum "SYNSOURCE_OSN" {
+        description
+          "SYNSOURCE_OSN.";
+      }
+      enum "SYNSOURCE_OBJ" {
+        description
+          "SYNSOURCE_OBJ.";
+      }
+      enum "SYSCLOCK_OBJ" {
+        description
+          "SYSCLOCK_OBJ.";
+      }
+      enum "OTUCN_PATH" {
+        description
+          "OTUCN_PATH.";
+      }
+      enum "ODUCN_PATH" {
+        description
+          "ODUCN_PATH.";
+      }
+      enum "SDH_OPTPORT" {
+        description
+          "SDH_OPTPORT.";
+      }
+      enum "NEW_LASER" {
+        description
+          "NEW_LASER.";
+      }
+      enum "CC" {
+        description
+          "CC.";
+      }
+      enum "WDM_LSP" {
+        description
+          "WDM_LSP.";
+      }
+      enum "NODE" {
+        description
+          "NODE.";
+      }
+      enum "OSPF_CL" {
+        description
+          "OSPF_CL.";
+      }
+      enum "OSPF_NBR" {
+        description
+          "OSPF_NBR.";
+      }
+      enum "RSVP_NBR" {
+        description
+          "RSVP_NBR.";
+      }
+      enum "WDM_SERVICE" {
+        description
+          "WDM_SERVICE.";
+      }
+      enum "TEL_OCHPATH" {
+        description
+          "TEL_OCHPATH.";
+      }
+      enum "TEL_OTNPATH" {
+        description
+          "TEL_OTNPATH.";
+      }
+      enum "TEL" {
+        description
+          "TEL.";
+      }
+      enum "ODUK_SPR" {
+        description
+          "ODUK_SPR.";
+      }
+      enum "SDH_NODE" {
+        description
+          "SDH_NODE.";
+      }
+      enum "SDH_SERVICE" {
+        description
+          "SDH_SERVICE.";
+      }
+      enum "SDH_LSP" {
+        description
+          "SDH_LSP.";
+      }
+      enum "PER_CC" {
+        description
+          "PER_CC.";
+      }
+      enum "SDH_TEL" {
+        description
+          "SDH_TEL.";
+      }
+      enum "TEL_SDHPATH" {
+        description
+          "TEL_SDHPATH.";
+      }
+      enum "SDH_MSP" {
+        description
+          "SDH_MSP.";
+      }
+      enum "NETWORK" {
+        description
+          "NETWORK.";
+      }
+      enum "VM" {
+        description
+          "VM.";
+      }
+      enum "L2VPN_UNI" {
+        description
+          "L2VPN_UNI.";
+      }
+      enum "L2VPN_NNI" {
+        description
+          "L2VPN_NNI.";
+      }
+      enum "EVPN" {
+        description
+          "EVPN";
+      }
+      enum "VPWS_PROTECT_GROUP" {
+        description
+          "VPWS_PROTECT_GROUP.";
+      }
+      enum "VPLS_PROTECT_GROUP" {
+        description
+          "VPLS_PROTECT_GROUP.";
+      }
+      enum "QOS_PWQUEUE" {
+        description
+          "QOS_PWQUEUE.";
+      }
+      enum "QOS_VUNIQUEUE" {
+        description
+          "QOS_VUNIQUEUE.";
+      }
+      enum "QOS_PORTQUEUE" {
+        description
+          "QOS_PORTQUEUE.";
+      }
+      enum "QOS_STREAM" {
+        description
+          "QOS_STREAM.";
+      }
+      enum "ERPS_RING" {
+        description
+          "ERPS_RING.";
+      }
+      enum "ERPS_NODE" {
+        description
+          "ERPS_NODE.";
+      }
+      enum "Fast_Reroute" {
+        description
+          "Fast_Reroute.";
+      }
+      enum "TNLECMP_Group" {
+        description
+          "TNLECMP_Group";
+      }
+      enum "TNLECMP_Member" {
+        description
+          "TNLECMP_Member";
+      }
+      enum "LMSP_OBJ" {
+        description
+          "LMSP_OBJ.";
+      }
+      enum "SNCP_OBJ" {
+        description
+          "SNCP_OBJ.";
+      }
+      enum "FORWARD_RESOURCE" {
+        description
+          "FORWARD_RESOURCE.";
+      }
+      enum "PTP_PKT_LOS_OBJ" {
+        description
+          "PTP_PKT_LOS_OBJ.";
+      }
+      enum "SDH_VC3PATH" {
+        description
+          "SDH_VC3PATH";
+      }
+      enum "SDH_VC12PATH" {
+        description
+          "SDH_VC12PATH";
+      }
+      enum "LPT_INTERFACE" {
+        description
+          "LPT_INTERFACE";
+      }
+      enum "FlexE_interface" {
+        description
+          "FlexE_interface";
+      }
+      enum "SUB_IF_CHANNEL" {
+        description
+          "SUB_IF_CHANNEL";
+      }
+      enum "DCN_PHY_INTERFACE" {
+        description
+          "DCN_PHY_INTERFACE";
+      }
+      enum "Tunnel_Resource" {
+        description
+          "Tunnel_Resource";
+      }
+      enum "ETREE_LEAF_APS_GROUP" {
+        description
+          "ETREE_LEAF_APS_GROUP";
+      }
+      enum "RSVPTE_NBR" {
+        description
+          "RSVPTE_NBR";
+      }
+    }
+    description
+      "The type of alarm object";
+  }
+  typedef inverseStatus {
+    type string;
+    description
+      "The type of inverse status";
+  }
+  typedef devmMaskType {
+    type string;
+    description
+      "The type of device";
+  }
+  typedef reportDisStatus {
+    type string;
+    description
+      "The type of report status";
+  }
+  typedef AuxiLiaryType {
+    type string;
+    description
+      "The type of auxiliary";
+  }
+}

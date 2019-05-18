@@ -1,0 +1,120 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-dhcp-type {
+  belongs-to huawei-dhcp {
+    prefix dhcp;
+  }
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "test.Description FOR submodule";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  typedef dhcpTYPE {
+    type string;
+    description
+      "description of dhcp_dhcpTYPE_type";
+  }
+  typedef dhcpOpt82SubOpt {
+    type enumeration {
+      enum "circuit-id" {
+        description
+          "DHCP option82 circuit-ID.";
+      }
+      enum "remote-id" {
+        description
+          "DHCP option82 remote-ID.";
+      }
+    }
+    description
+      "description of dhcp_dhcpOpt82SubOpt_type";
+  }
+  typedef dhcpOpt82VendorSubOptFormat {
+    type enumeration {
+      enum "ascii" {
+        description
+          "DHCP option82 ascii-type format.";
+      }
+      enum "hex" {
+        description
+          "DHCP option82 hex-type format.";
+      }
+      enum "ip-address" {
+        description
+          "DHCP option82 sub9 IP-address.";
+      }
+      enum "sysname" {
+        description
+          "System name.";
+      }
+    }
+    description
+      "description of dhcp_dhcpOpt82VendorSubOptFormat_type";
+  }
+  typedef dhcpOpt82Format {
+    type enumeration {
+      enum "default" {
+        description
+          "DHCP option82 default format.";
+      }
+      enum "common" {
+        description
+          "DHCP option82 common format.";
+      }
+      enum "extend" {
+        description
+          "DHCP option82 extend format.";
+      }
+      enum "user-defined" {
+        description
+          "DHCP option82 user-defined format.";
+      }
+    }
+    description
+      "description of dhcp_dhcpOpt82Format_type";
+  }
+  typedef dhcpOpt82Action {
+    type enumeration {
+      enum "insert" {
+        description
+          "insert";
+      }
+      enum "rebuild" {
+        description
+          "rebuild";
+      }
+    }
+    description
+      "description of dhcp_dhcpOpt82Action_type";
+  }
+  typedef dhcpInterfaceState {
+    type enumeration {
+      enum "Trusted" {
+        description
+          "Trusted";
+      }
+      enum "Untrusted" {
+        description
+          "Untrusted";
+      }
+    }
+    description
+      "description of dhcp_dhcpInterfaceState_type";
+  }
+}

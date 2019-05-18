@@ -1,0 +1,259 @@
+module huawei-mlag {
+    namespace "http://www.huawei.com/netconf/vrp/huawei-mlag";
+    prefix "mlag";
+    import huawei-pub-type {
+        prefix "pub-type";
+    }
+    include huawei-mlag-type;
+    
+    organization "Huawei Technologies Co.,Ltd.";
+    contact "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+              People's Republic of China                    
+              Website: http://www.huawei.com Email: support@huawei.com";
+    description "Multi-Chassis Link Aggregation Group.";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+    container mlag {
+        container mlagInstances {
+            description "M-LAG.";
+            list mlagInstance {
+                min-elements 0;
+                max-elements 2048;
+                key "dfsgroupId localMlagPort";
+                description "M-LAG.";
+                leaf dfsgroupId {
+                    type uint32 {
+                        range "1..2";
+                    }
+                    description "Dfs Id.";
+                }
+                leaf mlagId {
+                    type uint32 {
+                        range "1..2048";
+                    }
+                    mandatory true;
+                    description "mlag Id.";
+                }
+                leaf localMlagPort {
+                    type pub-type:ifName;
+                    description "Local Port.";
+                }
+                leaf localMlagState {
+                    type portState;
+                    config false;
+                    description "Local Port State.";
+                }
+                leaf peerMlagPort {
+                    type string;
+                    config false;
+                    description "Peer Port.";
+                }
+                leaf peerMlagState {
+                    type portState;
+                    config false;
+                    description "Peer Port State.";
+                }
+            }
+        }
+        container localDfsInfos {
+            description "Local Dfs Infos.";
+            list localDfsInfo {
+                key "dfsgroupId";
+                config false;
+                description "Local Dfs Infos.";
+                leaf dfsgroupId {
+                    type uint32;
+                    description "Dfs Id.";
+                }
+                leaf localPriority {
+                    type uint32 {
+                        range "1..254";
+                    }
+                    default "100";
+                    description "Priority.";
+                }
+                leaf srcIpAddress {
+                    type pub-type:ipAddress;
+                    description "Ipv4 Address.";
+                }
+                leaf srcVpnName {
+                    type string;
+                    description "VpnName.";
+                }
+                leaf localState {
+                    type dfsState;
+                    description "State.";
+                }
+                leaf localHeartState {
+                    type heartState;
+                    description "localHeartState.";
+                }
+                leaf localSystemID {
+                    type pub-type:macAddress;
+                    description "System Id.";
+                }
+                leaf localSystemName {
+                    type string;
+                    description "System Name.";
+                }
+                leaf localSoftVersion {
+                    type string;
+                    description "Soft Version.";
+                }
+                leaf localDevType {
+                    type string;
+                    description "Device Type.";
+                }
+                leaf localCausation {
+                    type string;
+                    description "Causation.";
+                }
+                container srcTrillType {
+                    description "Local Trill Type.";
+                    leaf srcNickname {
+                        type uint32 {
+                            range "1..65471";
+                        }
+                        description "Local Trill Nickname.";
+                    }
+                    leaf srcPseudoNickname {
+                        type uint32 {
+                            range "1..65471";
+                        }
+                        description "Local Pseudo Nickname.";
+                    }
+                    leaf srcPseudoPriority {
+                        type uint32 {
+                            range "128..255";
+                        }
+                        default "192";
+                        description "Local Pseudo Priority.";
+                    }
+                }
+            }
+        }
+        container peerDfsInfos {
+            description "peer Dfs Infos.";
+            list peerDfsInfo {
+                key "dfsgroupId";
+                config false;
+                description "peer Dfs Infos.";
+                leaf dfsgroupId {
+                    type uint32;
+                    description "Dfs Id.";
+                }
+                leaf peerPriority {
+                    type uint32 {
+                        range "1..254";
+                    }
+                    default "100";
+                    description "Priority.";
+                }
+                leaf peerIpAddress {
+                    type pub-type:ipAddress;
+                    description "Ip Address.";
+                }
+                leaf peerVpnName {
+                    type string;
+                    description "VpnName.";
+                }
+                leaf peerState {
+                    type dfsState;
+                    description "State.";
+                }
+                leaf peerSystemID {
+                    type pub-type:macAddress;
+                    description "System Id.";
+                }
+                leaf peerSystemName {
+                    type string;
+                    description "System Name.";
+                }
+                leaf peerSoftVersion {
+                    type string;
+                    description "Soft Version.";
+                }
+                leaf peerDevType {
+                    type string;
+                    description "Device Type.";
+                }
+                container peerTrillType {
+                    description "Peer Trill Type.";
+                    leaf peerNickname {
+                        type uint32 {
+                            range "1..65471";
+                        }
+                        description "Peer Trill Nickname.";
+                    }
+                }
+            }
+        }
+        container peerlinks {
+            description "Peerlink infos.";
+            list peerlink {
+                key "dfsgroupId linkId portName";
+                description "Peerlink infos.";
+                leaf dfsgroupId {
+                    type uint32 {
+                        range "1..2";
+                    }
+                    description "Dfs Id.";
+                }
+                leaf linkId {
+                    type uint32;
+                    description "Link Id.";
+                }
+                leaf portName {
+                    type pub-type:ifName;
+                    description "Port Name.";
+                }
+                leaf portState {
+                    type portState;
+                    config false;
+                    description "Port State.";
+                }
+                leaf excludeVlan {
+                    type pub-type:VLAN_BITMAP;
+                    description "Exclude Vlan.";
+                }
+            }
+        }
+        container errordowns {
+            description "Error Down Configure.";
+            list errordown {
+                key "dfsgroupId portName";
+                description "Error Down Configure.";
+                leaf dfsgroupId {
+                    type uint32 {
+                        range "1..2";
+                    }
+                    description "Dfs Id.";
+                }
+                leaf portName {
+                    type pub-type:ifName;
+                    description "Port Name.";
+                }
+                leaf portState {
+                    type errordownState;
+                    config false;
+                    description "Port State.";
+                }
+                leaf errordownAction {
+                    type errordownAction;
+                    mandatory true;
+                    description "Error Down Action.";
+                }
+            }
+        }
+    }
+}

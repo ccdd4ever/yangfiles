@@ -1,0 +1,288 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-qos-action {
+  belongs-to "huawei-qos" {
+    prefix "qos";
+  }
+  import huawei-pub-type {
+    prefix "pub-type";
+  }
+  import huawei-extension {
+    prefix "ext";
+  }
+  include huawei-qos-type;
+  
+  organization "Huawei Technologies Co.,Ltd.";
+  contact "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+              People's Republic of China                    
+              Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "Action of Quality of service."; 
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  rpc qosResetGlobalPolicyStat {
+    description
+      "To clear traffic policy statistics.";
+    input {
+      leaf policyName {
+        type qosPolicyName;
+        description
+          "Policy Name.";
+      }
+      leaf direction {
+        type qosPolicyApplyDirection;
+        description
+          "Direction.";
+      }
+      leaf classifierName {
+        type qosPolicyName;
+        description
+          "Classifier Name.";
+        ext:allowDelete true;
+      }
+    }
+  }
+  rpc qosResetSlotPolicyStat {
+    description
+      "To clear traffic policy statistics.";
+    input {
+      leaf policyName {
+        type qosPolicyName;
+        description
+          "Policy Name.";
+      }
+      leaf slotId {
+        type qosSlotPath;
+        description
+          "slot Id.";
+      }
+      leaf direction {
+        type qosPolicyApplyDirection;
+        description
+          "Direction.";
+      }
+      leaf classifierName {
+        type qosPolicyName;
+        description
+          "Classifier Name.";
+        ext:allowDelete true;
+      }
+    }
+  }
+  rpc qosResetVlanPolicyStat {
+    description
+      "To clear traffic policy statistics.";
+    input {
+      leaf vlanId {
+        type vlanID;
+        description
+          "VLAN ID.";
+      }
+      leaf policyName {
+        type qosPolicyName;
+        description
+          "Policy Name.";
+      }
+      leaf direction {
+        type qosPolicyApplyDirection;
+        description
+          "Direction.";
+      }
+      leaf classifierName {
+        type qosPolicyName;
+        description
+          "Classifier Name.";
+        ext:allowDelete true;
+      }
+    }
+  }
+  rpc qosResetIfPolicyStat {
+    description
+      "To clear traffic policy statistics.";
+    input {
+      leaf ifName {
+        type string {
+          length "1..32";
+        }
+        description
+          "InterfaceName.";
+      }
+      leaf policyName {
+        type qosPolicyName;
+        description
+          "Policy Name.";
+      }
+      leaf direction {
+        type qosPolicyApplyDirection;
+        description
+          "Direction.";
+      }
+      leaf classifierName {
+        type qosPolicyName;
+        description
+          "Classifier Name.";
+        ext:allowDelete true;
+      }
+    }
+  }
+  rpc qosResetVpnPolicyStat {
+    description
+      "To clear traffic policy statistics.";
+    input {
+      leaf vpnInstanceName {
+        type string {
+          length "1..31";
+        }
+        description
+          "VPN Instance Name";
+      }
+      leaf policyName {
+        type qosPolicyName;
+        description
+          "Policy Name.";
+      }
+      leaf direction {
+        type qosPolicyApplyDirection;
+        description
+          "Direction.";
+      }
+      leaf groupId {
+        type uint16 {
+          range "1..128";
+        }
+        description
+          "GroupId";
+        ext:allowDelete true;
+      }
+      leaf classifierName {
+        type qosPolicyName;
+        description
+          "Classifier Name.";
+        ext:allowDelete true;
+      }
+    }
+  }
+  rpc qosResetQosGroupPolicyStat {
+    description
+      "To clear traffic policy statistics.";
+    input {
+      leaf qosGroupName {
+        type string {
+          length "1..31";
+        }
+        description
+          "QoS group name.";
+      }
+      leaf policyName {
+        type qosPolicyName;
+        description
+          "Policy Name.";
+      }
+      leaf direction {
+        type qosPolicyApplyDirection;
+        description
+          "Direction.";
+      }
+      leaf classifierName {
+        type qosPolicyName;
+        description
+          "Classifier Name.";
+        ext:allowDelete true;
+      }
+    }
+  }
+  rpc qosResetQueueStat {
+    description
+      "Reset queue statistics.";
+    input {
+      leaf ifName {
+        type pub-type:ifName;
+        description
+          "Interface Name.";
+      }
+    }
+  }
+  rpc qosResetFlowTable {
+    description
+      "reset flow table.";
+    input {
+      leaf entryId {
+        type uint32;
+        description
+          "entryId.";
+      }
+    }
+  }
+  rpc qosResetBdPolicyStat {
+    description
+      "To clear traffic policy statistics.";
+    input {
+      leaf bdId {
+        type uint32 {
+          range "1..16777215";
+        }
+        description
+          "Value of BD.";
+      }
+      leaf policyName {
+        type qosPolicyName;
+        description
+          "Policy Name.";
+      }
+      leaf direction {
+        type qosPolicyApplyOutbound;
+        description
+          "Direction.";
+      }
+      leaf classifierName {
+        type qosPolicyName;
+        description
+          "Classifier Name.";
+        ext:allowDelete true;
+      }
+    }
+  }
+  rpc qosResetDropHistory {
+    description
+      "Reset queue droped history.";
+    input {
+      leaf slotId {
+        type qosSlotPath;
+        description
+          "Slot Id.";
+      }
+      leaf ifName {
+        type pub-type:ifName;
+        description
+          "Interface Name.";
+      }
+    }
+  }
+  rpc qosResetOverRunHistory {
+    description
+      "Reset queue buffer overrun history.";
+    input {
+      leaf slotId {
+        type qosSlotPath;
+        description
+          "Slot Id.";
+      }
+      leaf ifName {
+        type pub-type:ifName;
+        description
+          "Interface Name.";
+      }
+    }
+  }
+}

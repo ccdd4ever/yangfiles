@@ -1,0 +1,555 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mac {
+  namespace "http://www.huawei.com/netconf/vrp/huawei-mac";
+  prefix mac;
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import huawei-vlan {
+    prefix vlan;
+  }
+  import ietf-yang-types {
+    prefix yang;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  include huawei-mac-action;
+  include huawei-mac-type;
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "MAC address forwarding.";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  container mac {
+    description
+      "MAC address forwarding.";
+    container globalAttribute {
+      description
+        "MAC global attribute.";
+      leaf macAgeTimeEnable {
+        type macAgeTimeType;
+        default "enable";
+        description
+          "Whether MAC address aging is enabled.";
+      }
+      leaf macAgingTime {
+        when "not(../macAgeTimeEnable='disable') or ../macAgeTimeEnable='enable'";
+        type uint32 {
+          range "60..1000000";
+        }
+        default "300";
+        description
+          "Aging time.";
+      }
+    }
+    container vlanFdbs {
+      description
+        "VLAN forwarding table.";
+      list vlanFdb {
+        key "macAddress vlanId slotId";
+        description
+          "VLAN forwarding entry.";
+        leaf macAddress {
+          type pub-type:macAddress {
+            length "0..255";
+          }
+          description
+            "MAC address in the format of H-H-H.";
+        }
+        leaf vlanId {
+          type leafref {
+            path "/vlan:vlan/vlan:vlans/vlan:vlan/vlan:vlanId";
+          }
+          description
+            "VLAN ID.";
+        }
+        leaf slotId {
+          type string {
+            length "1..24";
+          }
+          description
+            "Slot ID.";
+        }
+        leaf macType {
+          type macType;
+          must "((../macType='static' or ../macType='blackHole') )";
+          mandatory true;
+          description
+            "MAC address type, such as blackhole, static, and dynamic.";
+        }
+        leaf outIfName {
+          when "not(../macType='blackHole') or ../macType='static'";
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          description
+            "Outbound interface name.";
+          ext:support-filter "true";
+          ext:allowDelete "true";
+        }
+        leaf outNickname {
+          type string {
+            length "1..31";
+          }
+          config false;
+          mandatory true;
+          description
+            "Nickname.";
+        }
+        leaf learnedPeriod {
+          type uint32 {
+            range "0..4294967294";
+          }
+          default "0";
+          config false;
+          description
+            "Dynamic MAC Holding Time.";
+        }
+      }
+    }
+    container vlanStormSupps {
+      description
+        "VLAN Suppression List.";
+      list vlanStormSupp {
+        key "vlanId suppressType";
+        description
+          "VLAN Suppression.";
+        leaf vlanId {
+          type macVlanId {
+            range "1..4094";
+          }
+          description
+            "VLAN ID.";
+        }
+        leaf suppressType {
+          type suppressType;
+          description
+            "Traffic suppression type.";
+        }
+        leaf cir {
+          type uint64 {
+            range "64..4294967295";
+          }
+          mandatory true;
+          description
+            "CIR value.";
+        }
+        leaf cbs {
+          type uint64 {
+            range "10000..4294967295";
+          }
+          description
+            "CBS value.";
+          ext:allowDelete "true";
+        }
+      }
+    }
+    container ifMacFlappings {
+      description
+        "Interface MAC Flapping.";
+      list ifMacFlapping {
+        key "ifName";
+        description
+          "Interface MAC Flapping.";
+        leaf ifName {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          description
+            "Name of an interface. ";
+        }
+        leaf action {
+          type triggerType;
+          default "ErrorDown";
+          description
+            "Action.";
+        }
+      }
+    }
+    container ifStormSupps {
+      description
+        "Interface traffic suppression list.";
+      list ifStormSupp {
+        key "ifName suppressType";
+        description
+          "Interface traffic suppression.";
+        leaf ifName {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          description
+            "Name of an interface. ";
+        }
+        leaf suppressType {
+          type suppressType;
+          description
+            "Suppression type.";
+        }
+        leaf percent {
+          type uint64 {
+            range "0..100";
+          }
+          description
+            "Percent.";
+          ext:allowDelete "true";
+        }
+        leaf packets {
+          type uint64 {
+            range "0..148810000";
+          }
+          description
+            "Packets per second.";
+          ext:allowDelete "true";
+        }
+        leaf cir {
+          type uint64 {
+            range "0..100000000";
+          }
+          description
+            "CIR(Kbit/s).";
+          ext:allowDelete "true";
+        }
+        leaf cbs {
+          when "../cir";
+          type uint64 {
+            range "10000..4294967295";
+          }
+          description
+            "CBS(Bytes).";
+          ext:allowDelete "true";
+        }
+      }
+    }
+    container ifStormBlocks {
+      description
+        "Interface traffic block list.";
+      list ifStormBlock {
+        key "ifName blockType direction";
+        description
+          "Interface traffic suppression.";
+        leaf ifName {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          description
+            "Name of an interface. ";
+        }
+        leaf blockType {
+          type suppressType;
+          description
+            "Block type.";
+        }
+        leaf direction {
+          type directionType;
+          description
+            "Direction.";
+        }
+      }
+    }
+    container ifStormContrls {
+      description
+        "Interface storm control list.";
+      list ifStormContrl {
+        key "ifName";
+        description
+          "Interface storm control.";
+        leaf ifName {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          description
+            "Name of an interface. ";
+        }
+        leaf action {
+          type stormCtrlActionType;
+          default "normal";
+          description
+            "Action type.";
+          ext:allowDelete "true";
+        }
+        leaf trapEnable {
+          type enableType;
+          default "disable";
+          description
+            "Trap state.";
+          ext:allowDelete "true";
+        }
+        leaf logEnable {
+          type enableType;
+          default "disable";
+          description
+            "Log state.";
+          ext:allowDelete "true";
+        }
+        leaf interval {
+          type uint64 {
+            range "1..180";
+          }
+          default "5";
+          description
+            "Detect interval.";
+          ext:allowDelete "true";
+        }
+        container ifPacketContrlAttributes {
+          description
+            "Storm control rate list.";
+          list ifPacketContrlAttribute {
+            key "packetType";
+            description
+              "Storm control rate.";
+            leaf packetType {
+              type stormCtrlType;
+              description
+                "Packet type.";
+            }
+            leaf rateType {
+              type stormCtrlRateType;
+              mandatory true;
+              description
+                "Storm control rate type.";
+            }
+            leaf minRate {
+              type uint32 {
+                range "1..148810000";
+              }
+              mandatory true;
+              description
+                "Storm control min rate.";
+            }
+            leaf maxRate {
+              type uint64 {
+                range "1..148810000";
+              }
+              mandatory true;
+              description
+                "Storm control max rate.";
+            }
+          }
+        }
+        container ifstormContrlInfos {
+          config false;
+          description
+            "Storm control info list.";
+          list ifstormContrlInfo {
+            key "packetType";
+            config false;
+            description
+              "Storm control info";
+            leaf packetType {
+              type stormCtrlType;
+              config false;
+              description
+                "Packet type.";
+            }
+            leaf punishStatus {
+              type stormCtrlActionType;
+              config false;
+              description
+                "Storm control status.";
+            }
+            leaf lastPunishTime {
+              type string {
+                length "1..50";
+              }
+              config false;
+              description
+                "Last punish time.";
+            }
+          }
+        }
+      }
+    }
+    container macflpDetectGlbAttr {
+      description
+        "MAC flapping detection global attribute.";
+      leaf macflpDetectEnable {
+        type macEnableStatus;
+        default "enable";
+        description
+          "MAC flapping detection enable.";
+      }
+      leaf macflpDetectLevel {
+        type securityLevel;
+        default "middle";
+        description
+          "MAC flapping detection security level.";
+      }
+      leaf macflpAgingTime {
+        type uint32 {
+          range "60..900";
+        }
+        default "300";
+        description
+          "MAC flapping agint time.";
+      }
+      leaf macflpTrapEnable {
+        type macEnableStatus;
+        default "disable";
+        description
+          "MAC flapping  periodical trap status.";
+      }
+      leaf macflpTrapInterval {
+        when "not(../macflpTrapEnable='disable')";
+        type uint32 {
+          range "2..30";
+        }
+        default "2";
+        description
+          "MFLP periodical trap interval.";
+        ext:allowDelete "true";
+      }
+    }
+    container macflpDetectExcludeVlan {
+      description
+        "MAC flapping detection exclude vlan list.";
+      leaf vlanLists {
+        type pub-type:VLAN_RANGE {
+        }
+        description
+          "MAC flapping detection exclude vlan list.";
+        ext:allowDelete "true";
+      }
+    }
+    container macflpDetectRecords {
+      config false;
+      description
+        "Records of MAC Flapping Detection.";
+      list macflpDetectRecord {
+        key "broadcastDomainType broadcastDomainName slotId macAddress";
+        config false;
+        description
+          "Records of MAC Flapping Detection.";
+        leaf broadcastDomainType {
+          type broadcastDomainType;
+          config false;
+          description
+            "Broadcast Domain Type.";
+        }
+        leaf broadcastDomainName {
+          type string {
+            length "1..31";
+          }
+          config false;
+          description
+            "Broadcast Domain Name.";
+        }
+        leaf slotId {
+          type string {
+            length "1..50";
+          }
+          config false;
+          description
+            "Slot ID.";
+        }
+        leaf macAddress {
+          type pub-type:macAddress {
+            length "0..255";
+          }
+          config false;
+          description
+            "Mac Address.";
+        }
+        leaf moveNum {
+          type uint32 {
+            range "1..4294967295";
+          }
+          config false;
+          description
+            "Move Number.";
+        }
+        leaf startTime {
+          type yang:date-and-time;
+          config false;
+          description
+            "Start Time.";
+        }
+        leaf endTime {
+          type yang:date-and-time;
+          config false;
+          description
+            "End Time.";
+        }
+        container originalPorts {
+          config false;
+          description
+            "Original Ports.";
+          list originalPort {
+            key "orgPort";
+            config false;
+            description
+              "Original Port.";
+            leaf orgPortType {
+              type mflpPortType;
+              config false;
+              description
+                "Original Port Type.";
+            }
+            leaf orgPort {
+              type string {
+                length "1..63";
+              }
+              config false;
+              description
+                "Original Port.";
+            }
+          }
+        }
+        container movePorts {
+          config false;
+          description
+            "Move Ports.";
+          list movePort {
+            key "movePort";
+            config false;
+            description
+              "Move Port.";
+            leaf movePortType {
+              type mflpPortType;
+              config false;
+              description
+                "Move Port Type.";
+            }
+            leaf moveSequence {
+              type uint32 {
+                range "1..4294967295";
+              }
+              config false;
+              description
+                "Move Port Sequence.";
+            }
+            leaf movePort {
+              type string {
+                length "1..63";
+              }
+              config false;
+              description
+                "Move Port.";
+            }
+          }
+        }
+      }
+    }
+  }
+}

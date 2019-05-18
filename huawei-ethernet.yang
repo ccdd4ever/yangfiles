@@ -1,0 +1,227 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ethernet {
+  namespace "http://www.huawei.com/netconf/vrp/huawei-ethernet";
+  prefix ethernet;
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-vlan {
+    prefix vlan;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  include huawei-ethernet-action;
+  include huawei-ethernet-type;
+  include huawei-ethernet-stacking;
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "Ethernet Interface.";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  container ethernet {
+    description
+      "Ethernet Interface.";
+    container ethernetIfs {
+      description
+        "List of Ethernet interfaces.";
+      list ethernetIf {
+        key "ifName";
+        description
+          "Ethernet interface.";
+        leaf ifName {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          description
+            "Name of an interface. For example, Ethernet 0/1/0. ";
+        }
+        leaf l2Enable {
+          type ethernetEnableStatus;
+          default "disable";
+          description
+            "Enable or disable L2 interface switching.";
+          ext:allowDelete "true";
+        }
+        container l2Attribute {
+          when "not(../l2Enable='disable')";
+          description
+            "Interface Layer 2 attribute.";
+          leaf linkType {
+            type ethernetLinkType;
+            default "hybrid";
+            description
+              "Link type.";
+          }
+          leaf pvid {
+            type leafref {
+              path "/vlan:vlan/vlan:vlans/vlan:vlan/vlan:vlanId";
+            }
+            description
+              "Default VLAN ID.";
+            ext:allowDelete "true";
+          }
+          leaf trunkVlans {
+            when "../linkType!='access' and ../linkType!='dot1qtunnel' and ../linkType";
+            type pub-type:VLAN_RANGE {
+            }
+            description
+              "List of VLANs that are allowed to pass.";
+            ext:allowDelete "true";
+          }
+          leaf untagVlans {
+            when "../linkType='hybrid'";
+            type pub-type:VLAN_RANGE {
+            }
+            description
+              "List of Untagged VLANs that are allowed to pass.";
+            ext:allowDelete "true";
+          }
+          leaf portBridgEnable {
+            type boolean;
+            description
+              "Whether port bridge is enabled.";
+          }
+          leaf taggedPacketDiscard {
+            type boolean;
+            default "false";
+            description
+              "Discard tagged packets.";
+          }
+          container portIsolateGroups {
+            description
+              "Port Isolate Groups";
+            list portIsolateGroup {
+              key "groupId";
+              description
+                "Port Isolate Group";
+              leaf groupId {
+                type int32 {
+                  range "1..32";
+                }
+                description
+                  "Group Id";
+              }
+            }
+          }
+          container ifProtocolVlans {
+            description
+              "protocol Vlan List.";
+            list ifProtocolVlan {
+              key "vlan protocolIndex";
+              description
+                "protocol Vlan.";
+              leaf vlan {
+                type uint32 {
+                  range "1..4094";
+                }
+                description
+                  "Identifier of a VLAN.";
+              }
+              leaf protocolIndex {
+                type uint16 {
+                  range "0..15";
+                }
+                description
+                  "protocol ifindex.";
+              }
+              leaf priority {
+                type uint16 {
+                  range "0..7";
+                }
+                default "0";
+                description
+                  "vlan priority.";
+              }
+            }
+          }
+          container muxVlanEna {
+            description
+              "Enable Mux Vlan List";
+            leaf enableVlans {
+              type pub-type:VLAN_RANGE {
+              }
+              description
+                "Mux Vlan List";
+              ext:allowDelete "true";
+            }
+          }
+        }
+      }
+    }
+    container ethSubIfs {
+      description
+        "Sub-interface attribute list.";
+      list ethSubIf {
+        key "ifName";
+        description
+          "Sub-interface attribute.";
+        leaf ifName {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          description
+            "Name of a sub-interface. For example, Ethernet 0/1/0.1.";
+        }
+        leaf flowType {
+          type flowType;
+          mandatory true;
+          description
+            "Sub-interface type, including VLAN sub-interfaces, sub-interfaces for Dot1q VLAN tag termination, sub-interfaces for QinQ VLAN tag termination, and stacking sub-interfaces.";
+        }
+        leaf dot1qBitmap {
+          when "../flowType='Dot1qTerm'";
+          type pub-type:VLAN_RANGE {
+          }
+          description
+            "VLAN list.";
+          ext:allowDelete "true";
+        }
+      }
+    }
+    container trunkMemBindVlans {
+      description
+        "Trunk member port bind VLAN list.";
+      list trunkMemBindVlan {
+        key "ifName vlanId";
+        description
+          "Trunk member port bind VLAN.";
+        leaf ifName {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          description
+            "Name of a trunk member port. For example, Ethernet 0/1/0.";
+        }
+        leaf vlanId {
+          type uint16 {
+            range "1..4094";
+          }
+          description
+            "VLAN bound by trunk member port.";
+        }
+      }
+    }
+  }
+}

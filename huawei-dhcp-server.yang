@@ -1,0 +1,668 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-dhcp-server {
+  belongs-to huawei-dhcp {
+    prefix dhcp;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  include huawei-dhcp-server-type;
+  include huawei-dhcp-type;
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "test.Description FOR submodule";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  grouping dhcpServer_type {
+    description
+      "";
+    container common {
+      description
+        "Common.";
+      leaf pingPacketNub {
+        type uint32 {
+          range "0..10";
+        }
+        units /second;
+        default "0";
+        description
+          "Number of ping packets, in the range of 0 to 10.";
+        ext:allowDelete "true";
+      }
+      leaf pingPacketTimeOut {
+        type uint32 {
+          range "0..10000";
+        }
+        units millisecond;
+        default "500";
+        description
+          "Timeout interval, in the range of 0 to 10000, in milliseconds.";
+        ext:allowDelete "true";
+      }
+      leaf trustOption82 {
+        type boolean;
+        default "true";
+        description
+          "Enable the system to trust Option82.";
+      }
+      leaf bootpEnable {
+        type boolean;
+        default "false";
+        description
+          "Enable Bootp.";
+      }
+      leaf bootpAutomaticEnable {
+        type boolean;
+        default "false";
+        description
+          "Enable Bootp automatic IP address assignment.";
+      }
+      leaf dataBaseEnable {
+        type boolean;
+        default "false";
+        description
+          "Enable database.";
+      }
+      leaf dataBaseRecover {
+        type boolean;
+        default "false";
+        description
+          "Enable database recovery.";
+      }
+      leaf leaseItemsPath {
+        type string {
+          length "1..64";
+        }
+        config false;
+        description
+          "Lease items path.";
+      }
+      leaf conflitItemsPath {
+        type string {
+          length "1..64";
+        }
+        config false;
+        description
+          "Conflict items path.";
+      }
+      leaf writeDelayInterval {
+        type uint32 {
+          range "300..86400";
+        }
+        units second;
+        default "7200";
+        description
+          "Write delay interval, in the range of 300 to 86400, in seconds.";
+        ext:allowDelete "true";
+      }
+      leaf identifierDestIpEnable {
+        type boolean;
+        default "false";
+        description
+          "Use destionation IP address of the request packet as server identifier option";
+      }
+    }
+    container globalIpPools {
+      description
+        "Pool list.";
+      list globalIpPool {
+        key "ipPoolName";
+        description
+          "Pool.";
+        leaf ipPoolName {
+          type string {
+            length "1..64";
+          }
+          description
+            "Pool Name.";
+        }
+        leaf vpnInstance {
+          type leafref {
+            path "/l3vpn:l3vpn/l3vpn:l3vpncomm/l3vpn:l3vpnInstances/l3vpn:l3vpnInstance/l3vpn:vrfName";
+          }
+          description
+            "VPN instance.";
+          ext:allowDelete "true";
+        }
+        leaf lockedFlag {
+          type boolean;
+          mandatory true;
+          description
+            "Locked flag.";
+        }
+        leaf networkIpAddress {
+          type inet:ipv4-address-no-zone;
+          mandatory true;
+          description
+            "IP pool address.";
+        }
+        leaf networkMask {
+          when "not(not(../networkIpAddress))";
+          type pub-type:ipv4Mask {
+            length "1..255";
+          }
+          mandatory true;
+          description
+            "IP pool mask.";
+        }
+        leaf domainName {
+          type string {
+            length "1..63";
+          }
+          description
+            "Domain name.";
+          ext:allowDelete "true";
+        }
+        leaf netBiosType {
+          type dhcpSvrNtbsType;
+          description
+            "NetBios type.";
+          ext:allowDelete "true";
+        }
+        leaf nextServerIp {
+          type inet:ipv4-address-no-zone;
+          mandatory true;
+          description
+            "Next server IP address.";
+        }
+        container gatewayLists {
+          description
+            "Gateway IP list.";
+          list gatewayList {
+            key "gatewayIp";
+            max-elements  "8";
+            description
+              "Gateway IP instance.";
+            leaf gatewayIp {
+              type inet:ipv4-address-no-zone;
+              description
+                "Gateway IP.";
+            }
+          }
+        }
+        container leaseTime {
+          description
+            "Lease time.";
+          leaf day {
+            when "not(../unlimited='true')";
+            type uint16 {
+              range "0..999";
+            }
+            mandatory true;
+            description
+              "Day.";
+            ext:allowDelete "true";
+          }
+          leaf hour {
+            when "not(../unlimited='true')";
+            type uint16 {
+              range "0..23";
+            }
+            default "0";
+            description
+              "Hour.";
+            ext:allowDelete "true";
+          }
+          leaf minute {
+            when "not(../unlimited='true')";
+            type uint16 {
+              range "0..59";
+            }
+            default "0";
+            description
+              "Minute.";
+            ext:allowDelete "true";
+          }
+          leaf unlimited {
+            type boolean;
+            mandatory true;
+            description
+              "Unlimited.";
+          }
+        }
+        container option184 {
+          description
+            "Option 184.";
+          leaf asIp {
+            type inet:ipv4-address-no-zone;
+            description
+              "Backup NCP IP address.";
+          }
+          leaf failOverIp {
+            type inet:ipv4-address-no-zone;
+            description
+              "FailOver IP.";
+          }
+          leaf dialString {
+            when "not(not(../failOverIp))";
+            type string {
+              length "1..64";
+            }
+            description
+              "Dial string.";
+            ext:allowDelete "true";
+          }
+          leaf ncpIp {
+            type inet:ipv4-address-no-zone;
+            description
+              "Ncp IP.";
+          }
+          leaf voiceVlan {
+            type uint16 {
+              range "1..4094";
+            }
+            description
+              "Voice VLAN.";
+            ext:allowDelete "true";
+          }
+        }
+        container dnsLists {
+          description
+            "DNS IP list.";
+          list dnsList {
+            key "dnsIP";
+            max-elements  "8";
+            description
+              "DNS IP instance.";
+            leaf dnsIP {
+              type inet:ipv4-address-no-zone;
+              description
+                "DNS IP.";
+            }
+          }
+        }
+        container netBiosIPs {
+          description
+            "NetBios IP list.";
+          list netBiosIP {
+            key "netBiosIP";
+            max-elements  "8";
+            description
+              "NetBios IP instance.";
+            leaf netBiosIP {
+              type inet:ipv4-address-no-zone;
+              description
+                "NetBios IP address.";
+            }
+          }
+        }
+        container excludedIps {
+          config false;
+          description
+            "Excluded IP list.";
+          list excludedIp {
+            key "excludedStartIp";
+            config false;
+            description
+              "Excluded IP instance.";
+            leaf excludedStartIp {
+              type inet:ipv4-address-no-zone;
+              config false;
+              description
+                "Excluded start IP address.";
+            }
+            leaf excludedEndIp {
+              type inet:ipv4-address-no-zone;
+              config false;
+              description
+                "Excluded end IP address.";
+            }
+          }
+        }
+        container staticBinds {
+          description
+            "Static bind IP list.";
+          list staticBind {
+            key "staticBindIp";
+            max-elements  "4096";
+            description
+              "Static bind IP instance.";
+            leaf staticBindIp {
+              type inet:ipv4-address-no-zone;
+              description
+                "Static bind IP.";
+              ext:allowDelete "false";
+            }
+            leaf staticBindMac {
+              type pub-type:macAddress {
+                length "0..255";
+              }
+              mandatory true;
+              description
+                "Static bind Mac.";
+              ext:allowDelete "false";
+            }
+          }
+        }
+        container options {
+          description
+            "Options.";
+          list option {
+            key "optionCode";
+            max-elements  "32";
+            description
+              "Option.";
+            leaf optionCode {
+              type uint32 {
+                range "1..254";
+              }
+              description
+                "Option Code.";
+            }
+            leaf optionMode {
+              type dhcpSvrOptionMode;
+              default "asciiMode";
+              description
+                "Option Mode.";
+              ext:allowDelete "false";
+            }
+            container optionIps {
+              must "not(../optionMode='ipMode') or (../optionMode='ipMode' and count(optionIp)>=1) and ((../optionMode='ipMode' and count(optionIp)<=8))";
+              description
+                "Option IP List.";
+              list optionIp {
+                when "not(../../optionMode='asciiMode' or ../../optionMode='cipherMode' or ../../optionMode='hexMode' or ../../optionMode='subOptMode') or ../../optionMode='ipMode'";
+                key "optionIp";
+                max-elements  "8";
+                description
+                  "Option IP Instance.";
+                leaf optionIp {
+                  type inet:ipv4-address-no-zone;
+                  description
+                    "Option IP.";
+                }
+              }
+            }
+            leaf asciiString {
+              when "not(../optionMode='cipherMode' or ../optionMode='hexMode' or ../optionMode='ipMode' or ../optionMode='subOptMode') or ../optionMode='asciiMode'";
+              type string {
+                length "1..255";
+              }
+              description
+                "ASCII string.";
+              ext:allowDelete "true";
+            }
+            leaf hexString {
+              when "not(../optionMode='asciiMode' or ../optionMode='cipherMode' or ../optionMode='ipMode' or ../optionMode='subOptMode') or ../optionMode='hexMode'";
+              type string {
+                length "1..497";
+              }
+              description
+                "Hex String.";
+              ext:allowDelete "true";
+            }
+            leaf cipherString {
+              when "not(../optionMode='asciiMode' or ../optionMode='hexMode' or ../optionMode='ipMode' or ../optionMode='subOptMode') or ../optionMode='cipherMode'";
+              type pub-type:passwordExtend {
+                length "1..255";
+              }
+              description
+                "Cipher String.";
+              ext:allowDelete "true";
+            }
+            container subOptions {
+              must "not(../optionMode='subOptMode') or (../optionMode='subOptMode' and count(subOption)>=1)";
+              description
+                "Sub Options.";
+              list subOption {
+                when "not(../../optionMode='asciiMode' or ../../optionMode='cipherMode' or ../../optionMode='hexMode' or ../../optionMode='ipMode') or ../../optionMode='subOptMode'";
+                key "subOptionCode";
+                max-elements  "32";
+                description
+                  "Sub Option.";
+                leaf subOptionCode {
+                  type uint32 {
+                    range "1..254";
+                  }
+                  description
+                    "Sub-option code.";
+                }
+                leaf subOptionMode {
+                  type dhcpSvrSubOptionMode;
+                  default "asciiMode";
+                  description
+                    "Sub-option mode.";
+                  ext:allowDelete "false";
+                }
+                container subOptionIps {
+                  must "not(../subOptionMode='ipMode') or (../subOptionMode='ipMode' and count(subOptionIp)>=1)";
+                  description
+                    "Sub-option IP list.";
+                  list subOptionIp {
+                    when "not(../../subOptionMode='asciiMode' or ../../subOptionMode='cipherMode' or ../../subOptionMode='hexMode') or ../../subOptionMode='ipMode'";
+                    key "subOptionIp";
+                    max-elements  "8";
+                    description
+                      "Sub-option IP instance.";
+                    leaf subOptionIp {
+                      type inet:ipv4-address-no-zone;
+                      description
+                        "Sub-option IP.";
+                    }
+                  }
+                }
+                leaf asciiString {
+                  when "not(../subOptionMode='cipherMode' or ../subOptionMode='hexMode' or ../subOptionMode='ipMode') or ../subOptionMode='asciiMode'";
+                  type string {
+                    length "1..253";
+                  }
+                  description
+                    "Ascii String.";
+                  ext:allowDelete "true";
+                }
+                leaf hexString {
+                  when "not(../subOptionMode='asciiMode' or ../subOptionMode='cipherMode' or ../subOptionMode='ipMode') or ../subOptionMode='hexMode'";
+                  type string {
+                    length "1..484";
+                  }
+                  description
+                    "Hex String.";
+                  ext:allowDelete "true";
+                }
+                leaf cipherString {
+                  when "not(../subOptionMode='asciiMode' or ../subOptionMode='hexMode' or ../subOptionMode='ipMode') or ../subOptionMode='cipherMode'";
+                  type pub-type:passwordExtend {
+                    length "1..255";
+                  }
+                  description
+                    "Cipher String.";
+                  ext:allowDelete "true";
+                }
+              }
+            }
+          }
+        }
+        container option121s {
+          description
+            "Option 121 list.";
+          list option121 {
+            key "destIp mask gateway";
+            max-elements  "8";
+            description
+              "Option 121.";
+            leaf destIp {
+              type inet:ipv4-address-no-zone;
+              description
+                "Destination IP address.";
+            }
+            leaf mask {
+              type uint32 {
+                range "0..32";
+              }
+              description
+                "Mask.";
+            }
+            leaf gateway {
+              type inet:ipv4-address-no-zone;
+              description
+                "Gateway address.";
+            }
+          }
+        }
+        container ipPoolStat {
+          config false;
+          description
+            "IP pool statistics.";
+          leaf usedIpCount {
+            type uint32;
+            config false;
+            description
+              "Number of used IP addresses.";
+          }
+          leaf idleIpCount {
+            type uint32;
+            config false;
+            description
+              "Number of Idle IP addresses.";
+          }
+          leaf expiredIpCount {
+            type uint32;
+            config false;
+            description
+              "Number of Expired IP addresses.";
+          }
+          leaf conflictIpCount {
+            type uint32;
+            config false;
+            description
+              "Number of conflicted IP addresses.";
+          }
+          leaf disableIpCount {
+            type uint32;
+            config false;
+            description
+              "Number of disabled IP addresses.";
+          }
+          leaf totalIpCount {
+            type uint32;
+            config false;
+            description
+              "Total number of IP addresses.";
+          }
+          leaf startIP {
+            type inet:ipv4-address-no-zone;
+            config false;
+            description
+              "Start IP.";
+          }
+          leaf endIP {
+            type inet:ipv4-address-no-zone;
+            config false;
+            description
+              "End IP address.";
+          }
+        }
+      }
+    }
+    container packetStat {
+      config false;
+      description
+        "Packet statistics.";
+      leaf clientRequestCount {
+        type uint32;
+        config false;
+        description
+          "Number of client request packets.";
+      }
+      leaf discoverCount {
+        type uint32;
+        config false;
+        description
+          "Number of Discover Packets";
+      }
+      leaf requestCount {
+        type uint32;
+        config false;
+        description
+          "Number of request packets.";
+      }
+      leaf declineCount {
+        type uint32;
+        config false;
+        description
+          "Number of Decline packets.";
+      }
+      leaf releaseCount {
+        type uint32;
+        config false;
+        description
+          "Number of Release Packets";
+      }
+      leaf informCount {
+        type uint32;
+        config false;
+        description
+          "Number of Inform Packets";
+      }
+      leaf serverReplyCount {
+        type uint32;
+        config false;
+        description
+          "Number of reply packets from servers.";
+      }
+      leaf offerCount {
+        type uint32;
+        config false;
+        description
+          "Number of Offer Packets";
+      }
+      leaf ackCount {
+        type uint32;
+        config false;
+        description
+          "Number of Ack packets.";
+      }
+      leaf nakCount {
+        type uint32;
+        config false;
+        description
+          "Number of Nak Packets.";
+      }
+      leaf badMessagesCount {
+        type uint32;
+        config false;
+        description
+          "Number of error packets.";
+      }
+      leaf bootpReqstCount {
+        type uint32;
+        config false;
+        description
+          "Number of Bootp Request packets.";
+      }
+      leaf bootpReplyCount {
+        type uint32;
+        config false;
+        description
+          "Number of Bootp Reply packets.";
+      }
+    }
+  }
+}

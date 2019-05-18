@@ -1,0 +1,373 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-fm {
+  namespace "http://www.huawei.com/netconf/vrp/huawei-fm";
+  prefix fm;
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import ietf-yang-types {
+    prefix yang;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  include huawei-fm-action;
+  include huawei-fm-type;
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "Fault management module.";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  container fm {
+    description
+      "Fault management module.";
+    container activeAlarms {
+      config false;
+      description
+        "List of active alarms.";
+      list activeAlarm {
+        key "sequence";
+        config false;
+        description
+          "Information about an active alarm.";
+        leaf sequence {
+          type uint32;
+          config false;
+          description
+            "Sequence number of an active alarm.";
+        }
+        leaf alarmName {
+          type leafref {
+            path "/fm/alarmCfgs/alarmCfg/alarmName";
+          }
+          config false;
+          description
+            "Name of an active alarm.";
+          ext:support-filter "true";
+        }
+        leaf alarmId {
+          type uint32;
+          config false;
+          description
+            "ID of an active alarm.";
+        }
+        leaf level {
+          type severityLevel;
+          config false;
+          description
+            "Severity of an active alarm.";
+          ext:support-filter "true";
+        }
+        leaf generatedTime {
+          type yang:date-and-time;
+          config false;
+          description
+            "Time when an active alarm is generated.";
+        }
+        leaf rootKindFlag {
+          type rootCauseIndication;
+          config false;
+          description
+            "Flag indicating a root or correlative alarm.";
+          ext:support-filter "true";
+        }
+        leaf rootAlarmSequence {
+          type uint32;
+          config false;
+          description
+            "Sequence number of a root alarm.";
+        }
+        leaf reason {
+          type uint32;
+          config false;
+          description
+            "Reason ID of an active alarm.";
+        }
+        container vbinfos {
+          config false;
+          description
+            "Query of active alarm parameters.";
+          list vbinfo {
+            key "index";
+            config false;
+            description
+              "Parameters of a historical alarm.";
+            leaf index {
+              type uint32;
+              config false;
+              description
+                "ID of a historical alarm parameter.";
+            }
+            leaf value {
+              type pub-type:block {
+                length "0..255";
+              }
+              config false;
+              description
+                "Value of a historical alarm parameter.";
+            }
+          }
+        }
+      }
+    }
+    container alarmStas {
+      config false;
+      description
+        "Query of alarm statistics.";
+      list alarmSta {
+        key "level";
+        config false;
+        description
+          "Alarm statistics.";
+        leaf level {
+          type severityLevel;
+          config false;
+          description
+            "Severity of an alarm.";
+        }
+        leaf count {
+          type uint32;
+          config false;
+          description
+            "Number of alarms.";
+        }
+      }
+    }
+    container historyAlarms {
+      config false;
+      description
+        "List of historical alarms.";
+      list historyAlarm {
+        key "alarmSequence";
+        config false;
+        description
+          "Information about a historical alarm.";
+        leaf alarmSequence {
+          type uint32;
+          config false;
+          description
+            "Sequence number of a historical alarm.";
+        }
+        leaf alarmName {
+          type leafref {
+            path "/fm/alarmCfgs/alarmCfg/alarmName";
+          }
+          config false;
+          description
+            "Name of a historical alarm.";
+          ext:support-filter "true";
+        }
+        leaf alarmId {
+          type uint32;
+          config false;
+          description
+            "ID of a historical alarm.";
+        }
+        leaf level {
+          type severityLevel;
+          config false;
+          description
+            "Severity of a historical alarm.";
+          ext:support-filter "true";
+        }
+        leaf generatedTime {
+          type yang:date-and-time;
+          config false;
+          description
+            "Time when a historical alarm is generated.";
+        }
+        leaf clearedTime {
+          type yang:date-and-time;
+          config false;
+          description
+            "Time when a historical alarm is cleared.";
+        }
+        leaf reason {
+          type uint32;
+          config false;
+          description
+            "Reason ID of a historical alarm.";
+        }
+        container vbinfos {
+          config false;
+          description
+            "Query of historical alarm parameters.";
+          list vbinfo {
+            key "index";
+            config false;
+            description
+              "Parameters of a historical alarm.";
+            leaf index {
+              type uint32;
+              config false;
+              description
+                "ID of a historical alarm parameter.";
+            }
+            leaf value {
+              type pub-type:block {
+                length "0..255";
+              }
+              config false;
+              description
+                "Value of a historical alarm parameter.";
+            }
+          }
+        }
+      }
+    }
+    container globalParam {
+      description
+        "To set global parameters.";
+      leaf suppressEnable {
+        type boolean;
+        description
+          "Enable alarm suppression.";
+      }
+      leaf correlationEnable {
+        type boolean;
+        description
+          "Enable alarm correlation analysis.";
+      }
+      leaf hisRecMode {
+        type boolean;
+        description
+          "Wrap historical alarm records.";
+      }
+    }
+    container alarmCfgs {
+      description
+        "Alarm configuration query.";
+      list alarmCfg {
+        key "alarmName";
+        description
+          "Alarm configuration.";
+        leaf alarmName {
+          type string {
+            length "1..63";
+          }
+          description
+            "Name of an alarm, it is case sensitive.";
+        }
+        leaf moduleName {
+          type string {
+            length "0..31";
+          }
+          config false;
+          description
+            "Module to which an alarm belongs.";
+          ext:support-filter "true";
+        }
+        leaf level {
+          type DispseverityLevel;
+          must "((../level='Critical' or ../level='Major' or ../level='Minor' or ../level='Warning' or ../level='Default') )";
+          description
+            "Severity of an alarm.";
+          ext:support-filter "true";
+        }
+        leaf clearPersistTime {
+          type uint32 {
+            range "0..600";
+          }
+          units second;
+          description
+            "Suppression period after which an alarm is cleared.";
+        }
+        leaf causePersistTime {
+          type uint32 {
+            range "0..600";
+          }
+          units second;
+          description
+            "Suppression period after which an alarm is generated.";
+        }
+        leaf lastChangedTime {
+          type yang:date-and-time;
+          config false;
+          description
+            "Time when configurations are modified last time.";
+        }
+        container alarmObjInstances {
+          description
+            "List of alarm object instances.";
+          list alarmObjInstance {
+            key "objType objInstance";
+            description
+              "Alarm object instance.";
+            leaf objType {
+              type alarmObjType;
+              description
+                "Type of an alarm object. The value with all Fs indicates all types of alarm objects.";
+            }
+            leaf objInstance {
+              type string {
+                length "1..127";
+              }
+              description
+                "Name of an alarm object instance.";
+              ext:allowDelete "true";
+            }
+            leaf severity {
+              type severityLevel;
+              default "Warning";
+              description
+                "Severity of an alarm object instance.";
+            }
+          }
+        }
+      }
+    }
+    container trapCfgs {
+      description
+        "Trap configuration query.";
+      list trapCfg {
+        key "trapName featureName";
+        description
+          "Trap configuration.";
+        leaf trapName {
+          type string {
+            length "0..63";
+          }
+          description
+            "Name of a trap, it is not case sensitive.";
+        }
+        leaf featureName {
+          type string {
+            length "0..31";
+          }
+          description
+            "Module to which a trap belongs.";
+        }
+        leaf trapDefStatus {
+          type trapStatus;
+          default "on";
+          config false;
+          description
+            "Default trap enabling status.";
+        }
+        leaf trapCfgStatus {
+          type trapStatus;
+          description
+            "Configured trap enabling status.";
+        }
+      }
+    }
+  }
+}

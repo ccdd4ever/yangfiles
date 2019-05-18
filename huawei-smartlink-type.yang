@@ -1,0 +1,161 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-smartlink-type {
+  belongs-to huawei-smartlink {
+    prefix smartlink;
+  }
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+   description
+    "smartlink_type";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  typedef mtlkPortRole {
+    type enumeration {
+      enum "UpLk" {
+        description
+          "";
+      }
+      enum "DwLk" {
+        description
+          "";
+      }
+    }
+    description
+      "Monitorlink Port Role";
+  }
+  typedef mtlkPortState {
+    type enumeration {
+      enum "-" {
+        description
+          "The Monitor Link member interface state is default.";
+      }
+      enum "UP" {
+        description
+          "The Monitor Link member interface state is Up.";
+      }
+      enum "DOWN" {
+        description
+          "The Monitor Link member interface state is Down.";
+      }
+    }
+    description
+      "Monitorlink Port State";
+  }
+  typedef smlkAuthMode {
+    type enumeration {
+      enum "none" {
+        description
+          "None authentication.";
+      }
+      enum "sha" {
+        description
+          "SHA authentication.";
+      }
+      enum "simple" {
+        description
+          "Simple authentication.";
+      }
+      enum "hmac-sha256" {
+        description
+          "HMAC SHA256 authentication.";
+      }
+    }
+    description
+      "Smartlink Auth Mode";
+  }
+  typedef smlkLockPos {
+    type enumeration {
+      enum "unknown" {
+        description
+          "Lock none.";
+      }
+      enum "lock" {
+        description
+          "Lock traffic to the master interface.";
+      }
+      enum "force" {
+        description
+          "Lock traffic to the slave interface.";
+      }
+    }
+    description
+      "Smartlink Lock Pos";
+  }
+  typedef smlkPortRole {
+    type enumeration {
+      enum "Master" {
+        description
+          "Master interface.";
+      }
+      enum "Slave" {
+        description
+          "Slave interface.";
+      }
+    }
+    description
+      "Smartlink Port Role";
+  }
+  typedef smlkPiStatus {
+    type enumeration {
+      enum "Unknown" {
+        description
+          "Instance state is Unknown.";
+      }
+      enum "Active" {
+        description
+          "State of instance is forward.";
+      }
+      enum "Inactive" {
+        description
+          "State of instance is block.";
+      }
+    }
+    description
+      "Smartlink PI Status";
+  }
+  typedef smlkEnableStatus {
+    type enumeration {
+      enum "enable" {
+        description
+          "Enable state.";
+      }
+      enum "disabled" {
+        description
+          "Disable state.";
+      }
+    }
+    description
+      "Smartlink Enable Status";
+  }
+  typedef mtlkStatusType {
+    type enumeration {
+      enum "disable" {
+        description
+          "Disable state.";
+      }
+      enum "enable" {
+        description
+          "Enable state.";
+      }
+    }
+    description
+      "Monitorlink Status Type";
+  }
+}

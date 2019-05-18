@@ -1,0 +1,1056 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-mstp {
+  namespace "http://www.huawei.com/netconf/vrp/huawei-mstp";
+  prefix mstp;
+  import huawei-ethernet {
+    prefix ethernet;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import ietf-yang-types {
+    prefix yang;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  include huawei-mstp-action;
+  include huawei-mstp-type;
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "Multiple Spanning Tree Protocol.";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  container mstp {
+    description
+      "Multiple Spanning Tree Protocol.";
+    container global {
+      description
+        "MSTP global configuration.";
+      leaf bpduFilterDef {
+        type boolean;
+        default "false";
+        description
+          "Default configuration of the BPDU filter function.";
+      }
+      leaf edgePortDef {
+        type boolean;
+        default "false";
+        description
+          "Default configuration of global edge port function.";
+      }
+      leaf bridgeAddress {
+        type pub-type:macAddress {
+          length "0..255";
+        }
+        description
+          "Bridge MAC Address.";
+        ext:allowDelete "true";
+      }
+      leaf tcnTrillEnable {
+        type boolean;
+        default "false";
+        description
+          "Enable or disable TC BPDU transparent transmission over a TRILL network.";
+      }
+      leaf vlanid {
+        when "not(../tcnTrillEnable='false')";
+        type uint16 {
+          range "1..4094";
+        }
+        must "../tcnTrillEnable='false' or (not(../tcnTrillEnable='false') and ../vlanid>=1) and ((not(../tcnTrillEnable='false') and ../vlanid<=4094)) or (not(not(../vlanid)) and ../vlanid>=1) and ((not(not(../vlanid)) and ../vlanid<=4094)) or not(../vlanid)";
+        description
+          "VLAN ID used by the TRILL network to transmit MSTP TC BPDUs.";
+        ext:allowDelete "true";
+      }
+      leaf transmitLimit {
+        type uint16 {
+          range "1..255";
+        }
+        default "6";
+        description
+          "Maximum number of BPDUs allowed to be sent globally within a Hello interval.";
+      }
+      leaf vstpEnable {
+        type boolean;
+        default "false";
+        description
+          "Enable or disable V-STP function.";
+      }
+    }
+    container processs {
+      description
+        "MSTP processes.";
+      list process {
+        key "processId";
+        description
+          "MSTP process.";
+        leaf processId {
+          type uint32 {
+            range "0..256";
+          }
+          description
+            "MSTP process ID.";
+        }
+        leaf enable {
+          type boolean;
+          description
+            "Enable or disable STP/RSTP/MSTP on a switch.";
+        }
+        leaf bpduProtection {
+          type boolean;
+          default "false";
+          description
+            "Configure BPDU protection on an edge port. This function prevents network flapping caused by attack packets.";
+        }
+        leaf flushCapability {
+          type boolean;
+          default "false";
+          description
+            "Enable or disable flush capability on a switch.";
+        }
+        leaf maxHops {
+          type uint16 {
+            range "1..40";
+          }
+          default "20";
+          description
+            "Set the maximum hops of a spanning tree in an MST region. The value is an integer ranging from 1 to 40. The default value is 20.";
+        }
+        leaf mode {
+          type stpMode;
+          default "Mstp";
+          description
+            "Set an operation mode for the current MSTP process. The mode can be STP, RSTP, and MSTP.";
+        }
+        leaf pathCostStandard {
+          type stpPathCostStanard;
+          default "Dot1T";
+          description
+            "Set a standard for calculating the path cost. The standard can be dot1d-1998, dot1t, or legacy. The default standard is dot1t.";
+        }
+        leaf tcNotify {
+          type boolean;
+          must "not(../processId=0)";
+          default "false";
+          description
+            "Enable the TC Notification function on the current MSTP process. By default, the TC Notification function is disabled.";
+        }
+        leaf tcProtection {
+          type boolean;
+          default "false";
+          description
+            "Configure the TC BPDU protection function for an MSTP process. By default, the TC BPDU protection function of an MSTP process is disabled. That is, each time when an MSTP process receives a TC BPDU, the MSTP process updates the forwarding entries.";
+        }
+        leaf tcProtectionThreshold {
+          type uint32 {
+            range "1..255";
+          }
+          default "1";
+          description
+            "Set the maximum number of TC BPDUs that the MSTP can handle. By default, the maximum number is 1.";
+        }
+        leaf interval {
+          type uint16 {
+            range "1..600";
+          }
+          description
+            "Set the time the MSTP device takes to handle the maximum number of TC BPDUs and immediately refresh forwarding entries. The default time is 1s.";
+          ext:allowDelete "true";
+        }
+        leaf timerFactor {
+          type uint8 {
+            range "1..10";
+          }
+          default "3";
+          description
+            "Set a multiplier for the Hello timer. The multiplier is an integer ranging from 1 to 10. The default multiplier is 3.";
+        }
+        leaf linkShareProtect {
+          type boolean;
+          must "not(../processId=0)";
+          default "false";
+          description
+            "Configure shared-link protection for an MSTP process. By default, shared-link protection of an MSTP process is disabled.";
+        }
+        leaf regionName {
+          type string {
+            length "1..32";
+            pattern '^[^\s\?]*$|"[^"]+"';
+          }
+          must "not(../processId!=0 and ../syncFlag='true')";
+          description
+            "Configure an MST region name for a switch. By default, the MST region name is the MAC address of the management network interface on the control board of the switch.";
+          ext:allowDelete "true";
+        }
+        leaf revisionLevel {
+          type uint16 {
+            range "0..65535";
+          }
+          must "not(../processId!=0 and ../syncFlag='true')";
+          default "0";
+          description
+            "Configure a revision level for an MST region. By default, the revision level is 0.";
+        }
+        leaf modulo {
+          when "not(../instVlanMode='false')";
+          type uint8 {
+            range "1..63";
+          }
+          description
+            "Instance-VLAN mapping modulo. The value is an integer ranging from 1 to 64.";
+          ext:allowDelete "true";
+        }
+        leaf instVlanMode {
+          type boolean;
+          must "not(../processId!=0 and ../syncFlag='true')";
+          default "false";
+          description
+            "Whether modulo is used to configure instance-VLAN mapping.";
+        }
+        leaf forwardDelay {
+          when "../timerParaMode='false'";
+          type uint16 {
+            range "400..3000";
+          }
+          default "1500";
+          description
+            "Set the value of the Forward Delay. The value is an integer ranging from 400 to 3000, in centiseconds. The step is 100. By default, the Forward delay is 1500 centiseconds.";
+        }
+        leaf helloTime {
+          when "../timerParaMode='false'";
+          type uint16 {
+            range "100..1000";
+          }
+          default "200";
+          description
+            "Set the interval at which BPDUs are sent. The value is an integer ranging from 100 to 1000, in centiseconds. The step is 100. By default, the interval is 200 centiseconds.";
+        }
+        leaf maxAge {
+          when "../timerParaMode='false'";
+          type uint16 {
+            range "600..4000";
+          }
+          default "2000";
+          description
+            "Set the BPDU aging time on a port of a switch. The value is an integer ranging from 600 to 4000, in centiseconds. By default, the Max Age is 2000 centiseconds.";
+        }
+        leaf bridgeDiameter {
+          when "../timerParaMode='true'";
+          type uint8 {
+            range "2..7";
+          }
+          default "7";
+          description
+            "Bridge diameter. The default diameter is 7.";
+          ext:allowDelete "true";
+        }
+        leaf timerParaMode {
+          type boolean;
+          default "false";
+          description
+            "Whether the timer is configured based on the bridge diameter.";
+        }
+        leaf convergeMode {
+          when "not(../processId!=0)";
+          type stpConvergeMode;
+          default "Normal";
+          description
+            "MSTP convergence mode. ";
+        }
+        leaf syncFlag {
+          when "not(../processId)";
+          type boolean;
+          config false;
+          description
+            "Process region synchronization flag.";
+        }
+        container instVlans {
+          description
+            "Instance-VLAN mappings.";
+          list instVlan {
+            when "not(../../instVlanMode='true')";
+            key "instanceId";
+            description
+              "Instance-VLAN mapping.";
+            leaf instanceId {
+              type uint32 {
+                range "0..4094";
+              }
+              description
+                "Instance ID.";
+            }
+            leaf vlans {
+              type pub-type:VLAN_RANGE {
+              }
+              mandatory true;
+              description
+                "VLAN list.";
+            }
+          }
+        }
+        container processInstances {
+          description
+            "Process instance configurations.";
+          list processInstance {
+            key "instanceId";
+            description
+              "Process instance configuration.";
+            leaf instanceId {
+              type uint32 {
+                range "0..4094";
+              }
+              description
+                "Instance ID.";
+            }
+            leaf priority {
+              when "../root='Normal'";
+              type uint32 {
+                range "0..61440";
+              }
+              default "32768";
+              description
+                "Set the priority of a switch in a spanning tree instance. The value is an integer ranging from 0 to 61440. The default step is 4096, that is, the switch can have 16 priorities configured, such as 0, 4096, and 8192. The default value is 32768. A smaller value indicates a higher priority.";
+            }
+            leaf root {
+              type stpRoot;
+              default "Normal";
+              description
+                "Configure the current switch as the root bridge of a spanning tree instance.";
+            }
+            container processInstancePorts {
+              description
+                "Process instance port configurations.";
+              list processInstancePort {
+                key "ifName";
+                description
+                  "Process instance port configuration.";
+                leaf ifName {
+                  type pub-type:ifName;
+                  description
+                    "Interface name.";
+                }
+                leaf cost {
+                  type uint32 {
+                    range "1..200000000";
+                  }
+                  description
+                    "Set the path cost of a port in a spanning tree instance. The value range varies with path cost calculation methods. The path cost is 1-200000 using the Huawei legacy standard, is 1-65535 using the IEEE 802.1D standard, and is 1-200000000 using the IEEE 802.1t standard.";
+                  ext:allowDelete "true";
+                }
+                leaf priority {
+                  type uint16 {
+                    range "0..240";
+                  }
+                  default "128";
+                  description
+                    "Set the priority of a port in a spanning tree instance. The value is an integer ranging from 0 to 240. The step is 16. By default, the priority of a port in a spanning tree instance is 128.";
+                }
+              }
+            }
+          }
+        }
+        container processPorts {
+          description
+            "Port-process binding configurations.";
+          list processPort {
+            when "not(../../processId=0)";
+            key "ifName";
+            description
+              "Port-process binding configuration.";
+            leaf ifName {
+              type leafref {
+                path "/mstp/ports/port/ifName";
+              }
+              description
+                "Interface name.";
+            }
+            leaf linkShareFlag {
+              type stpLinkShareFlag;
+              default "NoLinkShare";
+              description
+                "Bind-process-type.";
+            }
+          }
+        }
+        container cistInfos {
+          config false;
+          description
+            "CIST information.";
+          list cistInfo {
+            key "instanceId";
+            config false;
+            description
+              "CIST information.";
+            leaf instanceId {
+              type uint32 {
+                range "0..4094";
+              }
+              config false;
+              description
+                "Instance ID.";
+            }
+            leaf bridgePrio {
+              type uint32;
+              config false;
+              description
+                "Priority of the switch in CIST.";
+            }
+            leaf bridgeMac {
+              type pub-type:macAddress {
+                length "0..255";
+              }
+              config false;
+              description
+                "MAC address of the CIST bridge.";
+            }
+            leaf helloTime {
+              type uint8;
+              config false;
+              description
+                "Interval at which BPDUs are sent.";
+            }
+            leaf maxAge {
+              type uint8;
+              config false;
+              description
+                "Maximum lifecycle of BPDUs.";
+            }
+            leaf forwardDelay {
+              type uint8;
+              config false;
+              description
+                "Time that port status transition takes.";
+            }
+            leaf maxHops {
+              type uint8;
+              config false;
+              description
+                "Maximum hops in the MST region.";
+            }
+            leaf rootPrio {
+              type uint32;
+              config false;
+              description
+                "CIST root bridge priority.";
+            }
+            leaf rootMac {
+              type pub-type:macAddress {
+                length "0..255";
+              }
+              config false;
+              description
+                "MAC address of the CIST root bridge.";
+            }
+            leaf erpc {
+              type uint32;
+              config false;
+              description
+                "The path cost from the switch to the root bridge.";
+            }
+            leaf regRootPrio {
+              type uint32;
+              config false;
+              description
+                "CIST regional root bridge priority.";
+            }
+            leaf regRootMac {
+              type pub-type:macAddress {
+                length "0..255";
+              }
+              config false;
+              description
+                "MAC address of the CIST regional root bridge.";
+            }
+            leaf irpc {
+              type uint32;
+              config false;
+              description
+                "The path cost from the switch to the regional root bridge.";
+            }
+            leaf rootPortPrio {
+              type uint16;
+              config false;
+              description
+                "CIST root port priority.";
+            }
+            leaf rootPortId {
+              type uint16;
+              config false;
+              description
+                "CIST root port ID. '0' indicates the switch is a root bridge and has no root port.";
+            }
+            leaf bpduProtection {
+              type boolean;
+              config false;
+              description
+                "BPDU protection function.";
+            }
+            leaf tcReceive {
+              type uint32;
+              config false;
+              description
+                "Number of the received TC or TCN BPDUs.";
+            }
+            leaf tcCountPerHello {
+              type uint32;
+              config false;
+              description
+                "Number of TC or TCN BPDUs received within a Hello interval.";
+            }
+            leaf timeLastTc {
+              type string {
+                length "0..24";
+              }
+              config false;
+              description
+                "Time past from the last topology change.";
+            }
+            leaf tcFlag {
+              type int8;
+              config false;
+              description
+                "Topology change flag.";
+            }
+            container cistPortInfos {
+              config false;
+              description
+                "Port CIST information.";
+              list cistPortInfo {
+                key "ifName";
+                config false;
+                description
+                  "Port CIST information.";
+                leaf ifName {
+                  type pub-type:ifName;
+                  config false;
+                  description
+                    "Interface name.";
+                }
+                leaf tcOrTcnSend {
+                  type uint32;
+                  config false;
+                  description
+                    "Number of TC or TCN BPDUs sent by the port.";
+                }
+                leaf tcOrTcnReceive {
+                  type uint32;
+                  config false;
+                  description
+                    "Number of TC or TCN BPDUs received by the port.";
+                }
+                leaf txTcn {
+                  type uint32;
+                  config false;
+                  description
+                    "Number of TCN BPDUs sent.";
+                }
+                leaf txConf {
+                  type uint32;
+                  config false;
+                  description
+                    "Number of Configuration BPDUs sent.";
+                }
+                leaf txRst {
+                  type uint32;
+                  config false;
+                  description
+                    "Number of RST BPDUs sent. ";
+                }
+                leaf txMst {
+                  type uint32;
+                  config false;
+                  description
+                    "Number of MST BPDUs sent.";
+                }
+                leaf rxTcn {
+                  type uint32;
+                  config false;
+                  description
+                    "Number of TCN BPDUs received.";
+                }
+                leaf rxConf {
+                  type uint32;
+                  config false;
+                  description
+                    "Number of Configuration BPDUs received.";
+                }
+                leaf rxRst {
+                  type uint32;
+                  config false;
+                  description
+                    "Number of RST BPDUs received.";
+                }
+                leaf rxMst {
+                  type uint32;
+                  config false;
+                  description
+                    "Number of MST BPDUs received.";
+                }
+                leaf portCostStd {
+                  type stpPathCostStanard;
+                  config false;
+                  description
+                    "The standard used to calculate the path cost.
+";
+                }
+                leaf portCost {
+                  type uint32;
+                  config false;
+                  description
+                    "Path cost of the port.";
+                }
+                leaf desgBridgePrio {
+                  type uint32;
+                  config false;
+                  description
+                    "Priority of the designated bridge.";
+                }
+                leaf desgBridgeMac {
+                  type pub-type:macAddress {
+                    length "0..255";
+                  }
+                  config false;
+                  description
+                    "MAC address of the designated bridge.";
+                }
+                leaf desgPortPrio {
+                  type uint16;
+                  config false;
+                  description
+                    "Priority of the designated port.";
+                }
+                leaf desgPortId {
+                  type uint16;
+                  config false;
+                  description
+                    "ID of the designated port.";
+                }
+                leaf portEdge {
+                  type boolean;
+                  config false;
+                  description
+                    "Whether the port is an edge port.";
+                }
+                leaf portPriority {
+                  type uint16;
+                  config false;
+                  description
+                    "Priority of the port.";
+                }
+                leaf pointToPoint {
+                  type boolean;
+                  config false;
+                  description
+                    "Link type of the port.";
+                }
+                leaf transmitLimit {
+                  type uint16;
+                  config false;
+                  description
+                    "Maximum number of BPDUs sent by the current port within each Hello interval.";
+                }
+                leaf protectionType {
+                  type stpProtectionType;
+                  config false;
+                  description
+                    "Protection type of the port.";
+                }
+                leaf portStpMode {
+                  type stpPortMode;
+                  config false;
+                  description
+                    "STP mode on an interface.";
+                }
+                leaf portProtoType {
+                  type stpCompliance;
+                  config false;
+                  description
+                    "Format of the packets that the interface receives and sends.";
+                }
+                leaf helloTime {
+                  type uint8;
+                  config false;
+                  description
+                    "Interval at which BPDUs are sent.";
+                }
+                leaf maxAge {
+                  type uint8;
+                  config false;
+                  description
+                    "Maximum lifecycle of BPDUs.";
+                }
+                leaf forwardDelay {
+                  type uint8;
+                  config false;
+                  description
+                    "Time that port status transition takes.";
+                }
+                leaf portRole {
+                  type stpRole;
+                  config false;
+                  description
+                    "Port role.";
+                }
+                leaf portState {
+                  type stpPortState;
+                  config false;
+                  description
+                    "Port status.";
+                }
+                leaf remHop {
+                  type uint8;
+                  config false;
+                  description
+                    "Remaining hops.";
+                }
+                leaf messageAge {
+                  type uint8 {
+                    range "6..40";
+                  }
+                  config false;
+                  description
+                    "BPDU lifetime.";
+                }
+              }
+            }
+          }
+        }
+        container mstiInfos {
+          config false;
+          description
+            "MSTI information.";
+          list mstiInfo {
+            key "instanceId";
+            config false;
+            description
+              "MSTI information.";
+            leaf instanceId {
+              type uint32 {
+                range "1..4094";
+              }
+              config false;
+              description
+                "Instance ID.";
+            }
+            leaf masterBridgeMac {
+              type pub-type:macAddress {
+                length "0..255";
+              }
+              config false;
+              description
+                "Master Bridge MAC address.";
+            }
+            leaf costToMaster {
+              type uint32;
+              config false;
+              description
+                "The path cost from the MSTI to the master bridge.";
+            }
+            leaf regionRootPrio {
+              type uint32;
+              config false;
+              description
+                "MSTI regional root bridge priority.";
+            }
+            leaf regionRootMac {
+              type pub-type:macAddress {
+                length "0..255";
+              }
+              config false;
+              description
+                "MAC address of the MSTI regional root bridge.";
+            }
+            leaf irpc {
+              type uint32;
+              config false;
+              description
+                "The path cost from the switch to the regional root bridge.";
+            }
+            leaf rootPortPrio {
+              type uint16;
+              config false;
+              description
+                "MSTI root port priority.";
+            }
+            leaf rootPortId {
+              type uint16;
+              config false;
+              description
+                "MSTI root port ID. '0' indicates the switch is a root bridge and has no root port.";
+            }
+            leaf masterBridgePri {
+              type uint32;
+              config false;
+              description
+                "Master bridge priority.";
+            }
+            leaf bridgePrio {
+              type uint32;
+              config false;
+              description
+                "MSTI bridge priority.";
+            }
+            leaf bridgeMac {
+              type pub-type:macAddress {
+                length "0..255";
+              }
+              config false;
+              description
+                "MSTI bridge MAC address.";
+            }
+            leaf tcCountPerHello {
+              type uint32;
+              config false;
+              description
+                "Number of TC or TCN BPDUs received within a Hello interval.";
+            }
+            leaf tcOrTcnReceive {
+              type uint32;
+              config false;
+              description
+                "Number of TC or TCN BPDUs received.";
+            }
+            leaf tcFlag {
+              type int8;
+              config false;
+              description
+                "Topology change flag.";
+            }
+            container mstiPortInfos {
+              config false;
+              description
+                "Port MSTI information.";
+              list mstiPortInfo {
+                key "ifName";
+                config false;
+                description
+                  "Port MSTI information.";
+                leaf ifName {
+                  type pub-type:ifName;
+                  config false;
+                  description
+                    "Interface name.";
+                }
+                leaf portState {
+                  type stpPortState;
+                  config false;
+                  description
+                    "Port status.";
+                }
+                leaf portRole {
+                  type stpRole;
+                  config false;
+                  description
+                    "Port role.";
+                }
+                leaf portPriority {
+                  type uint16;
+                  config false;
+                  description
+                    "Priority of the port.";
+                }
+                leaf portCostStd {
+                  type stpPathCostStanard;
+                  config false;
+                  description
+                    "The standard used to calculate the path cost.
+";
+                }
+                leaf portCost {
+                  type uint32;
+                  config false;
+                  description
+                    "Path cost of the port.";
+                }
+                leaf desgBridgePrio {
+                  type uint32;
+                  config false;
+                  description
+                    "Priority of the designated bridge.";
+                }
+                leaf desgBridgeMac {
+                  type pub-type:macAddress {
+                    length "0..255";
+                  }
+                  config false;
+                  description
+                    "MAC address of the designated bridge.";
+                }
+                leaf desgPortPrio {
+                  type uint16;
+                  config false;
+                  description
+                    "Priority of the designated port.";
+                }
+                leaf desgPortId {
+                  type uint16;
+                  config false;
+                  description
+                    "ID of the designated port.";
+                }
+                leaf remHop {
+                  type uint8;
+                  config false;
+                  description
+                    "Remaining hops.";
+                }
+                leaf tcOrTcnReceive {
+                  type uint32;
+                  config false;
+                  description
+                    "Number of TC or TCN BPDUs received.";
+                }
+                leaf tcOrTcnSend {
+                  type uint32;
+                  config false;
+                  description
+                    "Number of TC or TCN BPDUs sent.";
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    container ports {
+      description
+        "Port.";
+      list port {
+        key "ifName";
+        description
+          "Port.";
+        leaf ifName {
+          type leafref {
+            path "/ethernet:ethernet/ethernet:ethernetIfs/ethernet:ethernetIf/ethernet:ifName";
+          }
+          description
+            "Interface name.";
+          ext:support-filter "true";
+        }
+        leaf enable {
+          type boolean;
+          description
+            "Enable or disable STP/RSTP/MSTP on a switch.";
+        }
+        leaf bpduFilter {
+          type stpBpduFilter;
+          default "Undo";
+          description
+            "Specify a port as a BPDU filter port. By default, a port is a non-BPDU-filter port.";
+        }
+        leaf compliance {
+          type stpCompliance;
+          default "Auto";
+          description
+            "Configure the format of the MST BPDUs that are received and sent on the switching device. By default, the MST BPDU format is auto.";
+        }
+        leaf configDigestSnoop {
+          type boolean;
+          default "false";
+          description
+            "Enable digest snooping. By default, the digest snooping is disabled.";
+        }
+        leaf edgePort {
+          type stpEdgePort;
+          default "Default";
+          description
+            "Set the current port as an edge port. By default, all the ports on the switching device are non-edge ports.";
+        }
+        leaf loopProtection {
+          type boolean;
+          default "false";
+          description
+            "Enable loop protection on the current port. By default, loop protection on ports is disabled.";
+        }
+        leaf noAgreementCheck {
+          type boolean;
+          default "false";
+          description
+            "Configure the common fast transition mechanism on the current interface. By default, the enhanced transition mechanism is configured on an interface.";
+        }
+        leaf pointToPoint {
+          type stpPointToPoint;
+          default "Auto";
+          description
+            "Set the link type of a port. By default, the link type of the port on the switching device is auto. That is, MSTP detects whether a port is connected to a P2P link.";
+        }
+        leaf rootProtection {
+          type boolean;
+          default "false";
+          description
+            "Enable root protection on the current port. By default, root protection is disabled.";
+        }
+        leaf transmitLimit {
+          type uint16 {
+            range "1..255";
+          }
+          description
+            "Set the maximum number of BPDUs sent by the current port within each Hello interval.";
+          ext:allowDelete "true";
+        }
+        leaf encapsulation {
+          type stpBpduEncap;
+          default "Stp";
+          description
+            "Set a BPDU encapsulation format on a port in a spanning tree instance. By default, The BPDU encapsulation format is STP.";
+        }
+        leaf tcNotifyTrill {
+          type tcNotifyTrillType;
+          default "disable";
+          description
+            "Enabling or Disabling the function of TC notification to TRILL nerwork on an interface.";
+        }
+      }
+    }
+    container errorPktInfos {
+      config false;
+      description
+        "Display error packet information, including error packet statistics, packet contents and receiving time. ";
+      list errorPktInfo {
+        config false;
+        description
+          "Display error packet information, including error packet statistics, packet contents and receiving time. ";
+        leaf errorPktTime {
+          type yang:date-and-time;
+          config false;
+          description
+            "Display the last time when error packets were received.";
+        }
+        leaf errorPktCount {
+          type uint32;
+          config false;
+          description
+            "Display the statistics about error packets received by MSTP.";
+          ext:support-filter "false";
+        }
+        leaf errorPktContent {
+          type string {
+            length "0..4500";
+          }
+          config false;
+          description
+            "Display the contents of received error packets.";
+        }
+      }
+    }
+  }
+}

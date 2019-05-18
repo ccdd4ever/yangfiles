@@ -1,0 +1,434 @@
+submodule huawei-devm-action {
+    belongs-to "huawei-devm" {
+        prefix "devm";
+    }
+    import huawei-pub-type {
+        prefix "pub-type";
+    }
+  import ietf-inet-types {
+    prefix inet;
+  }
+
+    include huawei-devm-type;
+    organization "Huawei Technologies Co.,Ltd.";
+    contact "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+              People's Republic of China                    
+              Website: http://www.huawei.com Email: support@huawei.com";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+    revision "2013-01-01";
+    rpc resetBoard {
+      description
+        "Reset board.";
+        input {
+            leaf boardPosition {
+                type string {
+                    length "1..32";
+                }
+                description "Board Position.";
+            }
+        }
+    }
+    rpc resetMpuBoard {
+      description
+        "Reset MPU.";
+        input {
+            leaf boardPosition {
+                type string {
+                    length "1..32";
+                }
+                description "Board Position.";
+            }
+        }
+    }
+    rpc resetLpuBoard {
+      description
+        "Reset LPU.";
+        input {
+            leaf boardPosition {
+                type string {
+                    length "1..32";
+                }
+                description "Board Position.";
+            }
+        }
+    }
+    rpc resetSfuBoard {
+      description
+        "Reset SFU.";
+        input {
+            leaf boardPosition {
+                type string {
+                    length "1..32";
+                }
+                description "Board Position.";
+            }
+        }
+    }
+    rpc resetEcuBoard {
+        input {
+            leaf boardPosition {
+                type string;
+                description "Board Position.";
+            }
+        }
+    }
+    rpc resetIcuBoard {
+        input {
+            leaf boardPosition {
+                type string;
+                description "Board Position.";
+            }
+        }
+    }
+    rpc resetFanBoard {
+        input {
+            leaf boardPosition {
+                type string;
+                description "Fan Position.";
+            }
+        }
+    }
+    rpc resetLcd {
+        input {
+            leaf boardPosition {
+                type string;
+                description "Lcd Position.";
+            }
+        }
+    }
+    rpc switchOver {
+      description
+        "Switchover.";
+        input {
+            leaf position {
+                type string {
+                    length "1..32";
+		}
+                description "Chassis Position";
+            }
+        }
+    }
+    rpc resetCard {
+      description
+        "Reset Card.";
+        input {
+            leaf cardPosition {
+                type string {
+                    length "1..32";
+                }
+                description "Card Position.";
+            }
+        }
+    }
+    rpc resetChassis {
+      description
+        "Reset Chassis.";
+        input {
+            leaf chassisPosition {
+                type string {
+                    length "1..32";
+                }
+                description "Chassis Position.";
+            }
+        }
+    }
+    rpc reboot {
+      description
+        "Reboot.";
+        input {
+            leaf saveConfig {
+                type boolean;
+                description "Save configuration flag. Save configuration when this flag set as true.";
+            }
+        }
+    }
+    rpc transferFile {
+    description
+      "Transfer files.";
+        input {
+          leaf serverIpAddress {
+            type inet:ip-address-no-zone;
+            mandatory true;
+            description
+              "FTP server IP address.";
+          }
+          leaf serverPort {
+            type uint32 {
+              range "21..65535";
+            }
+            default "21";
+            description
+              "Server port.";
+          }
+          leaf vpnInstanceName {
+            type string {
+              length "1..128";
+            }
+            description
+              "VPN instance name.";
+          }
+          leaf sourceIpv4Address {
+            type inet:ipv4-address-no-zone;
+            description
+              "Source IPv4 address.";
+          }
+          leaf sourceInterfaceName {
+            type pub-type:ifName;
+            description
+              "Source interface name.";
+          }
+          leaf serverType {
+            type devmServerType;
+            default "ftp";
+            description
+              "Server type.";
+          }
+          leaf commandType {
+            type devmTransType;
+            default "put";
+            description
+              "Transmission type.";
+          }
+          leaf userName {
+            type string {
+              length "1..85";
+            }
+            mandatory true;
+            description
+              "User name.";
+          }
+          leaf password {
+            type pub-type:password;
+            mandatory true;
+            description
+              "Password.";
+          }
+          leaf localFileName {
+            type string {
+              length "1..128";
+            }
+            mandatory true;
+            description
+              "Local file name.";
+          }
+          leaf remoteFileName {
+            type string {
+              length "1..128";
+            }
+            description
+              "File name on the FTP server.";
+          }
+          leaf remoteExtension {
+            type string {
+              length "1..5";
+            }
+            default ".hw!";
+            description
+              "Temporary file name extension used for reliability.";
+          }
+          container secureTransferOptions {
+            description
+              "Transfer encryption options.";
+            leaf preferKex {
+              type devmPreferKexType;
+              description
+                "Encryption algorithm.";
+            }
+            leaf preferStocCipher {
+              type devmCipherType;
+              description
+                "Encryption algorithm for messages from a client to server.";
+            }
+            leaf preferCtosCipher {
+              type devmCipherType;
+              description
+                "Encryption algorithm for messages from a server to client.";
+            }
+            leaf preferStocHmac {
+              type devmStocHmacType;
+              description
+                "Prefer Stoc Hmac.";
+            }
+            leaf preferCtosHmac {
+              type devmStocHmacType;
+              description
+                "Prefer Ctos Hmac.";
+            }
+            leaf keepAliveInterval {
+              type uint32 {
+                range "0..60";
+              }
+              default "0";
+              description
+                "Keepalive interval.";
+            }
+            leaf keepAliveCount {
+              type uint32 {
+                range "0..100";
+              }
+              default "0";
+              description
+                "Number of Keepalive packets.";
+            }
+          }
+        }
+    }
+    rpc clearPortCrcErrAlarm {
+        input {
+            leaf portPosition {
+                type string;
+                description "Port position.";
+            }
+        }
+    }
+    rpc clearPortSymbolErrAlarm {
+        input {
+            leaf portPosition {
+                type string;
+                description "Port position.";
+            }
+        }
+    }
+    rpc clearPortInputErrAlarm {
+        input {
+            leaf portPosition {
+                type string;
+                description "Port position.";
+            }
+        }
+    }
+    rpc clearPortOutputErrAlarm {
+        input {
+            leaf portPosition {
+                type string;
+                description "Port position.";
+            }
+        }
+    }
+    rpc clearPortSdhErrAlarm {
+        input {
+            leaf portPosition {
+                type string;
+                description "Port position.";
+            }
+        }
+    }
+    rpc clearPortTransAlarm {
+        input {
+            leaf portPosition {
+                type string;
+                description "Port position.";
+            }
+        }
+    }
+    rpc resetDustproofNet {
+        input {
+            leaf chassisPosition {
+                type string;
+                config false;
+                description "Chassis Position.";
+            }
+        }
+    }
+    rpc powerOnMpu {
+        input {
+            leaf boardPosition {
+                type string;
+                description "Board Position.";
+            }
+        }
+    }
+    rpc powerOffMpu {
+        input {
+            leaf boardPosition {
+                type string;
+                description "Board Position.";
+            }
+        }
+    }
+    rpc powerOnLpu {
+        input {
+            leaf boardPosition {
+                type string;
+                description "Board Position.";
+            }
+        }
+    }
+    rpc powerOffLpu {
+        input {
+            leaf boardPosition {
+                type string;
+                description "Board Position.";
+            }
+        }
+    }
+    rpc powerOnSfu {
+        input {
+            leaf boardPosition {
+                type string;
+                description "Board Position.";
+            }
+        }
+    }
+    rpc powerOffSfu {
+        input {
+            leaf boardPosition {
+                type string;
+                description "Board Position.";
+            }
+        }
+    }
+    rpc powerOnEcu {
+        input {
+            leaf boardPosition {
+                type string;
+                description "Board Position.";
+            }
+        }
+    }
+    rpc powerOffEcu {
+        input {
+            leaf boardPosition {
+                type string;
+                description "Board Position.";
+            }
+        }
+    }
+    rpc powerOnIcu {
+        input {
+            leaf boardPosition {
+                type string;
+                description "Board Position.";
+            }
+        }
+    }
+    rpc powerOffIcu {
+        input {
+            leaf boardPosition {
+                type string;
+                description "Board Position.";
+            }
+        }
+    }
+    rpc powerOnCard {
+        input {
+            leaf cardPosition {
+                type string;
+                description "Card Position.";
+            }
+        }
+    }
+    rpc powerOffCard {
+        input {
+            leaf cardPosition {
+                type string;
+                description "Card Position.";
+            }
+        }
+    }
+}

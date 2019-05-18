@@ -1,0 +1,834 @@
+module huawei-loadbalance {
+    namespace "http://www.huawei.com/netconf/vrp/huawei-loadbalance";
+    prefix "loadbalance";
+    import huawei-pub-type {
+        prefix "pub-type";
+    }
+    include huawei-loadbalance-action;
+    include huawei-loadbalance-type;
+    
+    organization "Huawei Technologies Co.,Ltd.";
+    contact "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+              People's Republic of China                    
+              Website: http://www.huawei.com Email: support@huawei.com";
+    description "load balance";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+    container loadbalance {
+        container globalCfg {
+            description "global Cfg";
+            leaf defaultProfileName {
+                type string {
+                    length "1..31";
+                }
+                default "default";
+                description "SVF leaf loadbalance profile name";
+            }
+            leaf defaultExtendProfileName {
+                type string {
+                    length "1..31";
+                }
+                default "default";
+                description "loadbalance profile name";
+            }
+            leaf ecmpHashBalanceEnable {
+                type boolean;
+                default "false";
+                description "ecmp hash loadbalance";
+            }
+            leaf hashmode {
+                type uint32 {
+                    range "0..1";
+                }
+                default "0";
+                description "ecmp hash mode";
+            }
+        }
+        container feiIpv4EcmpPros {
+            description "ECMP";
+            list feiIpv4EcmpPro {
+                key "profileId";
+                description "ECMP configuration";
+                leaf profileId {
+                    type uint32;
+                    description "Profile Id";
+                }
+                leaf sip {
+                    type boolean;
+                    default "true";
+                    description "Source IP";
+                }
+                leaf dip {
+                    type boolean;
+                    default "true";
+                    description "Destination IP";
+                }
+                leaf vlan {
+                    type boolean;
+                    default "false";
+                    description "VLAN";
+                }
+                leaf l4sport {
+                    type boolean;
+                    default "true";
+                    description "Source Port";
+                }
+                leaf l4dport {
+                    type boolean;
+                    default "true";
+                    description "Destination Port";
+                }
+                leaf protocol {
+                    type boolean;
+                    default "false";
+                    description "Protocol Number";
+                }
+                leaf sport {
+                    type boolean;
+                    default "false";
+                    description "Source PHY Port";
+                }
+                container trill {
+                    description "trill";
+                    leaf local-preference {
+                        type boolean;
+                        default "true";
+                        description "trill local preference";
+                    }
+                }
+            }
+        }
+        container l2loadbalanceprofiles {
+            description "l2loadbalanceprofiles";
+            list l2loadbalanceprofile {
+                key "profilename";
+                description "l2loadbalanceprofile";
+                leaf profilename {
+                    type string {
+                        length "1..31";
+                    }
+                }
+                container ipv4 {
+                    leaf ipv4destip {
+                        type boolean;
+                        default "true";
+                    }
+                    leaf ipv4srcip {
+                        type boolean;
+                        default "true";
+                    }
+                    leaf ipv4destport {
+                        type boolean;
+                        default "true";
+                    }
+                    leaf ipv4srcport {
+                        type boolean;
+                        default "true";
+                    }
+                    leaf ipv4protocol {
+                        type boolean;
+                        default "false";
+                    }
+                }
+                container ipv6 {
+                    leaf ipv6destip {
+                        type boolean;
+                        default "true";
+                    }
+                    leaf ipv6srcip {
+                        type boolean;
+                        default "true";
+                    }
+                    leaf ipv6destport {
+                        type boolean;
+                        default "true";
+                    }
+                    leaf ipv6srcport {
+                        type boolean;
+                        default "true";
+                    }
+                    leaf ipv6protocol {
+                        type boolean;
+                        default "false";
+                    }
+                }
+                container fcoe {
+                    leaf dstfcid {
+                        type boolean;
+                        default "true";
+                    }
+                    leaf srcfcid {
+                        type boolean;
+                        default "true";
+                    }
+                }
+                container mpls {
+                    leaf mplsecondlab {
+                        type boolean;
+                        default "true";
+                    }
+                    leaf mplsdstip {
+                        type boolean;
+                        default "false";
+                    }
+                    leaf mplssrcip {
+                        type boolean;
+                        default "false";
+                    }
+                    leaf mplstoplab {
+                        type boolean;
+                        default "true";
+                    }
+                    leaf mplthirdlab {
+                        type boolean;
+                        default "false";
+                    }
+                }
+                container l2 {
+                    leaf l2dstmac {
+                        type boolean;
+                        default "true";
+                    }
+                    leaf ethtype {
+                        type boolean;
+                        default "false";
+                    }
+                    leaf srcinterface {
+                        type boolean;
+                        default "false";
+                    }
+                    leaf l2srcmac {
+                        type boolean;
+                        default "true";
+                    }
+                    leaf vlan {
+                        type boolean;
+                        default "true";
+                    }
+                }
+                container ethtrunk {
+                    leaf hashmode {
+                        type uint32 {
+                            range "1..13";
+                        }
+                        default "1";
+                    }
+                    leaf universalid {
+                        type uint32 {
+                            range "1..16";
+                        }
+                        default "11";
+                    }
+                    leaf seed {
+                        type uint32 {
+                            range "0..255";
+                        }
+                        default "1";
+                    }
+                    leaf sport {
+                        type boolean;
+                        default "false";
+                    }
+                }
+                container ecmp {
+                    leaf hashmode {
+                        type uint32 {
+                            range "1..13";
+                        }
+                        default "2";
+                    }
+                    leaf seed {
+                        type uint32 {
+                            range "0..255";
+                        }
+                        default "1";
+                    }
+                    leaf sport {
+                        type boolean;
+                        default "false";
+                    }
+                    leaf localpreference {
+                        type boolean;
+                        default "false";
+                    }
+                    leaf universalid {
+                        type uint32 {
+                            range "1..16";
+                        }
+                        default "1";
+                    }
+                }
+                container mode {
+                    leaf modesymmetry {
+                        type boolean;
+                        default "false";
+                    }
+                }
+                container trill {
+                    leaf local-preference {
+                        type boolean;
+                        default "true";
+                    }
+                    leaf trillegress {
+                        type trillegress;
+                        default "ipv4trillegress";
+                    }
+                    leaf innersrcmac {
+                        type boolean;
+                        default "false";
+                    }
+                    leaf innerdstmac {
+                        type boolean;
+                        default "false";
+                    }
+                    leaf innervlan {
+                        type boolean;
+                        default "false";
+                    }
+                    leaf innersrcip {
+                        type boolean;
+                        default "false";
+                    }
+                    leaf innerdstip {
+                        type boolean;
+                        default "false";
+                    }
+                    leaf innerl4srcport {
+                        type boolean;
+                        default "false";
+                    }
+                    leaf innerl4dstport {
+                        type boolean;
+                        default "false";
+                    }
+                    leaf innerprotocol {
+                        type boolean;
+                        default "false";
+                    }
+                    leaf innerethtype {
+                        type boolean;
+                        default "false";
+                    }
+                    leaf shift {
+                        type uint32 {
+                            range "0..26";
+                        }
+                        default "0";
+                    }
+                }
+                container vxlan {
+                    leaf innersrcmac {
+                        type boolean;
+                        default "false";
+                    }
+                    leaf innerdstmac {
+                        type boolean;
+                        default "false";
+                    }
+                    leaf innersrcip {
+                        type boolean;
+                        default "false";
+                    }
+                    leaf innerdstip {
+                        type boolean;
+                        default "false";
+                    }
+                    leaf innerl4srcport {
+                        type boolean;
+                        default "false";
+                    }
+                    leaf innerl4dstport {
+                        type boolean;
+                        default "false";
+                    }
+                    leaf innerprotocol {
+                        type boolean;
+                        default "false";
+                    }
+                    leaf l4outsport {
+                        type boolean;
+                        default "false";
+                    }
+                    leaf shift {
+                        type uint32 {
+                            range "0..26";
+                        }
+                        default "0";
+                    }
+                }
+            }
+        }
+        container l2loadbalanceprofilesextend {
+            description "SVF leaf l2loadbalanceprofiles";
+            list l2loadbalanceprofilesextend {
+                key "profilename";
+                description "SVF leaf l2loadbalanceprofiles";
+                leaf profilename {
+                    type string {
+                        length "1..31";
+                    }
+                    description "SVF leaf l2loadbalance profile name";
+                }
+                container ipv4 {
+                    description "ipv4";
+                    leaf ipv4destip {
+                        type boolean;
+                        default "true";
+                        description "ipv4 destination ip";
+                    }
+                    leaf ipv4srcip {
+                        type boolean;
+                        default "true";
+                        description "ipv4 source ip";
+                    }
+                    leaf ipv4destport {
+                        type boolean;
+                        default "true";
+                        description "ipv4 destination l4 port";
+                    }
+                    leaf ipv4srcport {
+                        type boolean;
+                        default "true";
+                        description "ipv4 source l4 port";
+                    }
+                    leaf ipv4protocol {
+                        type boolean;
+                        default "false";
+                        description "ipv4 protocol";
+                    }
+                }
+                container ipv6 {
+                    description "ipv6";
+                    leaf ipv6destip {
+                        type boolean;
+                        default "true";
+                        description "ipv6 destination ip";
+                    }
+                    leaf ipv6srcip {
+                        type boolean;
+                        default "true";
+                        description "ipv6 source ip";
+                    }
+                    leaf ipv6destport {
+                        type boolean;
+                        default "true";
+                        description "ipv6 destination l4 port";
+                    }
+                    leaf ipv6srcport {
+                        type boolean;
+                        default "true";
+                        description "ipv6 source l4 port";
+                    }
+                    leaf ipv6protocol {
+                        type boolean;
+                        default "false";
+                        description "ipv6 protocol";
+                    }
+                }
+                container fcoe {
+                    description "fcoe";
+                    leaf dstfcid {
+                        type boolean;
+                        default "true";
+                        description "dst_fcid";
+                    }
+                    leaf srcfcid {
+                        type boolean;
+                        default "true";
+                        description "src_fcid";
+                    }
+                }
+                container mpls {
+                    description "mpls";
+                    leaf mplsecondlab {
+                        type boolean;
+                        default "true";
+                        description "second label";
+                    }
+                    leaf mplsdstip {
+                        type boolean;
+                        default "false";
+                        description "mpls destination ip";
+                    }
+                    leaf mplssrcip {
+                        type boolean;
+                        default "false";
+                        description "mpls source ip";
+                    }
+                    leaf mplstoplab {
+                        type boolean;
+                        default "true";
+                        description "top label";
+                    }
+                }
+                container l2 {
+                    description "l2";
+                    leaf l2dstmac {
+                        type boolean;
+                        default "true";
+                        description "destination tmac";
+                    }
+                    leaf ethtype {
+                        type boolean;
+                        default "false";
+                        description "eth-type ";
+                    }
+                    leaf srcinterface {
+                        type boolean;
+                        default "false";
+                        description "source Physical Port";
+                    }
+                    leaf l2srcmac {
+                        type boolean;
+                        default "true";
+                        description "source mac";
+                    }
+                }
+                container ethtrunk {
+                    description "ethtrunk";
+                    leaf hashmode {
+                        type uint32 {
+                            range "1..9";
+                        }
+                        default "1";
+                        description "hashmode";
+                    }
+                    leaf universalid {
+                        type uint32 {
+                            range "1..8";
+                        }
+                        default "1";
+                        description "universalid";
+                    }
+                }
+            }
+        }
+        container trunkloadbalanceprofiles {
+            description "eth-trunk loadbalance";
+            list trunkloadbalanceprofile {
+                key "portName";
+                description "eth-trunk loadbalance";
+                leaf portName {
+                    type pub-type:ifName;
+                    description "eth-trunk name";
+                }
+                leaf hashtype {
+                    type hashtype;
+                    default "enhanced";
+                    description "eth-trunk hash type";
+                }
+                leaf profilename {
+                    type string {
+                        length "1..31";
+                    }
+                    default "default";
+                    description "loadbalance profile name";
+                }
+            }
+        }
+        container loadbalancehashcalces {
+            description "loadbalance hash calculate";
+            list loadbalancehashcalc {
+                key "dstlagifname srcphyifname dstmac srcmac vlan ethtype srcip dstip protocol l4srcport l4dstport slot";
+                description "eth-trunk loadbalance hash calculate";
+                leaf dstlagifname {
+                    type pub-type:ifName;
+                    description "destination eth-trunk";
+                }
+                leaf srcphyifname {
+                    type pub-type:ifName;
+                    description "source port";
+                }
+                leaf dstmac {
+                    type pub-type:macAddress;
+                    description "destination mac";
+                }
+                leaf srcmac {
+                    type pub-type:macAddress;
+                    description "source mac";
+                }
+                leaf vlan {
+                    type uint32 {
+                        range "1..4094";
+                    }
+                    description "vlan";
+                }
+                leaf ethtype {
+                    type string {
+                        length "3..6";
+                        pattern '0[xX][0-9abcdefABCDEF]{1,4}';
+                    }
+                    description "ethtype";
+                }
+                leaf srcip {
+                    type pub-type:ipv4Address;
+                    description "source ip";
+                }
+                leaf dstip {
+                    type pub-type:ipv4Address;
+                    description "destination ip";
+                }
+                leaf protocol {
+                    type uint8 {
+                        range "0..255";
+                    }
+                    description "protocol";
+                }
+                leaf l4srcport {
+                    type uint16 {
+                        range "0..65535";
+                    }
+                    description "source l4port";
+                }
+                leaf l4dstport {
+                    type uint16 {
+                        range "0..65535";
+                    }
+                    description "destination l4port";
+                }
+                leaf slot {
+                    type LagSlotPath;
+                    description "source port slot";
+                }
+                leaf outinterface {
+                    type pub-type:ifName;
+                    config false;
+                    description "outinterface";
+                }
+            }
+            list loadbalanceecmphashcalc {
+                key "srcphyifname vlan vpnname srcip dstip protocol l4srcport l4dstport slot";
+                description "loadbalance ecmp hash calculate";
+                leaf srcphyifname {
+                    type pub-type:ifName;
+                    description "source port";
+                }
+                leaf vlan {
+                    type uint32 {
+                        range "1..4094";
+                    }
+                    description "vlan";
+                }
+                leaf vpnname {
+                    type string;
+                    description "vpn-instance name";
+                }
+                leaf srcip {
+                    type pub-type:ipv4Address;
+                    description "source ip";
+                }
+                leaf dstip {
+                    type pub-type:ipv4Address;
+                    description "destination ip";
+                }
+                leaf protocol {
+                    type uint32 {
+                        range "0..255";
+                    }
+                    description "protocol";
+                }
+                leaf l4srcport {
+                    type uint32 {
+                        range "0..65535";
+                    }
+                    description "source l4port";
+                }
+                leaf l4dstport {
+                    type uint32 {
+                        range "0..65535";
+                    }
+                    description "destination l4port";
+                }
+                leaf slot {
+                    type LagSlotPath;
+                    description "source port slot";
+                }
+                leaf outinterface {
+                    type pub-type:ifName;
+                    config false;
+                    description "outinterface";
+                }
+            }
+        }
+        container feiIpEcmpPros {
+            description "ECMP configuration";
+            list feiIpEcmpPro {
+                key "profileId";
+                description "ECMP configuration";
+                leaf profileId {
+                    type uint32;
+                    description "Profile Id";
+                }
+                leaf sip {
+                    type boolean;
+                    default "true";
+                    description "Source IP";
+                }
+                leaf dip {
+                    type boolean;
+                    default "true";
+                    description "Destination IP";
+                }
+                leaf vlan {
+                    type boolean;
+                    default "false";
+                    description "VLAN";
+                }
+                leaf l4sport {
+                    type boolean;
+                    default "true";
+                    description "Source Port";
+                }
+                leaf l4dport {
+                    type boolean;
+                    default "true";
+                    description "Destination Port";
+                }
+                leaf protocol {
+                    type boolean;
+                    default "false";
+                    description "Protocol Number";
+                }
+                leaf sport {
+                    type boolean;
+                    default "false";
+                    description "Source PHY Port";
+                }
+                leaf dscp {
+                    type boolean;
+                    default "false";
+                    description "DSCP";
+                }
+            }
+        }
+        container feiIptnlEcmpPros {
+            description "ECMP configuration of IPinIP";
+            list feiIptnlEcmpPro {
+                key "profileId";
+                description "ECMP configuration of IPinIP";
+                leaf profileId {
+                    type uint32;
+                    description "Profile Id";
+                }
+                leaf inner-src-ip {
+                    type boolean;
+                    default "true";
+                    description "Inner source IP address";
+                }
+                leaf inner-dst-ip {
+                    type boolean;
+                    default "true";
+                    description "Inner destination IP address";
+                }
+                leaf inner-l4-dport {
+                    type boolean;
+                    default "true";
+                    description "Inner destination L4 port";
+                }
+                leaf inner-l4-sport {
+                    type boolean;
+                    default "true";
+                    description "Inner source L4 port";
+                }
+            }
+        }
+        container feiMplsEcmpPros {
+            description "MPLS ECMP";
+            list feiMplsEcmpPro {
+                key "profileId";
+                config false;
+                description "MPLS ECMP configuration";
+                leaf profileId {
+                    type uint32;
+                    description "Profile Id";
+                }
+                leaf sip {
+                    type boolean;
+                    default "true";
+                    description "Source IP";
+                }
+                leaf dip {
+                    type boolean;
+                    default "true";
+                    description "Destination IP";
+                }
+                leaf inlabel {
+                    type boolean;
+                    default "false";
+                    description "Inner Label";
+                }
+                leaf outlabel {
+                    type boolean;
+                    default "false";
+                    description "Outer Label";
+                }
+                leaf sip6 {
+                    type boolean;
+                    default "true";
+                    description "Source IPv6";
+                }
+                leaf dip6 {
+                    type boolean;
+                    default "true";
+                    description "Destination IPv6";
+                }
+            }
+        }
+        container feiIpv6EcmpPros {
+            description "IPV6 ECMP";
+            list feiIpv6EcmpPro {
+                key "profileId";
+                description "IPV6 ECMP configuration";
+                leaf profileId {
+                    type uint32;
+                    description "Profile Id";
+                }
+                leaf sip6 {
+                    type boolean;
+                    default "true";
+                    description "Source IPV6 address";
+                }
+                leaf dip6 {
+                    type boolean;
+                    default "true";
+                    description "Destination IPV6 address";
+                }
+                leaf vlan {
+                    type boolean;
+                    default "false";
+                    description "VLAN";
+                }
+                leaf l4sport {
+                    type boolean;
+                    default "true";
+                    description "Source Port";
+                }
+                leaf l4dport {
+                    type boolean;
+                    default "true";
+                    description "Destination Port";
+                }
+                leaf protocol {
+                    type boolean;
+                    default "false";
+                    description "Protocol Number";
+                }
+                leaf sport {
+                    type boolean;
+                    default "false";
+                    description "Source PHY Port";
+                }
+            }
+        }
+    }
+}

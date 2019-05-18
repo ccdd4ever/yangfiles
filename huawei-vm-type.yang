@@ -1,0 +1,93 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-vm-type {
+  belongs-to huawei-vm {
+    prefix vm;
+  }
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "test.Description FOR submodule";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  typedef directionType {
+    type enumeration {
+      enum "inbound" {
+        description
+          "Inbound dircection.";
+      }
+      enum "outbound" {
+        description
+          "Outbound diection.";
+      }
+    }
+    description
+      "";
+  }
+  typedef ruleAction {
+    type enumeration {
+      enum "deny" {
+        description
+          "Deny type of VM users rule.";
+      }
+      enum "permit" {
+        description
+          "Permit type of VM users rule.";
+      }
+    }
+    description
+      "";
+  }
+  typedef userState {
+    type enumeration {
+      enum "waiting" {
+        description
+          "waiting state.";
+      }
+      enum "success" {
+        description
+          "success state.";
+      }
+      enum "fail" {
+        description
+          "fail state.";
+      }
+    }
+    description
+      "";
+  }
+  typedef associationType {
+    type enumeration {
+      enum "preAssociate" {
+        description
+          "VM preassociation.";
+      }
+      enum "associate" {
+        description
+          "VM association.";
+      }
+      enum "deAssociate" {
+        description
+          "VM deassociation.";
+      }
+    }
+    description
+      "";
+  }
+}

@@ -1,0 +1,41 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-system-action {
+  belongs-to huawei-system {
+    prefix system;
+  }
+  include huawei-system-type;
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "Description of system action submodule";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  rpc switchLanguage {
+    description
+      "Switch language.";
+    input {
+      leaf languageMode {
+        type systemLanguageE;
+        description
+          "Language mode.";
+      }
+    }
+  }
+}

@@ -1,0 +1,357 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-feiarpstatus {
+  namespace "http://www.huawei.com/netconf/vrp/huawei-feiarpstatus";
+  prefix feiarpstatus;
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "feiarpstatus";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  container feiarpstatus {
+    description
+      "feiarpstatus";
+    container feil3arpstatuss {
+      config false;
+      description
+        "feiarpstatuss";
+      list feil3arpstatus {
+        key "ipAddr";
+        config false;
+        description
+          "feiarpstatus";
+        leaf ipAddr {
+          type inet:ipv4-address-no-zone;
+          config false;
+          description
+            "IP";
+        }
+        leaf macAddr {
+          type pub-type:macAddress {
+            length "1..255";
+          }
+          config false;
+          mandatory true;
+          description
+            "MAC";
+        }
+        leaf intNve {
+          type string {
+            length "0..50";
+          }
+          config false;
+          description
+            "intNve";
+        }
+        leaf vpnName {
+          type string {
+            length "0..32";
+          }
+          config false;
+          description
+            "vpnName";
+        }
+        leaf gateway {
+          type string {
+            length "0..50";
+          }
+          config false;
+          description
+            "GateWay";
+        }
+        leaf state {
+          type string {
+            length "0..50";
+          }
+          config false;
+          description
+            "State";
+        }
+      }
+    }
+    container feil3arpstatusstatics {
+      description
+        "feil3arpstatusstatics";
+      list feil3arpstatusstatic {
+        key "totalcount";
+        description
+          "feil3arpstatusstatic";
+        leaf totalcount {
+          type uint32;
+          description
+            "TotalCount";
+        }
+        leaf successcount {
+          type uint32;
+          mandatory true;
+          description
+            "SuccessCount";
+        }
+        leaf failcount {
+          type uint32;
+          mandatory true;
+          description
+            "FailCount";
+        }
+      }
+    }
+    container feil3arpcopycons {
+      description
+        "feil3arpcopycons";
+      list feil3arpcopycon {
+        key "bdId";
+        description
+          "feil3arpcopycon";
+        leaf bdId {
+          type uint32 {
+            range "1..16777215";
+          }
+          description
+            "bdId";
+        }
+        leaf arpControllerReplyEnable {
+          type boolean;
+          default "false";
+          description
+            "arpControllerReplyEnable";
+        }
+      }
+    }
+    container feil3vxlandetects {
+      description
+        "feil3vxlandetects";
+      list feil3vxlandetect {
+        key "VxlanPathDetectEnable";
+        description
+          "feil3vxlandetect";
+        leaf VxlanPathDetectEnable {
+          type boolean;
+          description
+            "VxlanPathDetectEnable";
+        }
+        leaf VrId {
+          type uint32 {
+            range "0..32768";
+          }
+          description
+            "VrId";
+          ext:allowDelete "true";
+        }
+      }
+    }
+    container feil3arpsyslogs {
+      description
+        "feil3arpsyslogs";
+      list feil3arpsyslog {
+        key "ArpSysLogtEnable";
+        description
+          "feil3arpsyslog";
+        leaf ArpSysLogtEnable {
+          type boolean;
+          description
+            "ArpSysLogtEnable";
+        }
+      }
+    }
+    container feil3ipdetects {
+      description
+        "feil3ipdetects";
+      list feil3ipdetect {
+        key "IpPathDetectEnable";
+        description
+          "feil3ipdetect";
+        leaf IpPathDetectEnable {
+          type boolean;
+          description
+            "IpPathDetectEnable";
+        }
+        leaf VrId {
+          type uint32 {
+            range "0..32768";
+          }
+          description
+            "VrId";
+          ext:allowDelete "true";
+        }
+      }
+    }
+    container Nvo3ArpMisss {
+      description
+        "Nvo3ArpMisss";
+      list Nvo3ArpMiss {
+        key "ifName";
+        description
+          "Nvo3ArpMiss";
+        leaf ifName {
+          type string {
+            length "0..32";
+          }
+          description
+            "ifName";
+        }
+        leaf enable {
+          type uint32 {
+            range "0..1";
+          }
+          mandatory true;
+          description
+            "enable";
+        }
+      }
+    }
+    container IpPingDetects {
+      description
+        "IpPingDetects";
+      list IpPingDetect {
+        key "SrcIp DstIp";
+        description
+          "IpPingDetect";
+        leaf SrcIp {
+          type inet:ipv4-address-no-zone;
+          description
+            "SrcIp";
+        }
+        leaf DstIp {
+          type inet:ipv4-address-no-zone;
+          description
+            "DstIp";
+        }
+      }
+    }
+    container MacPingDetects {
+      description
+        "MacPingDetects";
+      list MacPingDetect {
+        key "SrcIp DstIp";
+        description
+          "MacPingDetect";
+        leaf SrcMac {
+          type pub-type:macAddress {
+            length "0..255";
+          }
+          default "0";
+          description
+            "SrcMac";
+        }
+        leaf DstMac {
+          type pub-type:macAddress {
+            length "0..255";
+          }
+          default "0";
+          description
+            "DstMac";
+        }
+        leaf SrcIp {
+          type inet:ipv4-address-no-zone;
+          description
+            "SrcIp";
+        }
+        leaf DstIp {
+          type inet:ipv4-address-no-zone;
+          description
+            "DstIp";
+        }
+      }
+    }
+    container feiResUses {
+      description
+        "FeiResUseStatus";
+      list feiResUse {
+        key "serviceName slot chip resName";
+        description
+          "feiResUse";
+        leaf serviceName {
+          type string {
+            length "0..16";
+          }
+          description
+            "Service";
+        }
+        leaf serviceUsage {
+          type string {
+            length "0..16";
+          }
+          mandatory true;
+          description
+            "Used value";
+        }
+        leaf serviceMax {
+          type string {
+            length "0..16";
+          }
+          mandatory true;
+          description
+            "Service max";
+        }
+        leaf slot {
+          type string {
+            length "0..16";
+          }
+          description
+            "Slot";
+        }
+        leaf chip {
+          type uint32;
+          description
+            "Chip";
+        }
+        leaf resName {
+          type string {
+            length "0..16";
+          }
+          description
+            "Resource name";
+        }
+        leaf resUsage {
+          type string {
+            length "0..16";
+          }
+          mandatory true;
+          description
+            "Resource used value";
+        }
+        leaf resRemain {
+          type string {
+            length "0..16";
+          }
+          mandatory true;
+          description
+            "Remain";
+        }
+        leaf template {
+          type string {
+            length "0..16";
+          }
+          mandatory true;
+          description
+            "Template";
+        }
+      }
+    }
+  }
+}

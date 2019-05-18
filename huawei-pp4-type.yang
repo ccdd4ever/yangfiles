@@ -1,0 +1,229 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-pp4-type {
+  belongs-to huawei-pp4 {
+    prefix pp4;
+  }
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "pp4 data type";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  typedef pp4SwitchOp {
+    type enumeration {
+      enum "enable" {
+        description
+          "Enabling.";
+      }
+      enum "disable" {
+        description
+          "Disabling.";
+      }
+    }
+    description
+      "pp4SwitchOp";
+  }
+  typedef pp4icmpSrcType {
+    type enumeration {
+      enum "port-unreachable" {
+        description
+          "port-unreachable:";
+      }
+      enum "ttl-exceeded" {
+        description
+          "ttl-exceeded:";
+      }
+    }
+  }
+  typedef pp4PktAction {
+    type enumeration {
+      enum "rcvPkt" {
+        description
+          "Packet reception.";
+      }
+      enum "sndPkt" {
+        description
+          "Packet sending.";
+      }
+    }
+    description
+      "pp4PktAction";
+  }
+  typedef pp4OptionType {
+    type enumeration {
+      enum "routeAlert" {
+        description
+          "Route-alert option.";
+      }
+      enum "routeRecord" {
+        description
+          "Route-record option.";
+      }
+      enum "sourceRoute" {
+        description
+          "Source-route option.";
+      }
+      enum "timeStamp" {
+        description
+          "Time-stamp option.";
+      }
+    }
+    description
+      "pp4OptionType";
+  }
+  typedef udphelperFamousPortType {
+    type enumeration {
+      enum "dns" {
+        description
+          "dns";
+      }
+      enum "netbios-ds" {
+        description
+          "netbios-ds";
+      }
+      enum "netbios-ns" {
+        description
+          "netbios-ns";
+      }
+      enum "tacacs" {
+        description
+          "tacacs";
+      }
+      enum "tftp" {
+        description
+          "tftp";
+      }
+      enum "time" {
+        description
+          "time";
+      }
+    }
+    description
+      "udphelperFamousPortType";
+  }
+  typedef pp4IfIcmpSecType {
+    type enumeration {
+      enum "echo" {
+        description
+          "Type=8, Code=0.";
+      }
+      enum "echo-reply" {
+        description
+          "Type=0, Code=0.";
+      }
+      enum "fragmentneed-dfset" {
+        description
+          "Type=3, Code=4.";
+      }
+      enum "host-redirect" {
+        description
+          "Type=5, Code=1.";
+      }
+      enum "host-tos-redirect" {
+        description
+          "Type=5, Code=3.";
+      }
+      enum "host-unreachable" {
+        description
+          "Type=3, Code=1.";
+      }
+      enum "information-reply" {
+        description
+          "Type=16, Code=0.";
+      }
+      enum "information-request" {
+        description
+          "Type=15, Code=0.";
+      }
+      enum "net-redirect" {
+        description
+          "Type=5, Code=0.";
+      }
+      enum "net-tos-redirect" {
+        description
+          "Type=5, Code=2.";
+      }
+      enum "net-unreachable" {
+        description
+          "Type=3, Code=0.";
+      }
+      enum "parameter-problem" {
+        description
+          "Type=12, Code=0.";
+      }
+      enum "port-unreachable" {
+        description
+          "Type=3, Code=3.";
+      }
+      enum "protocol-unreachable" {
+        description
+          "Type=3, Code=2.";
+      }
+      enum "reassembly-timeout" {
+        description
+          "Type=11, Code=1.";
+      }
+      enum "source-quench" {
+        description
+          "Type=4, Code=0.";
+      }
+      enum "source-route-failed" {
+        description
+          "Type=3, Code=5.";
+      }
+      enum "timestamp-reply" {
+        description
+          "Type=14, Code=0.";
+      }
+      enum "timestamp-request" {
+        description
+          "Type=13, Code=0.";
+      }
+      enum "ttl-exceeded" {
+        description
+          "Type=11, Code=0.";
+      }
+      enum "user-defined" {
+        description
+          "user-defined.";
+      }
+    }
+    description
+      "pp4IfIcmpSecType";
+  }
+  typedef appProtolTYPE {
+    type string;
+    description
+      "appProtolTYPE";
+  }
+  typedef aclType {
+    type string {
+      length "1..32";
+      pattern '(^[2-3]\d{3}$)|(^[a-zA-Z]([^\s]*$))';
+    }
+    description
+      "aclNumOrName is begin with a-z or A-Z or 0-9";
+  }
+  typedef pktServiceClass {
+    type string;
+    description
+      "pktServiceClass";
+  }
+}

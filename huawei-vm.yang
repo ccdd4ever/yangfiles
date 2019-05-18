@@ -1,0 +1,356 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-vm {
+  namespace "http://www.huawei.com/netconf/vrp/huawei-vm";
+  prefix vm;
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  include huawei-vm-action;
+  include huawei-vm-type;
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "Virtual Managemet Configuration.";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  container vm {
+    description
+      "Virtual Managemet Configuration.";
+    container vmSys {
+      description
+        "Configure VM under system.";
+      leaf rdsSvrTmpltName {
+        type string {
+          length "1..32";
+        }
+        description
+          "Configure radius template for VM users.";
+        ext:allowDelete "true";
+      }
+    }
+    container shareGroups {
+      description
+        "The ports in the same share group share the same policy.";
+      list shareGroup {
+        key "groupName";
+        max-elements  "256";
+        description
+          "The ports in the same share group share the same policy.";
+        leaf groupName {
+          type string {
+            length "1..16";
+          }
+          description
+            "Configure share group name.";
+        }
+        container sharePorts {
+          description
+            "Add ports to share group.";
+          list sharePort {
+            key "ifName";
+            max-elements  "4";
+            description
+              "Add ports to share group.";
+            leaf ifName {
+              type leafref {
+                path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+              }
+              description
+                "Specifies the name of the interface added to share group.";
+            }
+          }
+        }
+      }
+    }
+    container userInfos {
+      config false;
+      description
+        "Display VM users information.";
+      list userInfo {
+        key "vlanId vsiMac ifName";
+        config false;
+        max-elements  "4096";
+        description
+          "Display VM users information.";
+        leaf vlanId {
+          type uint16 {
+            range "1..4094";
+          }
+          config false;
+          description
+            "VLAN ID of VM users.";
+        }
+        leaf vsiMac {
+          type pub-type:macAddress {
+            length "0..255";
+          }
+          config false;
+          description
+            "VSI MAC address of VM users.";
+        }
+        leaf ifName {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          config false;
+          description
+            "Interface name of VM users.";
+        }
+        leaf vsiIP {
+          type inet:ip-address-no-zone;
+          config false;
+          description
+            "VSI IP address of VM users.";
+        }
+        leaf downloadProfileState {
+          type userState;
+          config false;
+          description
+            "State of VM user download profile.";
+        }
+        leaf uploadProfileState {
+          type userState;
+          config false;
+          description
+            "State of VM user upload profile.";
+        }
+        leaf profileId {
+          type string {
+            length "1..64";
+          }
+          config false;
+          description
+            "VM user profile ID.";
+        }
+        leaf aclName {
+          type string {
+            length "1..32";
+          }
+          config false;
+          description
+            "VM user ACL name.";
+        }
+        container userQoSs {
+          config false;
+          description
+            "VM user QoS information table.";
+          container userQoS {
+            config false;
+            description
+              "VM user QoS information.";
+            leaf cir {
+              type uint32;
+              config false;
+              description
+                "CIR information of VM users.";
+            }
+            leaf pir {
+              type uint32;
+              config false;
+              description
+                "PIR information of VM users.";
+            }
+          }
+        }
+        container userSecurityRules {
+          config false;
+          description
+            "VM users security rules.";
+          list userSecurityRule {
+            key "direction ruleAction protocolType srcIP srcIPWild dstIP dstIPWild aclSrcPortBegin aclSrcPortEnd aclDestPortBegin aclDestPortEnd";
+            config false;
+            max-elements  "1024";
+            description
+              "VM users security rule table.";
+            leaf direction {
+              type directionType;
+              config false;
+              description
+                "VM user security rule direction.";
+            }
+            leaf ruleAction {
+              type ruleAction;
+              config false;
+              description
+                "VM users security rule action.";
+            }
+            leaf protocolType {
+              type uint16;
+              config false;
+              description
+                "Protocol type value((0: any ipv4 protocol; 1: icmp; 2: igmp; 4: ipinip; 6: tcp; 17: udp; 47: gre; 89: ospf). ";
+              ext:value-replace {
+                ext:item  "0" {
+                  ext:meaning "IP";
+                }
+                ext:item  "1" {
+                  ext:meaning "ICMP";
+                }
+                ext:item  "2" {
+                  ext:meaning "IGMP";
+                }
+                ext:item  "4" {
+                  ext:meaning "IPINIP";
+                }
+                ext:item  "6" {
+                  ext:meaning "TCP";
+                }
+                ext:item  "17" {
+                  ext:meaning "UDP";
+                }
+                ext:item  "47" {
+                  ext:meaning "GRE";
+                }
+                ext:item  "89" {
+                  ext:meaning "OSPF";
+                }
+                ext:item  "256" {
+                  ext:meaning "any";
+                }
+              }
+            }
+            leaf srcIP {
+              type inet:ip-address-no-zone;
+              config false;
+              description
+                "VM user security rule source IP address.";
+            }
+            leaf srcIPWild {
+              type uint32;
+              config false;
+              description
+                "VM user security rule source IP wild.";
+            }
+            leaf dstIP {
+              type inet:ip-address-no-zone;
+              config false;
+              description
+                "VM user security rule destination IP address.";
+            }
+            leaf dstIPWild {
+              type uint32;
+              config false;
+              description
+                "VM user security rule destination IP wild.";
+            }
+            leaf aclSrcPortBegin {
+              type uint16 {
+                range "0..65535";
+              }
+              config false;
+              description
+                "VM user security rule start port number of the source port.";
+            }
+            leaf aclSrcPortEnd {
+              type uint16 {
+                range "0..65535";
+              }
+              config false;
+              description
+                "VM user security rule end port number of the source port.";
+            }
+            leaf aclDestPortBegin {
+              type uint16 {
+                range "0..65535";
+              }
+              config false;
+              description
+                "VM user security rule start port number of the destination port.";
+            }
+            leaf aclDestPortEnd {
+              type uint16 {
+                range "0..65535";
+              }
+              config false;
+              description
+                "VM user security rule end port of the destination port.";
+            }
+          }
+        }
+      }
+    }
+    container defaultAcl {
+      description
+        "Default ACL Configuration";
+      leaf aclName {
+        type string {
+          length "1..32";
+        }
+        description
+          "Default ACL Name.";
+        ext:allowDelete "true";
+      }
+      leaf aclDirection {
+        type directionType;
+        description
+          "Default ACL Direction.";
+        ext:allowDelete "true";
+      }
+    }
+    container defaultQos {
+      description
+        "Default QOS Configuration";
+      leaf qosCir {
+        type int32 {
+          range "8..838860800";
+        }
+        description
+          "Default QOS CIR Configuration";
+        ext:allowDelete "true";
+      }
+      leaf qosPir {
+        type int32 {
+          range "8..838860800";
+        }
+        description
+          "Default QOS PIR Configuration";
+        ext:allowDelete "true";
+      }
+      leaf qosDirection {
+        type directionType;
+        must "(../qosDirection='outbound')";
+        description
+          "Default QOS Direction Configuration";
+        ext:allowDelete "true";
+      }
+    }
+    container vmPassword {
+      description
+        "VM User authentication password";
+      leaf password {
+        type pub-type:password {
+          length "6..16";
+        }
+        description
+          "VM User authentication password";
+        ext:allowDelete "true";
+      }
+    }
+  }
+}

@@ -1,0 +1,79 @@
+module huawei-dad {
+    namespace "http://www.huawei.com/netconf/vrp/huawei-dad";
+    prefix "dad";
+    import huawei-pub-type {
+        prefix "pub-type";
+    }
+    include huawei-dad-type;
+    
+    organization "Huawei Technologies Co.,Ltd.";
+    contact "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+              People's Republic of China                    
+              Website: http://www.huawei.com Email: support@huawei.com";
+    description "dual-active detective.";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+    container dad {
+        container globalPara {
+            description "dual-active meth status.";
+            leaf dadStatus {
+                type dadStatusType;
+                config false;
+                description "dual-active info.";
+            }
+            leaf dadMode {
+                type dadModeType;
+                config false;
+                description "dual-active status.";
+            }
+            leaf dadMethStatus {
+                type dadMethStatusType;
+                config false;
+                description "dual-active mode.";
+            }
+        }
+        container directModeInterfaces {
+            description "the List of Interfaces That Have DAD in Direct Mode Configured.";
+            list directModeInterface {
+                key "ifName";
+                description "the List of Interfaces That Have DAD in Direct Mode Configured.";
+                leaf ifName {
+                    type pub-type:ifName;
+                    description "the Interfaces Name That Have DAD in Direct Mode Configured.";
+                }
+            }
+        }
+        container relayModeInterfaces {
+            description "the List of Interfaces That Have DAD in Relay Mode Configured.";
+            list relayModeInterface {
+                key "ifName";
+                description "the List of Interfaces That Have DAD in Relay Mode Configured.";
+                leaf ifName {
+                    type pub-type:ifName;
+                    description "the Interfaces Name That Have DAD in Relay Mode Configured.";
+                }
+            }
+        }
+        container proxyInterfaces {
+            description "the List of Interfaces That Have the Relay Function Enabled on the Relay Agent.";
+            list proxyInterface {
+                key "ifName";
+                description "the List of Interfaces That Have the Relay Function Enabled on the Relay Agent.";
+                leaf ifName {
+                    type pub-type:ifName;
+                    description "the Interfaces Name That Have the Relay Function Enabled on the Relay Agent.";
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,91 @@
+submodule huawei-mlag-type {
+    belongs-to "huawei-mlag" {
+        prefix "mlag";
+    }
+    
+    organization "Huawei Technologies Co.,Ltd.";
+    contact "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+              People's Republic of China                    
+              Website: http://www.huawei.com Email: support@huawei.com";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+    typedef portState {
+        description "";
+        type enumeration {
+            enum "Down" {
+                value 0;
+                description "Down.";
+            }
+            enum "Up" {
+                value 1;
+                description "Up.";
+            }
+            enum "Negative" {
+                value 2;
+                description "No Configuration.";
+            }
+        }
+    }
+    typedef errordownState {
+        description "";
+        type enumeration {
+            enum "Normal" {
+                value 0;
+                description "Normal.";
+            }
+            enum "ErrorDown" {
+                value 1;
+                description "ErrorDown.";
+            }
+        }
+    }
+    typedef dfsState {
+        description "";
+        type enumeration {
+            enum "Master" {
+                value 0;
+                description "Master.";
+            }
+            enum "Backup" {
+                value 1;
+                description "Backup.";
+            }
+        }
+    }
+    typedef heartState {
+        description "";
+        type enumeration {
+            enum "OK" {
+                value 0;
+                description "OK.";
+            }
+            enum "Lost" {
+                value 1;
+                description "Lost.";
+            }
+        }
+    }
+    typedef errordownAction {
+        description "";
+        type enumeration {
+            enum "Suspend" {
+                value 0;
+                description "Suspend this port when m-lag dual-active.";
+            }
+            enum "Reserved" {
+                value 1;
+                description "Reserve this port when m-lag dual-active.";
+            }
+        }
+    }
+}

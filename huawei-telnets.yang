@@ -1,0 +1,199 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-telnets {
+  namespace "http://www.huawei.com/netconf/vrp/huawei-telnets";
+  prefix telnets;
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  include huawei-telnets-type;
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "Telnet Server component.";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  container telnets {
+    description
+      "Telnet Server component.";
+    container telnetServer {
+      description
+        "Telnet Server configuration statistics.";
+      leaf acl4Num {
+        type uint32 {
+          range "2000..3999";
+        }
+        description
+          "Server ACL number for IPV4 connections";
+        ext:allowDelete "true";
+      }
+      leaf acl6Num {
+        type uint32 {
+          range "2000..3999";
+        }
+        description
+          "Server ACL number for IPV6 connections";
+        ext:allowDelete "true";
+      }
+      leaf currentNumberOfUsers {
+        type uint32;
+        config false;
+        description
+          "The current number of users.";
+      }
+      leaf acl4Name {
+        type string {
+          length "1..32";
+        }
+        description
+          "Server ACL name for IPV4 connections";
+        ext:allowDelete "true";
+      }
+      leaf acl6Name {
+        type string {
+          length "1..32";
+        }
+        description
+          "Server ACL name for IPV6 connections";
+        ext:allowDelete "true";
+      }
+      leaf portNum {
+        type uint32 {
+          range "23..65535";
+        }
+        default "23";
+        description
+          "User can set the listen port for Telnet server. The default port number for Telnet Server is 23.";
+        ext:allowDelete "true";
+      }
+      leaf port6Num {
+        type uint32 {
+          range "23..65535";
+        }
+        default "23";
+        description
+          "User can set the ipv6 listen port for Telnet ipv6 server. The default port number for Telnet ipv6 Server is 23.";
+        ext:allowDelete "true";
+      }
+      leaf srcIpv6Addr {
+        type inet:ipv6-address-no-zone;
+        description
+          "TELNET ipv6 server source IpAddr";
+        ext:allowDelete "false";
+      }
+      leaf srcIpv6VpnId {
+        type uint32;
+        default "0";
+        config false;
+        description
+          "TELNET ipv6 server source VpnId";
+      }
+      leaf srcIpv6VpnName {
+        type string;
+        description
+          "TELNET ipv6 server source VpnName";
+        ext:allowDelete "true";
+      }
+      leaf telnetSvrEnable {
+        type boolean;
+        default "false";
+        description
+          "User can start the Telnet service. By default, Telnet service is enabled.";
+      }
+      leaf telIpv6SrvEnble {
+        type boolean;
+        default "false";
+        description
+          "User can start the Telnet IPv6 service. By default, Telnet IPv6 service is enabled.";
+      }
+      leaf srcInterfName {
+        type leafref {
+          path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+        }
+        description
+          "Specify the source interface name.";
+        ext:allowDelete "true";
+      }
+    }
+    container telnetSessionStatss {
+      config false;
+      description
+        "Session statistic list.";
+      list telnetSessionStats {
+        key "vtyIndex";
+        config false;
+        description
+          "Session statistic.";
+        leaf srcIpv4Ipv6Addr {
+          type inet:ip-address-no-zone;
+          config false;
+          description
+            "IP address of client.";
+        }
+        leaf vtyIndex {
+          type uint32 {
+            range "0..20";
+          }
+          config false;
+          description
+            "First free slot used in the connection. Maximum number of slots currently supported are 21.";
+        }
+      }
+    }
+    container loginFailAlarm {
+      description
+        "Alarm when manager login failed frequently.";
+      leaf period {
+        type uint32 {
+          range "1..120";
+        }
+        must "not(not(../upperLimit))";
+        mandatory true;
+        description
+          "Login Alarm period, default is 5 minutes.";
+        ext:allowDelete "true";
+      }
+      leaf upperLimit {
+        type uint32 {
+          range "0..100";
+        }
+        mandatory true;
+        description
+          "Login Alarm report times, default is 30 times.  ";
+        ext:allowDelete "true";
+      }
+      leaf lowerLimit {
+        type uint32 {
+          range "0..45";
+        }
+        must "(../upperLimit and ../lowerLimit<=../upperLimit) or not(../upperLimit or not(../upperLimit))";
+        mandatory true;
+        description
+          "Login Alarm resume times, default is 20 times.";
+        ext:allowDelete "true";
+      }
+    }
+  }
+}

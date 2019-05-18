@@ -1,0 +1,112 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-qos-wred {
+  belongs-to "huawei-qos" {
+    prefix "qos";
+  }
+  include huawei-qos-type;
+  
+  organization "Huawei Technologies Co.,Ltd.";
+  contact "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+              People's Republic of China                    
+              Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "WRED.";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  grouping qos_wred_type {
+    description
+      "";
+    container qosWreds {
+      description
+        "WRED list.";
+      list qosWred {
+        key "wredName";
+        max-elements 8;
+        description
+          "WRED.";
+        leaf wredName {
+          type qosPolicyName;
+          description
+            "WRED name.";
+        }
+        container qosWredColors {
+          description
+            "List of WRED colors.";
+          list qosWredColor {
+            key "color";
+            max-elements 3;
+            description
+              "WRED color.";
+            leaf color {
+              type qosColor;
+              description
+                "Color.";
+            }
+            leaf lowLimitPct {
+              type uint8 {
+                range "0..100";
+              }
+              mandatory true;
+              description
+                "Low limit percentage.";
+            }
+            leaf highLimitPct {
+              type uint8 {
+                range "0..100";
+              }
+              mandatory true;
+              description
+                "High limit percentage.";
+            }
+            leaf discardPct {
+              type uint8 {
+                range "1..100";
+              }
+              mandatory true;
+              description
+                "Discarding percentage.";
+            }
+          }
+        }
+      }
+    }
+    container qosWredQueues {
+      description
+        "List of the queues applying WRED.";
+      list qosWredQueue {
+        key "serviceClass speedType";
+        max-elements 8;
+        description
+          "Queue applying WRED.";
+        leaf serviceClass {
+          type qosServiceClass;
+          description
+            "Class of service.";
+        }
+        leaf speedType {
+          type qosSpeedType;
+          description
+            "Speed type. The available options are high-speed and low-speed.";
+        }
+        leaf wredName {
+          type qosPolicyName;
+          mandatory true;
+          description
+            "WRED name.";
+        }
+      }
+    }
+  }
+}

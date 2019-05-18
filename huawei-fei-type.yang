@@ -1,0 +1,383 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-fei-type {
+  belongs-to huawei-fei {
+    prefix fei;
+  }
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "FEI";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  typedef feiBoardHardType {
+    type enumeration {
+      enum "ALL" {
+        description
+          "ALL BOARD:";
+      }
+      enum "LPUA" {
+        description
+          "LPUA:";
+      }
+      enum "LPUB" {
+        description
+          "LPUB:";
+      }
+      enum "LPUC" {
+        description
+          "LPUC:";
+      }
+      enum "LPUE" {
+        description
+          "LPUE:";
+      }
+      enum "LPUF" {
+        description
+          "LPUF:";
+      }
+      enum "LPUG" {
+        description
+          "LPUG:";
+      }
+      enum "LPUH" {
+        description
+          "LPUH:";
+      }
+      enum "LPUI" {
+        description
+          "LPUI:";
+      }
+      enum "LPUK" {
+        description
+          "LPUK:";
+      }
+      enum "LPUM" {
+        description
+          "LPUM:";
+      }
+      enum "LPUN" {
+        description
+          "LPUN:";
+      }
+      enum "SPUC" {
+        description
+          "SPUC:";
+      }
+      enum "RNRLPUB" {
+        description
+          "RNRLPUB:";
+      }
+      enum "RNRLPUD" {
+        description
+          "RNRLPUD:";
+      }
+      enum "RNRLPUF" {
+        description
+          "RNRLPUF:";
+      }
+      enum "RNRNS" {
+        description
+          "RNRNS:";
+      }
+      enum "RNRGRE" {
+        description
+          "RNRGRE:";
+      }
+      enum "CR56LPUF100A" {
+        description
+          "CR56LPUF100A:";
+      }
+      enum "CR56LPUI100A" {
+        description
+          "CR56LPUI100A:";
+      }
+      enum "CR52MPUA" {
+        description
+          "CR52MPUA:";
+      }
+      enum "CR52MPUB" {
+        description
+          "CR52MPUB:";
+      }
+      enum "CR55MPUA" {
+        description
+          "CR55MPUA:";
+      }
+      enum "CR56MPUC" {
+        description
+          "CR56MPUC:";
+      }
+    }
+    description
+      "feiBoardHardType";
+  }
+  typedef feiBoardVersion {
+    type enumeration {
+      enum "ALL" {
+        description
+          "ALL VERSION:";
+      }
+      enum "REVA" {
+        description
+          "REV A:";
+      }
+      enum "REVB" {
+        description
+          "REV B:";
+      }
+      enum "REVC" {
+        description
+          "REV C:";
+      }
+      enum "REVD" {
+        description
+          "REV D:";
+      }
+    }
+    description
+      "feiBoardVersion";
+  }
+  typedef feiPicHardType {
+    type enumeration {
+      enum "ALL" {
+        description
+          "ALL PIC:";
+      }
+      enum "CR52E1XX" {
+        description
+          "CR52E1XX:";
+      }
+      enum "CR52W1XX" {
+        description
+          "CR52W1XX:";
+      }
+      enum "CR52EAGF" {
+        description
+          "CR52EAGF:";
+      }
+      enum "CR52P4UF" {
+        description
+          "CR52P4UF:";
+      }
+      enum "CR52P1XX" {
+        description
+          "CR52P1XX:";
+      }
+      enum "CR52P4HF" {
+        description
+          "CR52P4HF:";
+      }
+      enum "CR52E2XX" {
+        description
+          "CR52E2XX:";
+      }
+      enum "CR52W2XX" {
+        description
+          "CR52W2XX:";
+      }
+      enum "CR52P2XX" {
+        description
+          "CR52P2XX:";
+      }
+      enum "CR52EMGE" {
+        description
+          "CR52EMGE:";
+      }
+      enum "CR52P8CF" {
+        description
+          "CR52P8CF:";
+      }
+      enum "CR52EFGE" {
+        description
+          "CR52EFGE:";
+      }
+      enum "CR52P1UF" {
+        description
+          "CR52P1UF:";
+      }
+      enum "CR52P2UF" {
+        description
+          "CR52P2UF:";
+      }
+      enum "CR52E5GF" {
+        description
+          "CR52E5GF:";
+      }
+      enum "CR52P4CF" {
+        description
+          "CR52P4CF:";
+      }
+      enum "CR52P1MZ" {
+        description
+          "CR52P1MZ:";
+      }
+      enum "CR52D1MV" {
+        description
+          "CR52D1MV:";
+      }
+      enum "LPUI100A" {
+        description
+          "LPUI100A:";
+      }
+      enum "CR52E4XX" {
+        description
+          "CR52E4XX:";
+      }
+      enum "CR52P1XZ" {
+        description
+          "CR52P1XZ:";
+      }
+      enum "CR52E1XZ" {
+        description
+          "CR52E1XZ:";
+      }
+      enum "CR52W1XZ" {
+        description
+          "CR52W1XZ:";
+      }
+      enum "CR56L5XX" {
+        description
+          "CR56L5XX:";
+      }
+      enum "CR56E5XX" {
+        description
+          "CR56E5XX:";
+      }
+      enum "CR56E1NC" {
+        description
+          "CR56E1NC:";
+      }
+    }
+    description
+      "feiPicHardType";
+  }
+  typedef feiPortHardType {
+    type enumeration {
+      enum "ALL" {
+        description
+          "ALL INTERFACE:";
+      }
+      enum "EthLANPort" {
+        description
+          "EthLANPort:";
+      }
+      enum "EthWANPort" {
+        description
+          "EthWANPort:";
+      }
+      enum "EthGEPort" {
+        description
+          "EthGEPort:";
+      }
+      enum "EthGFPort" {
+        description
+          "EthGFPort:";
+      }
+      enum "EthFEPort" {
+        description
+          "EthFEPort:";
+      }
+      enum "EthMGEPort" {
+        description
+          "EthMGEPort:";
+      }
+      enum "EthPort" {
+        description
+          "EthPort:";
+      }
+      enum "PosPort" {
+        description
+          "PosPort:";
+      }
+      enum "OtnPort" {
+        description
+          "OtnPort:";
+      }
+    }
+    description
+      "feiPortHardType";
+  }
+  typedef feiMainSubType {
+    type enumeration {
+      enum "ALL" {
+        description
+          "ALL TYPE:";
+      }
+      enum "MainInterface" {
+        description
+          "MainInterface:";
+      }
+      enum "SubInterface" {
+        description
+          "SubInterface:";
+      }
+    }
+    description
+      "feiMainSubType";
+  }
+  typedef feiIsSupport {
+    type enumeration {
+      enum "FALSE" {
+        description
+          "FALSE:";
+      }
+      enum "TRUE" {
+        description
+          "TRUE:";
+      }
+    }
+    description
+      "feiIsSupport";
+  }
+  typedef feiOpMode {
+    type enumeration {
+      enum "QueryAll" {
+        description
+          "QueryAll:";
+      }
+      enum "QueryIfHardType" {
+        description
+          "QueryIfHardType:";
+      }
+      enum "QueryBdHardType" {
+        description
+          "QueryBdHardType:";
+      }
+      enum "QueryDiffElement" {
+        description
+          "QueryDiffElement:";
+      }
+      enum "QueryIfDiff" {
+        description
+          "QueryIfDiff:";
+      }
+      enum "CreateSubIf" {
+        description
+          "CreateSubIf:";
+      }
+      enum "QueryBdDiff" {
+        description
+          "QueryBdDiff:";
+      }
+    }
+    description
+      "feiOpMode";
+  }
+}

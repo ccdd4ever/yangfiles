@@ -1,0 +1,1555 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-nsm {
+  namespace "http://www.huawei.com/netconf/vrp/huawei-nsm";
+  prefix nsm;
+  import huawei-devm {
+    prefix devm;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import ietf-yang-types {
+    prefix yang;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  include huawei-nsm-action;
+  include huawei-nsm-type;
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "netstream";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  container nsm {
+    description
+      "netstream";
+    container nsmSGConfs {
+      description
+        "Global list.";
+      list nsmSGConf {
+        key "flowType";
+        description
+          "Global instance.";
+        leaf flowType {
+          type nsmALLFLOWTYPE;
+          description
+            "Flow type. The value can be 0 or 1.";
+        }
+        leaf sourceIpv4Addr {
+          type inet:ipv4-address-no-zone;
+          description
+            "Source IPv4 address";
+          ext:allowDelete "true";
+        }
+        leaf sourceIpv6Addr {
+          type inet:ipv6-address-no-zone;
+          description
+            "Source IPv6 address";
+          ext:allowDelete "true";
+        }
+        leaf version {
+          type nsmOriginVersion;
+          must "(../flowType='ethernet_flow' and ../version=9) or (../flowType='ipv6_flow' and ../version=9) or (../flowType='vxlan_flow' and ../version=9) or not(../flowType='ethernet_flow' or ../flowType='ipv6_flow' or ../flowType='vxlan_flow')";
+          mandatory true;
+          description
+            "Version of NetStream statistics packets. The value can be 5 or 9. This means only version 5 and version 9 are supported at present.";
+        }
+        leaf asType {
+          when "not(../flowType='ethernet_flow' or ../flowType='vxlan_flow') or ../flowType='ip_flow' or ../flowType='ipv6_flow'";
+          type nsmAsType;
+          default "invalid_as";
+          description
+            "AS number of a specified IP address. The available options are origin-as (start AS number) and peer-as (adjacent AS number).";
+        }
+        leaf bgpNextHop {
+          when "not(../flowType='ethernet_flow' or ../flowType='vxlan_flow') or ../flowType='ip_flow' or ../flowType='ipv6_flow'";
+          type nsmEnable;
+          must "not(../version='5') or (../version='5' and ../bgpNextHop='false')";
+          default "false";
+          description
+            "Whether exported statistics contain BGP next hop information. Version 5 does not support BGP next hop.";
+        }
+        leaf tempTimeoutRate {
+          type uint16 {
+            range "1..3600";
+          }
+          default "1";
+          description
+            "The interval for refreshing the template. The value is an integer ranging from 1 to 3600, in minutes.The default value is 1.";
+        }
+        leaf aggActIntval {
+          when "not(../flowType='ethernet_flow' or ../flowType='vxlan_flow') or ../flowType='ip_flow' or ../flowType='ipv6_flow'";
+          type uint32 {
+            range "1..60";
+          }
+          default "5";
+          description
+            "Specifies the active aging time of aggregation flows. The value is an integer that ranges from 1 to 60, in minutes.The default value is 5.";
+        }
+        leaf aggInActIntval {
+          when "not(../flowType='ethernet_flow' or ../flowType='vxlan_flow') or ../flowType='ip_flow' or ../flowType='ipv6_flow'";
+          type uint32 {
+            range "5..600";
+          }
+          default "300";
+          description
+            "Inactive aging time of aggregation flows. The value is an integer that ranges from 5 to 600, in seconds.The default value is 300.";
+        }
+        leaf originActive {
+          type uint32 {
+            range "1..60";
+          }
+          default "30";
+          description
+            "Active aging time of original flows. The value is an integer ranging from 1 to 60, in minutes.The default value is 30.";
+        }
+        leaf originInactive {
+          type uint32 {
+            range "5..600";
+          }
+          default "30";
+          description
+            "Inactive aging time of original flows. The value is an integer that ranges from 5 to 600, in seconds.The default value is 30.";
+        }
+        leaf asMode {
+          when "not(../flowType='ethernet_flow' or ../flowType='vxlan_flow') or ../flowType='ip_flow' or ../flowType='ipv6_flow'";
+          type nsmAsmodeIndex;
+          default "16";
+          description
+            "Mode supported by ASs. By default, 16 bits are supported. The value can be extended to 32 bits.";
+        }
+        leaf indexSwitch {
+          when "../flowType='ethernet_flow' or ../flowType='ip_flow' or ../flowType='ipv6_flow' or ../flowType='vxlan_flow'";
+          type nsmAsmodeIndex;
+          must "not(../version='5') or (../version='5' and ../indexSwitch=16)";
+          default "16";
+          description
+            "NetStream interface index. By default, the NetStream interface index of 16 bits is used.";
+        }
+        leaf tcpFlagEnable {
+          when "not(../flowType='ethernet_flow') or ../flowType='ip_flow' or ../flowType='ipv6_flow' or ../flowType='vxlan_flow'";
+          type nsmEnable;
+          default "false";
+          description
+            "Whether tcp-flag information is extracted during the processing of sampling packets.";
+        }
+        leaf mplsAwareEnable {
+          when "not(../flowType='ethernet_flow' or ../flowType='ipv6_flow' or ../flowType='vxlan_flow') or ../flowType='ip_flow'";
+          type nsmMplsAware;
+          default "ip_only";
+          description
+            "Whether Layer 3 labels are extracted during the processing of sampling packets. The default value is ip-only, that is, not to extract the label.label-only indicates that only the label is extracted; label-and-ip indicates that both the label and IP address are extracted.";
+        }
+        container nsmGHostIPv4s {
+          description
+            "Destination IPv4 address";
+          list nsmGHostIPv4 {
+            key "address port";
+            description
+              "Destination IPv4 address instance";
+            leaf address {
+              type inet:ipv4-address-no-zone;
+              description
+                "Exported destination IPv4 address";
+            }
+            leaf port {
+              type uint16 {
+                range "1..65535";
+              }
+              description
+                "UDP port number of the NSC. The value is an integer ranging from 1 to 65535.";
+            }
+          }
+        }
+        container nsmGVpnHostIPv4s {
+          description
+            "Export vpn destination address list";
+          list nsmGVpnHostIPv4 {
+            key "address port vrfName";
+            description
+              "Export vpn destination IPv4 address instance";
+            leaf address {
+              type inet:ipv4-address-no-zone;
+              description
+                "Exported destination IPv6 address";
+            }
+            leaf port {
+              type uint16 {
+                range "1..65535";
+              }
+              description
+                "UDP port number used in exported IPv4 NetStream flows, that is, the UDP port number of the NSC. The value is an integer ranging from 1 to 65535.";
+            }
+            leaf vrfName {
+              type leafref {
+                path "/l3vpn:l3vpn/l3vpn:l3vpncomm/l3vpn:l3vpnInstances/l3vpn:l3vpnInstance/l3vpn:vrfName";
+              }
+              description
+                "Vpn instance name.";
+            }
+          }
+        }
+        container nsmGHostIPv6s {
+          description
+            "Destination IPv6 address";
+          list nsmGHostIPv6 {
+            key "address port";
+            description
+              "Destination IPv6 address instance";
+            leaf address {
+              type inet:ipv6-address-no-zone;
+              description
+                "Exported destination IPv6 address";
+            }
+            leaf port {
+              type uint16 {
+                range "1..65535";
+              }
+              description
+                "UDP port number of the NSC. The value is an integer ranging from 1 to 65535.";
+            }
+          }
+        }
+        container nsmGVpnHostIPv6s {
+          description
+            "Export destination IPv6 address list";
+          list nsmGVpnHostIPv6 {
+            key "address port vrfName";
+            description
+              "Export destination IPv6 address instance";
+            leaf address {
+              type inet:ipv6-address-no-zone;
+              description
+                "Exported destination IPv6 address";
+            }
+            leaf port {
+              type uint16 {
+                range "1..65535";
+              }
+              description
+                "UDP port number used in exported IPv6 NetStream flows, that is, the UDP port number of the NSC. The value is an integer ranging from 1 to 65535.";
+            }
+            leaf vrfName {
+              type leafref {
+                path "/l3vpn:l3vpn/l3vpn:l3vpncomm/l3vpn:l3vpnInstances/l3vpn:l3vpnInstance/l3vpn:vrfName";
+              }
+              description
+                "Vpn instance name.";
+            }
+          }
+        }
+      }
+    }
+    container nsmSISampEnables {
+      description
+        "Interface apply list";
+      list nsmSISampEnable {
+        key "flowType ifName direction";
+        description
+          "Interface apply instance";
+        leaf flowType {
+          type nsmINTFFLOWTYPE;
+          description
+            "Flow type";
+        }
+        leaf ifName {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          description
+            "Interface name";
+        }
+        leaf direction {
+          type nsmDIRECTION;
+          description
+            "Sampler direction.";
+        }
+      }
+    }
+    container nsmAggregations {
+      description
+        "Aggregation list";
+      list nsmAggregation {
+        key "flowType aggType";
+        description
+          "Aggregation instance";
+        leaf flowType {
+          type nsmFLOWTYPE;
+          description
+            "Flow type";
+        }
+        leaf aggType {
+          type nsmAggType;
+          description
+            "Aggregation type";
+        }
+        leaf aggEnable {
+          type nsmEnable;
+          default "false";
+          description
+            "Aggregation enabling flag. By default, no aggregation is enabled.";
+        }
+        leaf sourceIpv4 {
+          type inet:ipv4-address-no-zone;
+          description
+            "Source IPv4 address";
+        }
+        leaf sourceIpv6 {
+          type inet:ipv6-address-no-zone;
+          description
+            "Source IPv6 address";
+        }
+        leaf temTimeOut {
+          type uint16 {
+            range "1..3600";
+          }
+          default "1";
+          description
+            "Specifies the interval for refreshing the template. The value is an integer ranging from 1 to 3600, in minutes.The default value is 1 minutes.";
+        }
+        leaf version {
+          type nsmAggVersion;
+          must "(../flowType='ip_flow' and ../aggType='bgp_community' and ../version=9) or (../flowType='ip_flow' and ../aggType='bgp_nexthop_tos' and ../version=9) or (../flowType='ip_flow' and ../aggType='index_tos' and ../version=9) or (../flowType='ip_flow' and ../aggType='mpls_label' and ../version=9) or (../flowType='ip_flow' and ../aggType='source_index_tos' and ../version=9) or (../flowType='ip_flow' and ../aggType='vlan_id' and ../version=9) or (../flowType='ipv6_flow' and ../version=9) or not(../flowType='ip_flow' and ../aggType='bgp_community' or ../flowType='ip_flow' and ../aggType='bgp_nexthop_tos' or ../flowType='ip_flow' and ../aggType='index_tos' or ../flowType='ip_flow' and ../aggType='mpls_label' or ../flowType='ip_flow' and ../aggType='source_index_tos' or ../flowType='ip_flow' and ../aggType='vlan_id' or ../flowType='ipv6_flow')";
+          default "8";
+          description
+            "Version of exported aggregation flows. The value is an integer that can be 8 or 9. The default value is 8.";
+        }
+        leaf sourceMask {
+          when "not(../aggType='as' or ../aggType='as_tos' or ../aggType='bgp_community' or ../aggType='bgp_nexthop_tos' or ../aggType='destination_prefix' or ../aggType='destination_prefix_tos' or ../aggType='index_tos' or ../aggType='mpls_label' or ../aggType='protocol_port' or ../aggType='protocol_port_tos' or ../aggType='source_index_tos' or ../aggType='vlan_id') or ../aggType='prefix' or ../aggType='prefix_tos' or ../aggType='source_prefix' or ../aggType='source_prefix_tos'";
+          type uint8 {
+            range "1..128";
+          }
+          must "(../flowType='ip_flow' and ../aggType!='as' and ../aggType!='as_tos' and ../aggType!='protocol_port' and ../aggType!='protocol_port_tos' and ../aggType!='destination_prefix' and ../aggType!='destination_prefix_tos' and ../aggType!='mpls_label' and ../aggType!='vlan_id' and ../aggType!='bgp_nexthop_tos' and ../aggType!='index_tos' and ../aggType!='source_index_tos' and ../aggType!='bgp_community' and ../sourceMask>=1) and ((../flowType='ip_flow' and ../aggType!='as' and ../aggType!='as_tos' and ../aggType!='protocol_port' and ../aggType!='protocol_port_tos' and ../aggType!='destination_prefix' and ../aggType!='destination_prefix_tos' and ../aggType!='mpls_label' and ../aggType!='vlan_id' and ../aggType!='bgp_nexthop_tos' and ../aggType!='index_tos' and ../aggType!='source_index_tos' and ../aggType!='bgp_community' and ../sourceMask<=32)) or (../flowType='ipv6_flow' and ../aggType!='as' and ../aggType!='as_tos' and ../aggType!='protocol_port' and ../aggType!='protocol_port_tos' and ../aggType!='destination_prefix' and ../aggType!='destination_prefix_tos' and ../aggType!='mpls_label' and ../aggType!='vlan_id' and ../aggType!='bgp_nexthop_tos' and ../aggType!='index_tos' and ../sourceMask>=1) and ((../flowType='ipv6_flow' and ../aggType!='as' and ../aggType!='as_tos' and ../aggType!='protocol_port' and ../aggType!='protocol_port_tos' and ../aggType!='destination_prefix' and ../aggType!='destination_prefix_tos' and ../aggType!='mpls_label' and ../aggType!='vlan_id' and ../aggType!='bgp_nexthop_tos' and ../aggType!='index_tos' and ../sourceMask<=128)) or not(../flowType='ip_flow' and ../aggType!='as' and ../aggType!='as_tos' and ../aggType!='protocol_port' and ../aggType!='protocol_port_tos' and ../aggType!='destination_prefix' and ../aggType!='destination_prefix_tos' and ../aggType!='mpls_label' and ../aggType!='vlan_id' and ../aggType!='bgp_nexthop_tos' and ../aggType!='index_tos' and ../aggType!='source_index_tos' and ../aggType!='bgp_community' or ../flowType='ipv6_flow' and ../aggType!='as' and ../aggType!='as_tos' and ../aggType!='protocol_port' and ../aggType!='protocol_port_tos' and ../aggType!='destination_prefix' and ../aggType!='destination_prefix_tos' and ../aggType!='mpls_label' and ../aggType!='vlan_id' and ../aggType!='bgp_nexthop_tos' and ../aggType!='index_tos')";
+          description
+            "Source mask. It is used in prefix, prefix-ToS, source-prefix, or source-prefix-ToS aggregation mode.";
+          ext:allowDelete "true";
+        }
+        leaf destMask {
+          when "not(../aggType='as' or ../aggType='as_tos' or ../aggType='bgp_community' or ../aggType='bgp_nexthop_tos' or ../aggType='index_tos' or ../aggType='mpls_label' or ../aggType='protocol_port' or ../aggType='protocol_port_tos' or ../aggType='source_index_tos' or ../aggType='source_prefix' or ../aggType='source_prefix_tos' or ../aggType='vlan_id') or ../aggType='destination_prefix' or ../aggType='destination_prefix_tos' or ../aggType='prefix' or ../aggType='prefix_tos'";
+          type uint8 {
+            range "1..128";
+          }
+          must "(../flowType='ip_flow' and ../aggType!='as' and ../aggType!='as_tos' and ../aggType!='protocol_port' and ../aggType!='protocol_port_tos' and ../aggType!='source_prefix' and ../aggType!='source_prefix_tos' and ../aggType!='mpls_label' and ../aggType!='vlan_id' and ../aggType!='bgp_nexthop_tos' and ../aggType!='index_tos' and ../aggType!='source_index_tos' and ../destMask>=1) and ((../flowType='ip_flow' and ../aggType!='as' and ../aggType!='as_tos' and ../aggType!='protocol_port' and ../aggType!='protocol_port_tos' and ../aggType!='source_prefix' and ../aggType!='source_prefix_tos' and ../aggType!='mpls_label' and ../aggType!='vlan_id' and ../aggType!='bgp_nexthop_tos' and ../aggType!='index_tos' and ../aggType!='source_index_tos' and ../destMask<=32)) or (../flowType='ipv6_flow' and ../aggType!='as' and ../aggType!='as_tos' and ../aggType!='protocol_port' and ../aggType!='protocol_port_tos' and ../aggType!='source_prefix' and ../aggType!='source_prefix_tos' and ../aggType!='mpls_label' and ../aggType!='vlan_id' and ../aggType!='bgp_nexthop_tos' and ../aggType!='index_tos' and ../destMask>=1) and ((../flowType='ipv6_flow' and ../aggType!='as' and ../aggType!='as_tos' and ../aggType!='protocol_port' and ../aggType!='protocol_port_tos' and ../aggType!='source_prefix' and ../aggType!='source_prefix_tos' and ../aggType!='mpls_label' and ../aggType!='vlan_id' and ../aggType!='bgp_nexthop_tos' and ../aggType!='index_tos' and ../destMask<=128)) or not(../flowType='ip_flow' and ../aggType!='as' and ../aggType!='as_tos' and ../aggType!='protocol_port' and ../aggType!='protocol_port_tos' and ../aggType!='source_prefix' and ../aggType!='source_prefix_tos' and ../aggType!='mpls_label' and ../aggType!='vlan_id' and ../aggType!='bgp_nexthop_tos' and ../aggType!='index_tos' and ../aggType!='source_index_tos' or ../flowType='ipv6_flow' and ../aggType!='as' and ../aggType!='as_tos' and ../aggType!='protocol_port' and ../aggType!='protocol_port_tos' and ../aggType!='source_prefix' and ../aggType!='source_prefix_tos' and ../aggType!='mpls_label' and ../aggType!='vlan_id' and ../aggType!='bgp_nexthop_tos' and ../aggType!='index_tos')";
+          description
+            "Destination mask. It is used in prefix, prefix-ToS, destination-prefix, or destination-prefix-ToS aggregation mode.";
+          ext:allowDelete "true";
+        }
+        container nsmExportIPv4Hosts {
+          description
+            "Export destination address list";
+          list nsmExportIPv4Host {
+            key "hostipaddr hostport";
+            description
+              "Export destination IPv4 address instance";
+            leaf hostipaddr {
+              type inet:ipv4-address-no-zone;
+              description
+                "Destination IPv4 address for exported NetStream flows, that is, the IP address of the NSC. The value is in dotted decimal notation.";
+            }
+            leaf hostport {
+              type uint16 {
+                range "1..65535";
+              }
+              description
+                "";
+            }
+          }
+        }
+        container nsmVpnExportIPv4Hosts {
+          description
+            "Export vpn destination address list";
+          list nsmVpnExportIPv4Host {
+            key "hostipaddr hostport vrfName";
+            description
+              "Export vpn destination IPv4 address instance";
+            leaf hostipaddr {
+              type inet:ipv4-address-no-zone;
+              description
+                "Destination IPv4 address for exported NetStream flows, that is, the IP address of the NSC. The value is in dotted decimal notation.";
+            }
+            leaf hostport {
+              type uint16 {
+                range "1..65535";
+              }
+              description
+                "UDP port number used in exported NetStream flows, that is, the UDP port number of the NSC.";
+            }
+            leaf vrfName {
+              type leafref {
+                path "/l3vpn:l3vpn/l3vpn:l3vpncomm/l3vpn:l3vpnInstances/l3vpn:l3vpnInstance/l3vpn:vrfName";
+              }
+              description
+                "Vpn instance name.";
+            }
+          }
+        }
+        container nsmExportIPv6Hosts {
+          description
+            "Export destination IPv6 address list";
+          list nsmExportIPv6Host {
+            key "hostipaddr hostport";
+            description
+              "Export destination IPv6 address instance";
+            leaf hostipaddr {
+              type inet:ipv6-address-no-zone;
+              description
+                "Exported destination IPv6 address";
+            }
+            leaf hostport {
+              type uint16 {
+                range "1..65535";
+              }
+              description
+                "UDP port number used in exported IPv6 NetStream flows, that is, the UDP port number of the NSC. The value is an integer ranging from 1 to 65535.";
+            }
+          }
+        }
+        container nsmVpnExportIPv6Hosts {
+          description
+            "Export destination IPv6 address list";
+          list nsmVpnExportIPv6Host {
+            key "hostipaddr hostport vrfName";
+            description
+              "Export destination IPv6 address instance";
+            leaf hostipaddr {
+              type inet:ipv6-address-no-zone;
+              description
+                "Exported destination IPv6 address";
+            }
+            leaf hostport {
+              type uint16 {
+                range "1..65535";
+              }
+              description
+                "UDP port number used in exported NetStream flows, that is, the UDP port number of the NSC. ";
+            }
+            leaf vrfName {
+              type leafref {
+                path "/l3vpn:l3vpn/l3vpn:l3vpncomm/l3vpn:l3vpnInstances/l3vpn:l3vpnInstance/l3vpn:vrfName";
+              }
+              description
+                "Vpn instance name.";
+            }
+          }
+        }
+      }
+    }
+    container nsmSlots {
+      description
+        "Slot list";
+      list nsmSlot {
+        key "flowType sourceSlot samplerMode";
+        description
+          "Slot instance";
+        leaf flowType {
+          type nsmFLOWTYPE;
+          description
+            "Flow type";
+        }
+        leaf sourceSlot {
+          type leafref {
+            path "/devm:devm/devm:lpuBoards/devm:lpuBoard/devm:position";
+          }
+          description
+            "Source slot name. For example, board 3 is input as 0/3.";
+        }
+        leaf samplerMode {
+          type nsmDESBOARD;
+          description
+            "Type of a sampled board.";
+        }
+        leaf destSlot {
+          when "not(../samplerMode='self')";
+          type leafref {
+            path "/devm:devm/devm:lpuBoards/devm:lpuBoard/devm:position";
+          }
+          description
+            "Destination slot name. For example, board 3 is input as 0/3.";
+        }
+      }
+    }
+    container nsmStatistics {
+      config false;
+      description
+        "NSM statistics list";
+      list nsmStatistic {
+        key "flowType statisticType exportType exportKey";
+        config false;
+        description
+          "NSM statistics list";
+        leaf flowType {
+          type nsmALLFLOWTYPE;
+          config false;
+          description
+            "Flow type";
+        }
+        leaf statisticType {
+          type nsmStatType;
+          config false;
+          description
+            "Statistics type. The available options are data packet and template.";
+        }
+        leaf exportType {
+          type nsmTemplatType;
+          config false;
+          description
+            "Export type";
+        }
+        leaf exportKey {
+          type string {
+            length "0..32";
+          }
+          config false;
+          description
+            "Export keyword.";
+        }
+        leaf successNum {
+          type uint32;
+          config false;
+          description
+            "Success times of exporting packets or templates";
+          ext:support-filter "false";
+        }
+        leaf failedNum {
+          type uint32;
+          config false;
+          description
+            "Failure times of exporting packets or templates";
+          ext:support-filter "false";
+        }
+      }
+    }
+    container nsmSamperSlots {
+      description
+        "Samper slot";
+      list nsmSamperSlot {
+        key "samperSlot flowType addrType IPv4v6 desPort";
+        description
+          "Samper slot";
+        leaf samperSlot {
+          type leafref {
+            path "/devm:devm/devm:lpuBoards/devm:lpuBoard/devm:position";
+          }
+          description
+            "Samper slot";
+        }
+        leaf flowType {
+          type nsmFLOWTYPE;
+          description
+            "Flow type";
+        }
+        leaf addrType {
+          type nsmFLOWTYPE;
+          description
+            "Address type.";
+        }
+        leaf IPv4v6 {
+          type inet:ip-address-no-zone;
+          description
+            "Destination address.";
+        }
+        leaf desPort {
+          type uint16 {
+            range "1..65535";
+          }
+          description
+            "Destination port.";
+        }
+      }
+    }
+    container nsmMSchemas {
+      description
+        "Monitor list";
+      list nsmMSchema {
+        key "flowType mName";
+        description
+          "Monitor instance";
+        leaf flowType {
+          type nsmFLOWTYPE;
+          description
+            "Flow type";
+        }
+        leaf mName {
+          type string {
+            length "1..31";
+          }
+          description
+            "Monitor name";
+        }
+        leaf appCount {
+          type uint32;
+          config false;
+          description
+            "application counter.";
+        }
+        container nsmMHostIPv4s {
+          description
+            "Monitor IPv4 list";
+          list nsmMHostIPv4 {
+            key "hostipaddr hostport";
+            max-elements  "8";
+            description
+              "Monitor IPv4 instance";
+            leaf hostipaddr {
+              type inet:ipv4-address-no-zone;
+              description
+                "Monitor IPv4 address";
+            }
+            leaf hostport {
+              type uint16 {
+                range "1..65535";
+              }
+              description
+                "Monitor IPv4 port. The value is an integer ranging from 1 to 65535.";
+            }
+          }
+        }
+        container nsmMHostIPv6s {
+          description
+            "Monitor IPv6 list";
+          list nsmMHostIPv6 {
+            key "hostipaddr hostport";
+            max-elements  "8";
+            description
+              "Monitor IPv6 instance";
+            leaf hostipaddr {
+              type inet:ipv6-address-no-zone;
+              description
+                "Monitor IPv6 address";
+            }
+            leaf hostport {
+              type uint16 {
+                range "1..65535";
+              }
+              description
+                "Monitor IPv6 port. The value is an integer ranging from 1 to 65535.";
+            }
+          }
+        }
+        container nsmMInfs {
+          description
+            "Monitor interface list";
+          list nsmMInf {
+            key "ifName direction";
+            description
+              "Monitor interface instance";
+            leaf ifName {
+              type leafref {
+                path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+              }
+              description
+                "Interface name";
+            }
+            leaf direction {
+              type nsmDIRECTION;
+              description
+                "sampler direction.";
+            }
+          }
+        }
+      }
+    }
+    container nsmSGFixPacks {
+      description
+        "Global sampler lists.";
+      list nsmSGFixPack {
+        key "flowType direction samplerType";
+        description
+          "Global sampler instance.";
+        leaf flowType {
+          type nsmALLFLOWTYPE;
+          description
+            "Flow type. The value can be 0 or 1.";
+        }
+        leaf direction {
+          type nsmDIRECTION;
+          description
+            "Sampler direction.";
+        }
+        leaf samplerType {
+          type nsmSamplingMode;
+          description
+            "Sampler type.";
+        }
+        leaf fixPackValue {
+          when "not(../samplerType='fix_time' or ../samplerType='random_packets') or ../samplerType='fix_packets'";
+          type uint32 {
+            range "1..65535";
+          }
+          description
+            "fix-pack value.";
+          ext:allowDelete "true";
+        }
+        leaf fixTimeValue {
+          when "not(../samplerType='fix_packets' or ../samplerType='random_packets') or ../samplerType='fix_time'";
+          type uint32 {
+            range "5..30000";
+          }
+          description
+            "fix-time value.";
+          ext:allowDelete "true";
+        }
+        leaf ranPackValue {
+          when "not(../samplerType='fix_packets' or ../samplerType='fix_time') or ../samplerType='random_packets'";
+          type uint32 {
+            range "1..65535";
+          }
+          description
+            "random-packets value.";
+          ext:allowDelete "true";
+        }
+      }
+    }
+    container nsmSIFixPacks {
+      description
+        "Interface sampler lists.";
+      list nsmSIFixPack {
+        key "flowType ifName direction samplerType";
+        description
+          "Interface sampler instance.";
+        leaf flowType {
+          type nsmINTFFLOWTYPE;
+          description
+            "Flow type. The value can be 0 or 1.";
+        }
+        leaf ifName {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          description
+            "Interface name";
+        }
+        leaf direction {
+          type nsmDIRECTION;
+          description
+            "Sampler direction.";
+        }
+        leaf samplerType {
+          type nsmSamplingMode;
+          description
+            "Sampler type.";
+        }
+        leaf fixPackValue {
+          when "not(../samplerType='fix_time' or ../samplerType='random_packets' or ../samplerType='random_time') or ../samplerType='fix_packets'";
+          type uint32 {
+            range "1..65535";
+          }
+          description
+            "fix-pack value.";
+          ext:allowDelete "true";
+        }
+        leaf fixTimeValue {
+          when "not(../samplerType='fix_packets' or ../samplerType='random_packets' or ../samplerType='random_time') or ../samplerType='fix_time'";
+          type uint32 {
+            range "5..30000";
+          }
+          description
+            "fix-time value.";
+          ext:allowDelete "true";
+        }
+        leaf ranPackValue {
+          when "not(../samplerType='fix_packets' or ../samplerType='fix_time' or ../samplerType='random_time') or ../samplerType='random_packets'";
+          type uint32 {
+            range "1..65535";
+          }
+          description
+            "random-packets value.";
+          ext:allowDelete "true";
+        }
+        leaf ranTimeValue {
+          when "not(../samplerType='fix_packets' or ../samplerType='fix_time' or ../samplerType='random_packets') or ../samplerType='random_time'";
+          type nsmRANDOMTIME;
+          description
+            "random-time value.";
+          ext:allowDelete "true";
+        }
+      }
+    }
+    container nsmDCSGFixPacks {
+      description
+        "Global sampler lists.";
+      list nsmDCSGFixPack {
+        key "direction samplerType";
+        description
+          "Global sampler instance.";
+        leaf direction {
+          type nsmDIRECTION;
+          description
+            "Sampler direction.";
+        }
+        leaf samplerType {
+          type nsmSamplingMode;
+          description
+            "Sampler type.";
+        }
+        leaf fixPackValue {
+          when "not(../samplerType='random_packets')";
+          type uint32 {
+            range "1..65535";
+          }
+          description
+            "fix-pack value.";
+          ext:allowDelete "true";
+        }
+        leaf fixTimeValue {
+          when "not(../samplerType='random_packets')";
+          type uint32 {
+            range "5..30000";
+          }
+          description
+            "fix-time value.";
+          ext:allowDelete "true";
+        }
+        leaf ranPackValue {
+          when "../samplerType='random_packets'";
+          type uint32 {
+            range "1..65535";
+          }
+          mandatory true;
+          description
+            "random-packets value.";
+        }
+      }
+    }
+    container nsmDCSIFixPacks {
+      description
+        "Interface sampler lists.";
+      list nsmDCSIFixPack {
+        key "ifName direction samplerType";
+        description
+          "Interface sampler instance.";
+        leaf ifName {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          description
+            "Interface name";
+        }
+        leaf direction {
+          type nsmDIRECTION;
+          description
+            "Sampler direction.";
+        }
+        leaf samplerType {
+          type nsmSamplingMode;
+          description
+            "Sampler type.";
+        }
+        leaf fixPackValue {
+          when "not(../samplerType='random_packets')";
+          type uint32 {
+            range "1..65535";
+          }
+          description
+            "fix-pack value.";
+          ext:allowDelete "true";
+        }
+        leaf fixTimeValue {
+          when "not(../samplerType='random_packets')";
+          type uint32 {
+            range "5..30000";
+          }
+          description
+            "fix-time value.";
+          ext:allowDelete "true";
+        }
+        leaf ranPackValue {
+          when "../samplerType='random_packets'";
+          type uint32 {
+            range "1..65535";
+          }
+          mandatory true;
+          description
+            "random-packets value.";
+        }
+        leaf ranTimeValue {
+          when "not(../samplerType='random_packets')";
+          type nsmRANDOMTIME;
+          description
+            "random-time value.";
+          ext:allowDelete "true";
+        }
+      }
+    }
+    container nsmRecords {
+      description
+        "Flexible flow list.";
+      list nsmRecord {
+        key "flowType recordName";
+        description
+          "Flexible flow instance.";
+        leaf flowType {
+          type nsmFLEXFLOWTYPE;
+          description
+            "Flow type.";
+        }
+        leaf recordName {
+          type string {
+            length "1..32";
+          }
+          description
+            "Flexible flow record name.";
+        }
+        leaf protocol {
+          type nsmEnable;
+          default "false";
+          description
+            "Indicates the aggregation based on protocol types.
+";
+          ext:allowDelete "true";
+        }
+        leaf dscp {
+          type nsmEnable;
+          default "false";
+          description
+            "Indicates the aggregation based on ToS fields.";
+          ext:allowDelete "true";
+        }
+        leaf options {
+          when "not(../flowType='ip_flow' or ../flowType='vxlan_flow')";
+          type nsmEnable;
+          default "false";
+          description
+            "Indicates the aggregation based on option types.
+";
+          ext:allowDelete "true";
+        }
+        leaf sourceAddr {
+          type nsmEnable;
+          default "false";
+          description
+            "Indicates the aggregation based on source addresses.";
+          ext:allowDelete "true";
+        }
+        leaf destinationAddr {
+          type nsmEnable;
+          default "false";
+          description
+            "Indicates the aggregation based on destination addresses.
+";
+          ext:allowDelete "true";
+        }
+        leaf sourcePort {
+          type nsmEnable;
+          default "false";
+          description
+            "Indicates the aggregation based on source ports.";
+          ext:allowDelete "true";
+        }
+        leaf destinationPort {
+          type nsmEnable;
+          default "false";
+          description
+            "Indicates the aggregation based on destination ports.
+";
+          ext:allowDelete "true";
+        }
+        leaf flowLabel {
+          when "not(../flowType='ip_flow' or ../flowType='vxlan_flow') or ../flowType='ipv6_flow'";
+          type nsmEnable;
+          default "false";
+          description
+            "Indicates the aggregation based on IPv6 traffic labels. ";
+          ext:allowDelete "true";
+        }
+        leaf collectBytes {
+          type nsmEnableLong;
+          default "false";
+          description
+            "Specifies the number of bytes.
+";
+          ext:allowDelete "true";
+        }
+        leaf collectPackets {
+          type nsmEnableLong;
+          default "false";
+          description
+            "Specifies the number of packets.
+";
+          ext:allowDelete "true";
+        }
+        leaf collectInput {
+          type nsmEnable;
+          default "false";
+          description
+            "Indicates that the statistics to be sent to the NSC contain the index of the inbound interface.";
+          ext:allowDelete "true";
+        }
+        leaf collectOutput {
+          type nsmEnable;
+          default "false";
+          description
+            "Indicates that the statistics to be sent to the NSC contain the index of the outbound interface.";
+          ext:allowDelete "true";
+        }
+        leaf flowDirection {
+          type nsmEnable;
+          default "false";
+          description
+            "Mark flow direction.";
+          ext:allowDelete "true";
+        }
+        leaf sourceAS {
+          type nsmEnable;
+          default "false";
+          description
+            "Indicates that the statistics to be sent to the NSC contain source AS infomation.";
+          ext:allowDelete "true";
+        }
+        leaf sourcePeerAS {
+          type nsmEnable;
+          default "false";
+          description
+            "Indicates that the statistics to be sent to the NSC contain source AS infomation.";
+          ext:allowDelete "true";
+        }
+        leaf destinationAS {
+          type nsmEnable;
+          default "false";
+          description
+            "Indicates that the statistics to be sent to the NSC contain destination AS infomation.";
+          ext:allowDelete "true";
+        }
+        leaf destinationPeerAS {
+          type nsmEnable;
+          default "false";
+          description
+            "Indicates that the statistics to be sent to the NSC contain destination AS infomation.";
+          ext:allowDelete "true";
+        }
+        leaf nexthopIpv4 {
+          type nsmEnable;
+          default "false";
+          description
+            "Specifies the nexthop information of ipv4.";
+          ext:allowDelete "true";
+        }
+        leaf nexthopbgpIpv4 {
+          type nsmEnable;
+          default "false";
+          description
+            "Specifies the nexthop information of ipv4.";
+          ext:allowDelete "true";
+        }
+        leaf nexthopIpv6 {
+          when "not(../flowType='ip_flow')";
+          type nsmEnable;
+          default "false";
+          description
+            "Specifies the nexthop information of ipv6.";
+          ext:allowDelete "true";
+        }
+        leaf nexthopbgpIpv6 {
+          when "not(../flowType='ip_flow')";
+          type nsmEnable;
+          default "false";
+          description
+            "Specifies the nexthop information of ipv6.";
+          ext:allowDelete "true";
+        }
+        leaf first {
+          type nsmEnable;
+          default "false";
+          description
+            "Specifies the information of first timestamp.";
+          ext:allowDelete "true";
+        }
+        leaf last {
+          type nsmEnable;
+          default "false";
+          description
+            "Specifies the  information of last timestamp.";
+          ext:allowDelete "true";
+        }
+        leaf tcpFlag {
+          type nsmEnable;
+          default "false";
+          description
+            "Indicates that the statistics to be sent to the NSC contain the tcp flag information.";
+          ext:allowDelete "true";
+        }
+        leaf description {
+          type string {
+            length "1..80";
+          }
+          description
+            "Flexible flow record description.";
+          ext:allowDelete "true";
+        }
+        container nsmPortRecords {
+          description
+            "Port-Record relationship list.";
+          list nsmPortRecord {
+            key "ifName";
+            description
+              "Port-Record relationship.";
+            leaf ifName {
+              type leafref {
+                path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+              }
+              description
+                "Interface name.";
+            }
+          }
+        }
+      }
+    }
+    container nsmGlobalConfig {
+      description
+        "Mode supported list.";
+      leaf asMode {
+        type nsmAsmodeIndex;
+        default "16";
+        description
+          "Mode supported by ASs. By default, 16 bits are supported. The value can be extended to 32 bits.";
+      }
+    }
+    container nsmTopTalkers {
+      description
+        "TopTalker List.";
+      list nsmTopTalker {
+        key "flowType talkerName";
+        description
+          "TopTalker Instance.";
+        leaf flowType {
+          type nsmTOPFLOWTYPE;
+          description
+            "Flow type.";
+        }
+        leaf talkerName {
+          type string {
+            length "1..32";
+          }
+          description
+            "TopTalker template Name.";
+        }
+        leaf srcAddr {
+          type inet:ipv4-address-no-zone;
+          description
+            "Source IP address.";
+          ext:allowDelete "true";
+        }
+        leaf srcMask {
+          type inet:ipv4-address-no-zone;
+          description
+            "Source Mask.";
+          ext:allowDelete "true";
+        }
+        leaf dstAddr {
+          type inet:ipv4-address-no-zone;
+          description
+            "Destination IP address.";
+          ext:allowDelete "true";
+        }
+        leaf dstMask {
+          type inet:ipv4-address-no-zone;
+          description
+            "Destination Mask.";
+          ext:allowDelete "true";
+        }
+        leaf nextHop {
+          type inet:ipv4-address-no-zone;
+          description
+            "Nexthop IP address.";
+          ext:allowDelete "true";
+        }
+        leaf nextHopMask {
+          type inet:ipv4-address-no-zone;
+          description
+            "Nexthop Mask.";
+          ext:allowDelete "true";
+        }
+        leaf srcMinPort {
+          type uint16 {
+            range "1..65535";
+          }
+          description
+            "Source-port min.";
+          ext:allowDelete "true";
+        }
+        leaf srcMaxPort {
+          type uint16 {
+            range "1..65535";
+          }
+          description
+            "Source-port max.";
+          ext:allowDelete "true";
+        }
+        leaf dstMinPort {
+          type uint16 {
+            range "1..65535";
+          }
+          description
+            "Destination-port min.";
+          ext:allowDelete "true";
+        }
+        leaf dstMaxPort {
+          type uint16 {
+            range "1..65535";
+          }
+          description
+            "Destination-port max.";
+          ext:allowDelete "true";
+        }
+        leaf srcAs {
+          type uint32 {
+            range "1..65535";
+          }
+          description
+            "Source AS.";
+          ext:allowDelete "true";
+        }
+        leaf dstAs {
+          type uint32 {
+            range "1..65535";
+          }
+          description
+            "Destination AS.";
+          ext:allowDelete "true";
+        }
+        leaf srcPeer {
+          type uint32 {
+            range "1..65535";
+          }
+          description
+            "Source Peer-AS.";
+          ext:allowDelete "true";
+        }
+        leaf dstPeer {
+          type uint32 {
+            range "1..65535";
+          }
+          description
+            "Destination Peer-AS.";
+          ext:allowDelete "true";
+        }
+        leaf tos {
+          type nsmTOSTYPE;
+          default "invalid_tos";
+          description
+            "Server Type.";
+          ext:allowDelete "true";
+        }
+        leaf tosvalue {
+          when "not(../tos='dscp' or ../tos='invalid_tos' or ../tos='precedence') or ../tos='tos'";
+          type uint32 {
+            range "0..255";
+          }
+          description
+            "Server Value.";
+          ext:allowDelete "true";
+        }
+        leaf dscpvalue {
+          when "not(../tos='invalid_tos' or ../tos='precedence' or ../tos='tos') or ../tos='dscp'";
+          type uint32 {
+            range "0..63";
+          }
+          description
+            "Server Value.";
+          ext:allowDelete "true";
+        }
+        leaf prevalue {
+          when "not(../tos='dscp' or ../tos='invalid_tos' or ../tos='tos') or ../tos='precedence'";
+          type uint32 {
+            range "0..7";
+          }
+          description
+            "Server Value.";
+          ext:allowDelete "true";
+        }
+        leaf protocol {
+          type uint8 {
+            range "1..255";
+          }
+          description
+            "Protocol Type.";
+          ext:allowDelete "true";
+          ext:value-replace {
+            ext:item  "6" {
+              ext:meaning "TCP";
+            }
+            ext:item  "17" {
+              ext:meaning "UDP";
+            }
+          }
+        }
+        leaf minPkts {
+          type uint32 {
+            range "1..4294967295";
+          }
+          description
+            "Packet-range min.";
+          ext:allowDelete "true";
+        }
+        leaf maxPkts {
+          type uint32 {
+            range "1..4294967295";
+          }
+          description
+            "Packet-range max.";
+          ext:allowDelete "true";
+        }
+        leaf minByts {
+          type uint32 {
+            range "1..4294967295";
+          }
+          description
+            "Byte-range min.";
+          ext:allowDelete "true";
+        }
+        leaf maxByts {
+          type uint32 {
+            range "1..4294967295";
+          }
+          description
+            "Byte-range max.";
+          ext:allowDelete "true";
+        }
+        leaf topN {
+          type uint32 {
+            range "1..200";
+          }
+          description
+            "Top Number.";
+          ext:allowDelete "true";
+        }
+        leaf sortMode {
+          type nsmSORTMODE;
+          description
+            "Sort Mode.";
+          ext:allowDelete "true";
+        }
+        leaf time {
+          type uint32 {
+            range "1..3600000";
+          }
+          description
+            "Static Time.";
+          ext:allowDelete "true";
+        }
+        leaf startTime {
+          type yang:date-and-time;
+          description
+            "Start Time.";
+          ext:allowDelete "true";
+        }
+        container nsmPortTopTalkers {
+          description
+            "Port TopTalker List.";
+          list nsmPortTopTalker {
+            key "ifName direction";
+            description
+              "Port TopTalker Instance.";
+            leaf ifName {
+              type leafref {
+                path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+              }
+              description
+                "Interface Name.";
+            }
+            leaf direction {
+              type nsmDIRECTION;
+              description
+                "Direction.";
+            }
+          }
+        }
+        container nsmTalkerStartes {
+          description
+            "TopTalker Enable List.";
+          list nsmTalkerStart {
+            key "startNow";
+            description
+              "TopTalker Enable Instance.";
+            leaf startNow {
+              type nsmEnable;
+              description
+                "Talker Enable.";
+            }
+          }
+        }
+      }
+    }
+    container nsmShowTalkers {
+      config false;
+      description
+        "TopTalker Result Showing List.";
+      list nsmShowTalker {
+        key "talkerName topSlot";
+        config false;
+        description
+          "TopTalker Result Showing Instance.";
+        leaf flowType {
+          type nsmTOPFLOWTYPE;
+          default "ip_flow";
+          config false;
+          description
+            "Flow Type.";
+        }
+        leaf talkerName {
+          type string {
+            length "1..32";
+          }
+          config false;
+          description
+            "TopTalker Name.";
+        }
+        leaf direction {
+          type nsmDIRECTION;
+          default "inbound";
+          config false;
+          description
+            "Direction.";
+        }
+        leaf ifName {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          config false;
+          description
+            "IfIndex Name.";
+        }
+        leaf srcAddr {
+          type inet:ipv4-address-no-zone;
+          config false;
+          description
+            "Source Ip address.";
+        }
+        leaf dstAddr {
+          type inet:ipv4-address-no-zone;
+          config false;
+          description
+            "Destination Ip address.";
+        }
+        leaf protocol {
+          type uint16 {
+            range "1..255";
+          }
+          config false;
+          description
+            "Protocol Type.";
+        }
+        leaf srcPort {
+          type uint16 {
+            range "1..65535";
+          }
+          config false;
+          description
+            "Source port.";
+        }
+        leaf dstPort {
+          type uint16 {
+            range "1..65535";
+          }
+          config false;
+          description
+            "Destination port.";
+        }
+        leaf bytes {
+          type uint64;
+          config false;
+          description
+            "Bytes.";
+        }
+        leaf bps {
+          type uint64;
+          config false;
+          description
+            "Bytes per second.";
+        }
+        leaf bpm {
+          type uint64;
+          config false;
+          description
+            "Bytes per minute.";
+        }
+        leaf packets {
+          type uint64;
+          config false;
+          description
+            "Packets.";
+        }
+        leaf pps {
+          type uint64;
+          config false;
+          description
+            "Packets per second.";
+        }
+        leaf ppm {
+          type uint64;
+          config false;
+          description
+            "Packets per minute.";
+        }
+        leaf topSlot {
+          type leafref {
+            path "/devm:devm/devm:lpuBoards/devm:lpuBoard/devm:position";
+          }
+          config false;
+          description
+            "Slot ID.";
+        }
+      }
+    }
+    container nsmSampleSnoops {
+      description
+        "Sample Resource List.";
+      container nsmSampleSnoop {
+        description
+          "Sample Resource Instance.";
+        leaf sampleSnoop {
+          type nsmSampleMode;
+          mandatory true;
+          description
+            "Sample Resource.";
+        }
+      }
+    }
+    container nsmRouteDisables {
+      description
+        "Export Route Disable List.";
+      list nsmRouteDisable {
+        key "flowType";
+        max-elements  "2";
+        description
+          "Export Route Disable Instance.";
+        leaf flowType {
+          type nsmFLOWTYPE;
+          description
+            "Packet Type.";
+        }
+        leaf disable {
+          type nsmExportType;
+          mandatory true;
+          description
+            "Disable.";
+        }
+      }
+    }
+  }
+}

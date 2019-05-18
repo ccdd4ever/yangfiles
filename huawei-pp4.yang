@@ -1,0 +1,846 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-pp4 {
+  namespace "http://www.huawei.com/netconf/vrp/huawei-pp4";
+  prefix pp4;
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  include huawei-pp4-action;
+  include huawei-pp4-type;
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "IPv4.";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  container pp4 {
+    description
+      "IPv4.";
+    container globalCfg {
+      description
+        "IPv4 global configuration.";
+      leaf udphelperEnable {
+        type boolean;
+        default "false";
+        description
+          "UDP helper enable.";
+      }
+      leaf dscpPriorityValue {
+        type uint32 {
+          range "0..63";
+        }
+        description
+          "Priority Value.";
+        ext:allowDelete "true";
+      }
+      leaf icmpRateLimitEnable {
+        type boolean;
+        default "true";
+        description
+          "ICMP rate limit.";
+      }
+      leaf icmpRateLmtThreshold {
+        when "../icmpRateLimitEnable='true'";
+        type uint32 {
+          range "0..5000";
+        }
+        default "1500";
+        description
+          "ICMP rate threshold. The value is expressed in pps.";
+      }
+      leaf icmpTtlExdDrpEnable {
+        type boolean;
+        default "false";
+        description
+          "ICMP ttl exceed drop.";
+      }
+      leaf icmpWithOptDropEnable {
+        type boolean;
+        default "false";
+        description
+          "ICMP with ip option drop.";
+      }
+      leaf icmpBroadEchoEn {
+        type boolean;
+        default "true";
+        description
+          "ICMP broadcast echo.";
+      }
+      leaf icmpUnrchRevEn {
+        type boolean;
+        default "true";
+        description
+          "ICMP unreachable drop.";
+      }
+    }
+    container icmpSecuritys {
+      description
+        "Global ICMP security configuration.";
+      list icmpSecurity {
+        key "action icmpName icmpType icmpCode";
+        description
+          "Global ICMP security configuration.";
+        leaf action {
+          type pp4PktAction;
+          description
+            "Packet reception or packet sending.";
+        }
+        leaf icmpName {
+          type pp4IfIcmpSecType;
+          description
+            "ICMP names.";
+          ext:allowDelete "false";
+        }
+        leaf icmpType {
+          type uint32 {
+            range "0..255";
+          }
+          description
+            "ICMP types.";
+        }
+        leaf icmpCode {
+          type uint32 {
+            range "0..255";
+          }
+          description
+            "ICMP code.";
+        }
+        leaf switchOp {
+          type pp4SwitchOp;
+          mandatory true;
+          description
+            "Enabling or disabling of ICMP packet security configuration.";
+        }
+      }
+    }
+    container IpOptSecuritys {
+      description
+        "Global IP option configuration.";
+      list IpOptSecurity {
+        key "optionType";
+        description
+          "Global IP option configuration.";
+        leaf optionType {
+          type pp4OptionType;
+          description
+            "IP option types.";
+        }
+        leaf switchOp {
+          type pp4SwitchOp;
+          default "enable";
+          description
+            "Enabling or disabling of IP option packet configuration.";
+        }
+      }
+    }
+    container ReasTimeout {
+      description
+        "Configuration of timeout period for reassembling packets. The value is expressed in seconds.";
+      leaf timeout {
+        type uint32 {
+          range "5..120";
+        }
+        default "30";
+        description
+          "Timeout period for reassembling packets. The value is expressed in seconds.";
+      }
+    }
+    container ifIcmpSecuritys {
+      description
+        "ICMP security configuration on interfaces.";
+      list ifIcmpSecurity {
+        key "ifName action icmpName icmpType icmpCode";
+        description
+          "ICMP security configuration on interfaces.";
+        leaf ifName {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          description
+            "Interface names.";
+        }
+        leaf action {
+          type pp4PktAction;
+          description
+            "Packet reception or packet sending.";
+        }
+        leaf icmpName {
+          type pp4IfIcmpSecType;
+          description
+            "ICMP names.";
+        }
+        leaf icmpType {
+          type uint32 {
+            range "0..255";
+          }
+          description
+            "ICMP types.";
+        }
+        leaf icmpCode {
+          type uint32 {
+            range "0..255";
+          }
+          description
+            "ICMP code.";
+        }
+        leaf switchOp {
+          type pp4SwitchOp;
+          mandatory true;
+          description
+            "Enabling or disabling of ICMP packet security configuration on interfaces.";
+        }
+      }
+    }
+    container IpStats {
+      config false;
+      description
+        "Collection of statistics on IP packets.";
+      list IpStat {
+        config false;
+        description
+          "Collection of statistics on IP packets.";
+        leaf inSum {
+          type uint32;
+          config false;
+          description
+            "Total count of received packets.";
+        }
+        leaf inLocal {
+          type uint32;
+          config false;
+          description
+            "Total count of packets that are received locally.";
+        }
+        leaf inBadProto {
+          type uint32;
+          config false;
+          description
+            "Count of received packets whose protocols are unknown.";
+        }
+        leaf inBadOpt {
+          type uint32;
+          config false;
+          description
+            "Count of received packets whose options are unknown.";
+        }
+        leaf inDiscardSrr {
+          type uint32;
+          config false;
+          description
+            "Count of packets that discard source route options.";
+        }
+        leaf inDiscardRr {
+          type uint32;
+          config false;
+          description
+            "Count of packets that discard route record options.";
+        }
+        leaf inDiscardRa {
+          type uint32;
+          config false;
+          description
+            "Count of packets that discard route alert options.";
+        }
+        leaf inDiscardTs {
+          type uint32;
+          config false;
+          description
+            "Count of packets that discard time stamp options.";
+        }
+        leaf inTtlExceed {
+          type uint32;
+          config false;
+          description
+            "Count of received TTL timeout packets.";
+        }
+        leaf outFwd {
+          type uint32;
+          config false;
+          description
+            "Count of forwarded packets.";
+        }
+        leaf outNoRoute {
+          type uint32;
+          config false;
+          description
+            "Count of packets without routes.";
+        }
+        leaf fragDropped {
+          type uint32;
+          config false;
+          description
+            "Count of discarded packet fragments.";
+        }
+        leaf reassSum {
+          type uint32;
+          config false;
+          description
+            "Count of reassembled packet fragments.";
+        }
+        leaf reassTimeouts {
+          type uint32;
+          config false;
+          description
+            "Count of packet fragments whose reassembly times out.";
+        }
+        leaf inBadFmt {
+          type uint32;
+          config false;
+          description
+            "Count of received packets whose formats are incorrect.";
+        }
+        leaf inBadChecksum {
+          type uint32;
+          config false;
+          description
+            "Count of received packets whose checksums are incorrect.";
+        }
+        leaf outLocal {
+          type uint32;
+          config false;
+          description
+            "Count of packets that are sent locally.";
+        }
+        leaf outDropped {
+          type uint32;
+          config false;
+          description
+            "Count of discarded packets.";
+        }
+        leaf fragOutput {
+          type uint32;
+          config false;
+          description
+            "Count of sent packet fragments.";
+        }
+        leaf pktFraged {
+          type uint32;
+          config false;
+          description
+            "Count of fragmented packets.";
+        }
+        leaf fragForbid {
+          type uint32;
+          config false;
+          description
+            "Count of packets whose fragmenting is prohibited.";
+        }
+        leaf fragInput {
+          type uint32;
+          config false;
+          description
+            "Count of received packet fragments.";
+        }
+        leaf inHdrErr {
+          type uint32;
+          config false;
+          description
+            "Count of received packets whose headers are incorrect.";
+        }
+      }
+    }
+    container ipErrorStats {
+      config false;
+      description
+        "IP Packet Statistics Verbose.";
+      list ipErrorStat {
+        key "type";
+        config false;
+        description
+          "IP Packet Statistics Verbose.";
+        leaf type {
+          type string {
+            length "0..49";
+          }
+          config false;
+          description
+            "Type of IP Packet Statistics Verbose.";
+        }
+        leaf badFormat {
+          type uint32;
+          config false;
+          description
+            "Count of Received Packets with Format Error.";
+        }
+        leaf badCheckSum {
+          type uint32;
+          config false;
+          description
+            "Count of Received Packets with Checksum Error.";
+        }
+        leaf badOption {
+          type uint32;
+          config false;
+          description
+            "Count of Received Packets with Option Error.";
+        }
+        leaf inputNoRoute {
+          type uint32;
+          config false;
+          description
+            "Count of Received Packets with No Route.";
+        }
+        leaf reassTimeout {
+          type uint32;
+          config false;
+          description
+            "Count of Received Packets with Reassembly Timeout.";
+        }
+        leaf delivertoUp {
+          type uint32;
+          config false;
+          description
+            "Count of Received Packets has Sent to Upper-Layer.";
+        }
+        leaf outputNoRoute {
+          type uint32;
+          config false;
+          description
+            "Count of Sent Packets with No Route.";
+        }
+        leaf noPorts {
+          type uint32;
+          config false;
+          description
+            "Count of Sent Packets with Port Selection Failures.";
+        }
+        leaf outputDropped {
+          type uint32;
+          config false;
+          description
+            "Count of Sent Packets with Dropped Packets.";
+        }
+        leaf pathInvalid {
+          type uint32;
+          config false;
+          description
+            "Count of Sent Packets with Path Invalid.";
+        }
+      }
+    }
+    container IcmpStats {
+      config false;
+      description
+        "Collection of statistics on ICMP packets.";
+      list IcmpStat {
+        config false;
+        description
+          "Collection of statistics on ICMP packets.";
+        leaf inBadFmt {
+          type uint32;
+          config false;
+          description
+            "Count of received ICMP packets whose formats are incorrect.";
+        }
+        leaf inBadChecksum {
+          type uint32;
+          config false;
+          description
+            "Count of received packets whose checksums are incorrect.";
+        }
+        leaf inEcho {
+          type uint32;
+          config false;
+          description
+            "Count of received ICMP Echo Request packets.";
+        }
+        leaf inDstUnreach {
+          type uint32;
+          config false;
+          description
+            "Count of received packets whose destination addresses are unreachable.";
+        }
+        leaf inSrcQuench {
+          type uint32;
+          config false;
+          description
+            "Count of received source suppression packets.";
+        }
+        leaf inRedirect {
+          type uint32;
+          config false;
+          description
+            "Count of received redirection packets.";
+        }
+        leaf inEchoReply {
+          type uint32;
+          config false;
+          description
+            "Count of received Echo Reply packets.";
+        }
+        leaf inParaErr {
+          type uint32;
+          config false;
+          description
+            "Count of received packets whose parameters are incorrect.";
+        }
+        leaf inTimeStamp {
+          type uint32;
+          config false;
+          description
+            "Count of received timestamp request packets.";
+        }
+        leaf inInfoRequest {
+          type uint32;
+          config false;
+          description
+            "Count of received information request packets.";
+        }
+        leaf inMaskRequest {
+          type uint32;
+          config false;
+          description
+            "Count of received mask request packets.";
+        }
+        leaf inMaskReply {
+          type uint32;
+          config false;
+          description
+            "Count of received mask request response packets.";
+        }
+        leaf inTimeExceed {
+          type uint32;
+          config false;
+          description
+            "Count of received ICMP timeout error packets.";
+        }
+        leaf outEcho {
+          type uint32;
+          config false;
+          description
+            "Count of sent Echo Request packets.";
+        }
+        leaf outDstUnreach {
+          type uint32;
+          config false;
+          description
+            "Count of sent destination-unreachable packets.";
+        }
+        leaf outSrcQuench {
+          type uint32;
+          config false;
+          description
+            "Count of sent source suppression packets.";
+        }
+        leaf outRedirect {
+          type uint32;
+          config false;
+          description
+            "Count of sent redirection packets.";
+        }
+        leaf outEchoReply {
+          type uint32;
+          config false;
+          description
+            "Count of sent Echo Reply packets.";
+        }
+        leaf outParaErr {
+          type uint32;
+          config false;
+          description
+            "Count of sent packets whose parameters are incorrect.";
+        }
+        leaf outTimeStamp {
+          type uint32;
+          config false;
+          description
+            "Count of sent timestamp request packets.";
+        }
+        leaf outInfoRequest {
+          type uint32;
+          config false;
+          description
+            "Count of sent information request packets.";
+        }
+        leaf outMaskRequest {
+          type uint32;
+          config false;
+          description
+            "Count of sent mask request packets.";
+        }
+        leaf outMaskReply {
+          type uint32;
+          config false;
+          description
+            "Count of sent mask request response packets.";
+        }
+        leaf outTimeExceed {
+          type uint32;
+          config false;
+          description
+            "Count of sent ICMP timeout error packets.";
+        }
+        leaf inIcmpSum {
+          type uint32;
+          config false;
+          description
+            "Count of received ICMP packets.";
+        }
+        leaf inIcmpErr {
+          type uint32;
+          config false;
+          description
+            "Count of received ICMP packets whose headers are incorrect.";
+        }
+        leaf outIcmpSum {
+          type uint32;
+          config false;
+          description
+            "Count of sent ICMP packets.";
+        }
+        leaf outIcmpErr {
+          type uint32;
+          config false;
+          description
+            "Count of sent incorrect ICMP packets.";
+        }
+        leaf inMPingRequest {
+          type uint32;
+          config false;
+          description
+            "Count of received MPing Request packets.";
+        }
+        leaf outMPingRequest {
+          type uint32;
+          config false;
+          description
+            "Count of sent MPing Request packets.";
+        }
+        leaf inMPingReply {
+          type uint32;
+          config false;
+          description
+            "Count of received MPing Reply packets.";
+        }
+        leaf outMPingReply {
+          type uint32;
+          config false;
+          description
+            "Count of sent MPing Reply packets.";
+        }
+        leaf inTimeStampRep {
+          type uint32;
+          config false;
+          description
+            "Count of received Timestamp Reply packets.";
+        }
+        leaf outTimeStampRep {
+          type uint32;
+          config false;
+          description
+            "Count of sent Timestamp Reply packets.";
+        }
+      }
+    }
+    container udphelperPorts {
+      description
+        "UDP helper ports.";
+      list udphelperPort {
+        key "udphelperPortNum";
+        description
+          "UDP helper port.";
+        leaf udphelperPortNum {
+          type uint32 {
+            range "1..65535";
+          }
+          description
+            "UDP helper port number.";
+        }
+        leaf udphelperPortDes {
+          type string {
+            length "1..39";
+          }
+          description
+            "UDP helper port description.";
+          ext:allowDelete "true";
+        }
+      }
+    }
+    container udphelperVlanifs {
+      description
+        "UDP helper interface.";
+      list udphelperVlanif {
+        key "ifName serverAddr";
+        description
+          "UDP helper interface name.";
+        leaf ifName {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          description
+            "UDP helper server configuration.";
+        }
+        leaf serverAddr {
+          type inet:ipv4-address-no-zone;
+          description
+            "UDP helper server address.";
+        }
+        container udphelperServers {
+          config false;
+          description
+            "UDP helper servers.";
+          list udphelperServer {
+            config false;
+            description
+              "UDP helper server.";
+            leaf packetsCount {
+              type uint32;
+              config false;
+              description
+                "UDP helper packets forward count.";
+            }
+            leaf dropPacketsCount {
+              type uint32;
+              config false;
+              description
+                "UDP helper packets drop count.";
+            }
+          }
+        }
+      }
+    }
+    container icmpRateLimtInterfaces {
+      description
+        "ICMP rate limit.";
+      list icmpRateLimitInterface {
+        key "ifName";
+        description
+          "ICMP rate limit.";
+        leaf ifName {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          description
+            "Interface Name.";
+        }
+        leaf rateLimitThreshold {
+          type uint32 {
+            range "0..5000";
+          }
+          default "100";
+          description
+            "ICMP rate limit threshold. The value is expressed in pps.";
+        }
+      }
+    }
+    container icmpRedirectInterfaces {
+      description
+        "ICMP redirect.";
+      list icmpRedirectInterface {
+        key "ifName";
+        description
+          "ICMP redirect.";
+        leaf ifName {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          description
+            "Interface Name.";
+        }
+        leaf ifRdrctSndEn {
+          type boolean;
+          default "false";
+          description
+            "ICMP redirect send drop.";
+        }
+        leaf ifRdrctRevEn {
+          type boolean;
+          default "false";
+          description
+            "ICMP redirect receive drop.";
+        }
+      }
+    }
+    container ifIpOptSecuritys {
+      description
+        "IP option configuration on interfaces.";
+      list ifIpOptSecurity {
+        key "ifName optionType";
+        description
+          "IP option configuration on interfaces.";
+        leaf ifName {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          description
+            "Interface names.";
+        }
+        leaf optionType {
+          type pp4OptionType;
+          description
+            "IP option types on interface.";
+        }
+        leaf switchOp {
+          type pp4SwitchOp;
+          default "enable";
+          description
+            "Enabling or disabling of IP option packet configuration on interfaces.";
+        }
+      }
+    }
+    container ifIPFwdBroadCasts {
+      description
+        "IP forward broadcast configuration on interfaces.";
+      list ifIPFwdBroadCast {
+        key "ifName";
+        description
+          "IP forward broadcast configuration on interfaces.";
+        leaf ifName {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          description
+            "Interface names.";
+        }
+        leaf aclNumOrName {
+          type aclType {
+            length "1..32";
+            pattern '(^[2-3]\d{3}$)|(^[a-zA-Z]([^\s]*$))';
+          }
+          description
+            "ACL Number or ACL Name.";
+          ext:allowDelete "true";
+        }
+      }
+    }
+    container ifIpVerifySrcAddrs {
+      description
+        "Enable IP verify source-address configuration on interface.";
+      list ifIpVerifySrcAddr {
+        key "ifName";
+        description
+          "Enable IP verify source-address configuration on interface.";
+        leaf ifName {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          description
+            "Interface names.";
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,329 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-mstp-type {
+  belongs-to huawei-mstp {
+    prefix mstp;
+  }
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "submodule mstp_type";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  typedef stpBpduEncap {
+    type enumeration {
+      enum "Stp" {
+        description
+          "STP.";
+      }
+    }
+    description
+      "STP BPDU Encapsulation Format";
+  }
+  typedef stpBpduFilter {
+    type enumeration {
+      enum "Disable" {
+        description
+          "Disable the BPDU filter function.";
+      }
+      enum "Enable" {
+        description
+          "Enable the BPDU filter function.";
+      }
+      enum "Undo" {
+        description
+          "The BPDU filter function is disabled.";
+      }
+    }
+    description
+      "STP BPDU Filter";
+  }
+  typedef stpCompliance {
+    type enumeration {
+      enum "Auto" {
+        description
+          "Auto.";
+      }
+      enum "Dot1s" {
+        description
+          "IEEE 802.1S packet format.";
+      }
+      enum "Legacy" {
+        description
+          "Proprietary packet format.";
+      }
+    }
+    description
+      "STP BPDU Format";
+  }
+  typedef stpEdgePort {
+    type enumeration {
+      enum "Disabled" {
+        description
+          "Set a port as a non-edge port.";
+      }
+      enum "Enabled" {
+        description
+          "Set a port as an edge port.";
+      }
+      enum "Default" {
+        description
+          "By default, all the ports are not edge ports.";
+      }
+    }
+    description
+      "STP Edge Port";
+  }
+  typedef stpLinkShareFlag {
+    type enumeration {
+      enum "NoLinkShare" {
+        description
+          "Bind a port to a process in non-link-share mode.";
+      }
+      enum "LinkShare" {
+        description
+          "Bind a port to a process in link-share mode.";
+      }
+    }
+    description
+      "Port Binding Process Type";
+  }
+  typedef stpShLinkShareFlag {
+    type enumeration {
+      enum "NoLinkShare" {
+        description
+          "Bind a port to a process in non-link-share mode.";
+      }
+      enum "LinkShare" {
+        description
+          "Bind a port to a process in link-share mode.";
+      }
+    }
+    description
+      "Port Binding Process Type";
+  }
+  typedef stpMode {
+    type enumeration {
+      enum "Stp" {
+        description
+          "STP mode.";
+      }
+      enum "Rstp" {
+        description
+          "RSTP mode.";
+      }
+      enum "Mstp" {
+        description
+          "MSTP mode.";
+      }
+    }
+    description
+      "STP Mode";
+  }
+  typedef stpPathCostStanard {
+    type enumeration {
+      enum "Dot1D" {
+        description
+          "IEEE 802.1D standard used to calculate the path cost.";
+      }
+      enum "Dot1T" {
+        description
+          "IEEE 802.1T standard used to calculate the path cost.";
+      }
+      enum "Legacy" {
+        description
+          "Huawei legacy standard used to calculate the path cost.";
+      }
+    }
+    description
+      "Path Cost Standard";
+  }
+  typedef stpPointToPoint {
+    type enumeration {
+      enum "ForceTrue" {
+        description
+          "The link type is P2P.";
+      }
+      enum "ForceFalse" {
+        description
+          "The link type is non-P2P.";
+      }
+      enum "Auto" {
+        description
+          "The spanning tree protocol detects automatically whether the port is connected to a P2P link.";
+      }
+    }
+    description
+      "STP Point to Point Type";
+  }
+  typedef stpPortMode {
+    type enumeration {
+      enum "Stp" {
+        description
+          "Port STP mode.";
+      }
+      enum "Rstp" {
+        description
+          "Port RSTP mode.";
+      }
+      enum "Mstp" {
+        description
+          "Port MSTP mode.";
+      }
+    }
+    description
+      "Port STP Mode";
+  }
+  typedef stpPortState {
+    type enumeration {
+      enum "Down" {
+        description
+          "Port status.";
+      }
+      enum "Disabled" {
+        description
+          "Port status.";
+      }
+      enum "Forwarding" {
+        description
+          "Port status.";
+      }
+      enum "Learning" {
+        description
+          "Port status.";
+      }
+      enum "Discarding" {
+        description
+          "Port status.";
+      }
+      enum "Inactive" {
+        description
+          "Port status.";
+      }
+    }
+    description
+      "STP Port State";
+  }
+  typedef stpProtectionType {
+    type enumeration {
+      enum "None" {
+        description
+          "Protection Type.";
+      }
+      enum "LoopBack" {
+        description
+          "Protection Type.";
+      }
+      enum "BpduRoot" {
+        description
+          "Protection Type.";
+      }
+      enum "Root" {
+        description
+          "Protection Type.";
+      }
+      enum "Bpdu" {
+        description
+          "Protection Type.";
+      }
+      enum "Loop" {
+        description
+          "Protection Type.";
+      }
+    }
+    description
+      "STP Protection Type";
+  }
+  typedef stpRole {
+    type enumeration {
+      enum "Disabled" {
+        description
+          "Port role.";
+      }
+      enum "Alternate" {
+        description
+          "Port role.";
+      }
+      enum "Backup" {
+        description
+          "Port role.";
+      }
+      enum "Root" {
+        description
+          "Port role.";
+      }
+      enum "Designated" {
+        description
+          "Port role.";
+      }
+      enum "Master" {
+        description
+          "Port role.";
+      }
+    }
+    description
+      "STP Port Role";
+  }
+  typedef stpRoot {
+    type enumeration {
+      enum "Secondary" {
+        description
+          "Configure a switch as a secondary root bridge of a spanning tree.";
+      }
+      enum "Normal" {
+        description
+          "By default, a switch is neither a primary nor a secondary root bridge.";
+      }
+      enum "Primary" {
+        description
+          "Configure a switch as a primary root bridge of a spanning tree.";
+      }
+    }
+    description
+      "STP Root Type";
+  }
+  typedef stpConvergeMode {
+    type enumeration {
+      enum "Fast" {
+        description
+          "Set MSTP aging mode to Fast.";
+      }
+      enum "Normal" {
+        description
+          "Set MSTP aging mode to Normal.";
+      }
+    }
+    description
+      "STP Converge Mode";
+  }
+  typedef tcNotifyTrillType {
+    type enumeration {
+      enum "disable" {
+        description
+          "Disable the function of TC notification to TRILL nerwork.";
+      }
+      enum "enable" {
+        description
+          "Enable the function of TC notification to TRILL nerwork.";
+      }
+    }
+    description
+      "STP TC Notify Trill Type";
+  }
+}

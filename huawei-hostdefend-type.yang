@@ -1,0 +1,450 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-hostdefend-type {
+  belongs-to huawei-hostdefend {
+    prefix hostdefend;
+  }
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "hostdefend data type";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  typedef hostdefendMAAction {
+    type string;
+    description
+      "hostdefendMAAction";
+  }
+  typedef hostdefendGTSMPROTOCOL {
+    type enumeration {
+      enum "BGP" {
+        description
+          "BGP protocol.";
+      }
+      enum "BGPv6" {
+        description
+          "BGPv6 protocol.";
+      }
+      enum "OSPF" {
+        description
+          "OSPF protocol.";
+      }
+      enum "LDP" {
+        description
+          "LDP protocol.";
+      }
+      enum "OSPFv3" {
+        description
+          "OSPFv3 protocol.";
+      }
+      enum "RIP" {
+        description
+          "RIP protocol.";
+      }
+    }
+    description
+      "hostdefendGTSMPROTOCOL";
+  }
+  typedef hostdefendMaDefendPROTOCOL {
+    type string;
+    description
+      "hostdefendMaDefendPROTOCOL";
+  }
+  typedef hostdefendCaptPhyType {
+    type string;
+    description
+      "hostdefendCaptPhyType";
+  }
+  typedef hostdefendAclType {
+    type enumeration {
+      enum "InvalidAcl" {
+        description
+          "No Acl.";
+      }
+      enum "CaptAcl" {
+        description
+          "IPv4 ACL.";
+      }
+      enum "CaptIpv6Acl" {
+        description
+          "IPv6 ACL.";
+      }
+    }
+    description
+      "hostdefendAclType";
+  }
+  typedef hostdefendCaptAcl {
+    type string {
+      length "1..64";
+    }
+    description
+      "hostdefendCaptAcl";
+  }
+  typedef hostdefendCaptAcl_ncaGen001 {
+    type string {
+      length "1..32";
+    }
+  }
+  typedef hostdefendforwardAcl {
+    type string {
+      length "1..64";
+      pattern '(^[2-3]\d{3}$)|(^40\d{2}$)|(^10[0-9]{3}$)|(^[a-zA-Z]([^\s]*$))';
+    }
+    description
+      "aclNumOrName is begin with a-z or A-Z or 0-9";
+  }
+  typedef hostdefendCaptIpv6Acl {
+    type string {
+      length "1..64";
+    }
+    description
+      "acl6NumOrName is begin with a-z or A-Z or 0-9";
+  }
+  typedef hostdefendCaptIpv6Acl_ncaGen001 {
+    type string {
+      length "1..32";
+    }
+  }
+  typedef hostdefendCaptLinkType {
+    type string;
+    description
+      "hostdefendCaptLinkType";
+  }
+  typedef hostdefendPktLenType {
+    type enumeration {
+      enum "totalPacket" {
+        description
+          "Total Packet Of Capture Packet.";
+      }
+      enum "specifyPacket" {
+        description
+          "Specify Packet Length Of Capture Packet.";
+      }
+    }
+    description
+      "hostdefendPktLenType";
+  }
+  typedef hostdefendDestType {
+    type enumeration {
+      enum "file" {
+        description
+          "Save Packet Information To File";
+      }
+    }
+    description
+      "hostdefendDestType";
+  }
+  typedef hostdefendMaSlotId {
+    type string {
+      length "1..32";
+      pattern '^[^\s]*$';
+    }
+    description
+      "";
+  }
+  typedef hostdefendGtsmAction {
+    type enumeration {
+      enum "drop" {
+        description
+          "Drop.";
+      }
+      enum "pass" {
+        description
+          "Pass.";
+      }
+    }
+    description
+      "hostdefendGtsmAction";
+  }
+  typedef hostdefendIsolateStatus {
+    type enumeration {
+      enum "disable" {
+        description
+          "Disable isolate";
+      }
+      enum "enable" {
+        description
+          "Enable isolate";
+      }
+    }
+    description
+      "hostdefendIsolateStatus";
+  }
+  typedef mpacPolicyName {
+    type string {
+      length "1..31";
+      pattern '(^[a-zA-Z]([^\s]*$))';
+    }
+    description
+      "mpacPolicyName";
+  }
+  typedef mpacRuleAction {
+    type string;
+    description
+      "mpacRuleAction";
+  }
+  typedef mpacProtocolFamily {
+    type string;
+    description
+      "mpacProtocolFamily";
+  }
+  typedef mpacProtocolType {
+    type string;
+    description
+      "mpacProtocolType";
+  }
+  typedef mpacProtoName {
+    type enumeration {
+      enum "TCP" {
+        description
+          "All TCP protocol.";
+      }
+      enum "UDP" {
+        description
+          "All UDP protocol.";
+      }
+    }
+    description
+      "mpacProtoName";
+  }
+  typedef mpacProto6Name {
+    type enumeration {
+      enum "TCP" {
+        description
+          "All TCP protocol.";
+      }
+      enum "UDP" {
+        description
+          "All UDP protocol.";
+      }
+    }
+    description
+      "mpacProto6Name";
+  }
+  typedef hostIfStatsProtocolType {
+    type enumeration {
+      enum "ARP" {
+        description
+          "ARP.";
+      }
+      enum "STP" {
+        description
+          "STP.";
+      }
+      enum "LACP" {
+        description
+          "LACP.";
+      }
+      enum "LLDP" {
+        description
+          "LLDP.";
+      }
+      enum "ISIS" {
+        description
+          "ISIS.";
+      }
+      enum "LinkProtocolOthers" {
+        description
+          "LinkProtocolOthers.";
+      }
+      enum "ICMP" {
+        description
+          "ICMP.";
+      }
+      enum "OSPF" {
+        description
+          "OSPF.";
+      }
+      enum "PIM" {
+        description
+          "PIM.";
+      }
+      enum "IGMP" {
+        description
+          "IGMP.";
+      }
+      enum "VRRP" {
+        description
+          "VRRP.";
+      }
+      enum "RawIPv4Others" {
+        description
+          "RawIPv4Others.";
+      }
+      enum "SNMP" {
+        description
+          "SNMP.";
+      }
+      enum "DHCP" {
+        description
+          "DHCP.";
+      }
+      enum "IPv4UdpOthers" {
+        description
+          "IPv4UdpOthers.";
+      }
+      enum "BGP" {
+        description
+          "BGP.";
+      }
+      enum "LDP" {
+        description
+          "LDP.";
+      }
+      enum "IPv4TcpOthers" {
+        description
+          "IPv4TcpOthers.";
+      }
+      enum "ICMPv6" {
+        description
+          "ICMPv6.";
+      }
+      enum "OSPFv3" {
+        description
+          "OSPFv3.";
+      }
+      enum "PIMv6" {
+        description
+          "PIMv6.";
+      }
+      enum "MLD" {
+        description
+          "MLD.";
+      }
+      enum "VRRPv6" {
+        description
+          "VRRPv6.";
+      }
+      enum "RawIPv6Others" {
+        description
+          "RawIPv6Others.";
+      }
+      enum "SNMPv6" {
+        description
+          "SNMPv6.";
+      }
+      enum "DHCPv6" {
+        description
+          "DHCPv6.";
+      }
+      enum "IPv6UdpOthers" {
+        description
+          "IPv6UdpOthers.";
+      }
+      enum "BGP4PLUS" {
+        description
+          "BGP4PLUS.";
+      }
+      enum "LDPv6" {
+        description
+          "LDPv6.";
+      }
+      enum "IPv6TcpOthers" {
+        description
+          "IPv6TcpOthers.";
+      }
+    }
+    description
+      "hostIfStatsProtocolType";
+  }
+  typedef hostIfStatsProtocolLayType {
+    type enumeration {
+      enum "LINK" {
+        description
+          "LINK.";
+      }
+      enum "RAWIP" {
+        description
+          "RAWIP.";
+      }
+      enum "IPV4UDP" {
+        description
+          "IPv4UDP.";
+      }
+      enum "IPV4TCP" {
+        description
+          "IPv4TCP.";
+      }
+      enum "RAWIPV6" {
+        description
+          "RAWIPv6.";
+      }
+      enum "IPV6UDP" {
+        description
+          "IPv6UDP.";
+      }
+      enum "IPV6TCP" {
+        description
+          "IPv6TCP.";
+      }
+    }
+    description
+      "hostIfStatsProtocolLayType";
+  }
+  typedef antiAttackEnableCfgType {
+    type enumeration {
+      enum "Disable" {
+        description
+          "Disable.";
+      }
+      enum "Enable" {
+        description
+          "Enable.";
+      }
+    }
+    description
+      "antiAttackEnableCfgType";
+  }
+  typedef antiAttackType {
+    type enumeration {
+      enum "Abnormal" {
+        description
+          "Abnormal.";
+      }
+      enum "Fragment" {
+        description
+          "Fragment.";
+      }
+      enum "Tcp-syn" {
+        description
+          "Tcp-syn.";
+      }
+      enum "Udp-flood" {
+        description
+          "Udp-flood.";
+      }
+      enum "Icmp-flood" {
+        description
+          "Icmp-flood.";
+      }
+    }
+    description
+      "antiAttackType";
+  }
+  typedef hostdefendStatusType {
+    type string;
+    description
+      "hostdefendStatusType";
+  }
+  typedef hostdefendCaptType {
+    type string;
+    description
+      "hostdefendCaptType";
+  }
+}

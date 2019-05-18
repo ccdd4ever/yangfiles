@@ -1,0 +1,98 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-vm-action {
+  belongs-to huawei-vm {
+    prefix vm;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  include huawei-vm-type;
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "test.Description FOR submodule";		
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  rpc vmAssociation {
+    description
+      "VM association.";
+    input {
+      leaf ifName {
+        type pub-type:ifName;
+        mandatory true;
+        description
+          "Interface Name of TOR.";
+      }
+      leaf vsiId {
+        type string {
+          length "1..16";
+        }
+        description
+          "Virtual State Interface ID.";
+      }
+      leaf macAddress {
+        type pub-type:macAddress;
+        mandatory true;
+        description
+          "MAC Address of VM.";
+      }
+      leaf vlanId {
+        type uint16 {
+          range "1..4094";
+        }
+        description
+          "VLAN of VM.";
+      }
+      leaf ipAddress {
+        type inet:ipv4-address-no-zone;
+        description
+          "IP address of VM.";
+      }
+      leaf ipFlag {
+        type uint32;
+        description
+          "Flag of IP.";
+      }
+      leaf nCenterId {
+        type string {
+          length "1..16";
+        }
+        description
+          "network manager ID.";
+      }
+      leaf profileID {
+        type string {
+          length "1..4";
+        }
+        description
+          "Profile ID that is assigned to VM.";
+      }
+      leaf associationType {
+        type associationType;
+        mandatory true;
+        description
+          "Association type of VM.";
+      }
+    }
+  }
+}

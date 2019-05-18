@@ -1,0 +1,121 @@
+module huawei-dfs {
+    namespace "http://www.huawei.com/netconf/vrp/huawei-dfs";
+    prefix "dfs";
+    import huawei-pub-type {
+        prefix "pub-type";
+    }
+    include huawei-dfs-type;
+    
+    organization "Huawei Technologies Co.,Ltd.";
+    contact "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+              People's Republic of China                    
+              Website: http://www.huawei.com Email: support@huawei.com";
+    description "Dynamic Fabric Service.";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+    container dfs {
+        container groupInstances {
+            description "Dynamic Fabric Service Group.";
+            list groupInstance {
+                key "groupId";
+                description "Dynamic Fabric Service Group.";
+                leaf groupId {
+                    type uint32 {
+                        range "1..2";
+                    }
+                    description "Dynamic Fabric Service Group ID.";
+                }
+                leaf priority {
+                    type uint32 {
+                        range "1..254";
+                    }
+                    default "100";
+                    description "Priority.";
+                }
+                leaf udpPort {
+                    type uint32 {
+                        range "1025..65535";
+                    }
+                    default "61467";
+                    description "UDP Prot.";
+                }
+                leaf udpState {
+                    type udpPortState;
+                    config false;
+                    description "UDP Port State.";
+                }
+                leaf ipAddress {
+                    type pub-type:ipAddress;
+                    description "IP Address.";
+                }
+                leaf srcVpnName {
+                    type string;
+                    description "VPN Name.";
+                }
+                leaf updelay {
+                    type uint32 {
+                        range "0..3600";
+                    }
+                    default "120";
+                    description "M-LAG UP-Dely time.";
+                }
+                leaf immediately {
+                    type uint32 {
+                        range "0..1";
+                    }
+                    default "0";
+                    description "Lacp system-id time.";
+                }
+                leaf switchdelay {
+                    type uint32 {
+                        range "0..3600";
+                    }
+                    default "0";
+                    description "Lacp system-id time.";
+                }
+                leaf systemID {
+                    type pub-type:macAddress;
+                    config false;
+                    description "System ID.";
+                }
+                leaf systemName {
+                    type string;
+                    config false;
+                    description "System Name.";
+                }
+                container trillType {
+                    description "Trill Type.";
+                    leaf localNickname {
+                        type uint32 {
+                            range "1..65471";
+                        }
+                        description "Trill Nickname.";
+                    }
+                    leaf pseudoNickname {
+                        type uint32 {
+                            range "1..65471";
+                        }
+                        description "Pseudo Nickname.";
+                    }
+                    leaf pseudoPriority {
+                        type uint32 {
+                            range "128..255";
+                        }
+                        default "192";
+                        description "Pseudo Priority.";
+                    }
+                }
+            }
+        }
+    }
+}

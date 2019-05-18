@@ -1,0 +1,297 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-dhcp {
+  namespace "http://www.huawei.com/netconf/vrp/huawei-dhcp";
+  prefix dhcp;
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  include huawei-dhcp-action;
+  include huawei-dhcp-relay-action;
+  include huawei-dhcp-relay-type;
+  include huawei-dhcp-relay;
+  include huawei-dhcp-server-action;
+  include huawei-dhcp-server-type;
+  include huawei-dhcp-server;
+  include huawei-dhcp-snooping;
+  include huawei-dhcp-type;
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "Dynamic Host Configuration Protocol.";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  container dhcp {
+    description
+      "dhcp";
+    container common {
+      description
+        "Basic configuration of DHCP.";
+      container dhcpCommonCfg {
+        description
+          "Basic configuration.";
+        leaf dhcpEnable {
+          type boolean;
+          default "false";
+          description
+            "Enable DHCP globally.";
+        }
+      }
+      container dhcpOpt82Cfg {
+        description
+          "DHCP Option82 Configuration";
+        container dhcpSysOpt82Formats {
+          description
+            "Configure a DHCP Option82 format globally.";
+          list dhcpSysOpt82Format {
+            key "sysOptType";
+            description
+              "Configure DHCP Option82 global format.";
+            leaf sysOptType {
+              type dhcpOpt82SubOpt;
+              description
+                "DHCP option82 global sub-option.";
+            }
+            leaf sysOptFormat {
+              type dhcpOpt82Format;
+              must "((../sysOptFormat='default' or ../sysOptFormat='common' or ../sysOptFormat='extend' or ../sysOptFormat='user-defined') )";
+              mandatory true;
+              description
+                "Configure a DHCP option82 sub-option format type.";
+            }
+            leaf sysUserDefText {
+              type string {
+                length "1..255";
+                pattern '([^\t]{0,})';
+              }
+              must "not(../sysOptFormat!='user-defined') or (../sysOptFormat!='user-defined' and not(../sysUserDefText))";
+              mandatory true;
+              description
+                "The format string of DHCP option82 defined by user. The keywords include: sysname, portname, porttype, iftype, mac, slot, subslot, port, svlan, cvlan, and length. You can configure like this: '%portname:%svlan.%cvlan %sysname/0/0/0/0/0' or 0 %length %svlan %5slot %3subslot %8port and so on. Please refer to user command manual for more information.";
+            }
+          }
+        }
+        container dhcpOpt82VendorSubOpts {
+          description
+            "DHCP Option82 sub9 format.";
+          list dhcpOpt82VendorSubOpt {
+            key "subOptNum";
+            description
+              "DHCP Option82 sub9 format.";
+            leaf subOptNum {
+              type uint32 {
+                range "1..255";
+              }
+              description
+                "DHCP Option82 sub-option number.";
+            }
+            leaf subOptFormat {
+              type dhcpOpt82VendorSubOptFormat;
+              mandatory true;
+              description
+                "DHCP Option82 sub-option format.";
+            }
+            leaf userDefineText {
+              type string {
+                length "1..511";
+                pattern '([^\t]{0,})';
+              }
+              description
+                "DHCP Option82 sub-option user-defined string. The value can be an ASCII string with less than 129 characters or a hexadecimal string with less than 257 characters, spaces not supported. The hexadecimal string can contain digits and letters A to F or a to f, and its length must be even.";
+            }
+            leaf ipNumber {
+              type uint32 {
+                range "0..8";
+              }
+              must "(../subOptFormat='ip-address' and ../ipNumber>0) or ((not(../subOptFormat='ip-address') and ../ipNumber=0)) or (../subOptFormat='sysname' and ../ipNumber=0) or not(../subOptFormat='sysname')";
+              description
+                "Number of IP addresses.";
+            }
+            leaf ipAddress1 {
+              when "not(../ipNumber<1)";
+              type inet:ip-address-no-zone;
+              description
+                "IP address 1.";
+            }
+            leaf ipAddress2 {
+              when "not(../ipNumber<2)";
+              type inet:ip-address-no-zone;
+              description
+                "IP address 2.";
+            }
+            leaf ipAddress3 {
+              when "not(../ipNumber<3)";
+              type inet:ip-address-no-zone;
+              description
+                "IP address 3.";
+            }
+            leaf ipAddress4 {
+              when "not(../ipNumber<4)";
+              type inet:ip-address-no-zone;
+              description
+                "IP address 4.";
+            }
+            leaf ipAddress5 {
+              when "not(../ipNumber<5)";
+              type inet:ip-address-no-zone;
+              description
+                "IP address 5.";
+            }
+            leaf ipAddress6 {
+              when "not(../ipNumber<6)";
+              type inet:ip-address-no-zone;
+              description
+                "IP address 6.";
+            }
+            leaf ipAddress7 {
+              when "not(../ipNumber<7)";
+              type inet:ip-address-no-zone;
+              description
+                "IP address 7.";
+            }
+            leaf ipAddress8 {
+              when "not(../ipNumber<8)";
+              type inet:ip-address-no-zone;
+              description
+                "IP address 8.";
+            }
+          }
+        }
+        container dhcpIntfOpt82Formates {
+          description
+            "Configure a DHCP Option82 format on an interface.";
+          list dhcpIntfOpt82Formate {
+            key "ifName vlanId optType";
+            description
+              "Configure a DHCP Option82 format on an interface.";
+            leaf ifName {
+              type leafref {
+                path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+              }
+              description
+                "Interface Name.";
+            }
+            leaf vlanId {
+              type uint16 {
+                range "0..4094";
+              }
+              description
+                "VLAN ID.";
+            }
+            leaf optType {
+              type dhcpOpt82SubOpt;
+              description
+                "Configure a DHCP Option82 type on an interface.";
+            }
+            leaf optFormat {
+              type dhcpOpt82Format;
+              must "(../optType='circuit-id' and (../optFormat='default' or ../optFormat='common' or ../optFormat='extend' or ../optFormat='user-defined' or ../optFormat='self-define') ) or (../optType='circuit-remote' and (../optFormat='type1' or ../optFormat='type2' or ../optFormat='cn-telecom' or ../optFormat='self-define') ) or (../optType='remote-id' and (../optFormat='default' or ../optFormat='common' or ../optFormat='extend' or ../optFormat='user-defined' or ../optFormat='self-define') ) or not(../optType='circuit-id' or ../optType='circuit-remote' or ../optType='remote-id')";
+              mandatory true;
+              description
+                "Configure a DHCP Option82 format on an interface.";
+            }
+            leaf userDefineText {
+              type string {
+                length "1..255";
+                pattern '([^\t]{0,})';
+              }
+              must "not(../optFormat!='user-defined' and ../optFormat!='self-define') or (../optFormat!='user-defined' and ../optFormat!='self-define' and not(../userDefineText))";
+              mandatory true;
+              description
+                "Configure a DHCP Option82 user-defined string on an interface. The keywords include: sysname, portname, porttype, iftype, mac, slot, subslot, port, svlan, cvlan, and length. For example, you can configure a user-defined string as '%portname:%svlan.%cvlan %sysname/0/0/0/0/0' or 0 %length %svlan %5slot %3subslot %8port.";
+            }
+          }
+        }
+        container dhcpOpt82Intfs {
+          description
+            "Configure an interface to insert or forcibly insert DHCP Option82 to DHCP packets.";
+          list dhcpOpt82Intf {
+            key "ifName";
+            description
+              "Configure an interface to insert or forcibly insert DHCP Option82 to DHCP packets.";
+            leaf ifName {
+              type leafref {
+                path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+              }
+              description
+                "Interface name.";
+            }
+            leaf insertEnable {
+              type boolean;
+              description
+                "Configure an interface to insert DHCP Option82 to DHCP packets.";
+            }
+            leaf rebuildEnable {
+              type boolean;
+              description
+                "Configure an interface to forcibly insert DHCP Option82 to DHCP packets.";
+            }
+          }
+        }
+        container dhcpOpt82Vlans {
+          description
+            "Configure all interfaces in a VLAN to insert or forcibly insert DHCP Option82 to DHCP packets.";
+          list dhcpOpt82Vlan {
+            key "vlanId";
+            description
+              "Configure all interfaces in a VLAN to insert or forcibly insert DHCP Option82 to DHCP packets.";
+            leaf vlanId {
+              type uint16 {
+                range "1..4094";
+              }
+              description
+                "VLAN ID.";
+            }
+            leaf insertEnable {
+              type boolean;
+              description
+                "Configure all interfaces in a VLAN to insert DHCP Option82 to DHCP packets.";
+            }
+            leaf rebuildEnable {
+              type boolean;
+              description
+                "Configure all interfaces in a VLAN to forcibly insert DHCP Option82 to DHCP packets.";
+            }
+          }
+        }
+      }
+    }
+    container snooping {
+      description
+        "DHCP SNOOPING configuration.";
+      uses dhcp:dhcpSnooping_type;
+    }
+    container relay {
+      description
+        "Configure DHCP relay on an interface.";
+      uses dhcp:dhcpRelay_type;
+    }
+    container server {
+      description
+        "DHCP server.";
+      uses dhcp:dhcpServer_type;
+    }
+  }
+}

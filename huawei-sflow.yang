@@ -1,0 +1,300 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-sflow {
+  namespace "http://www.huawei.com/netconf/vrp/huawei-sflow";
+  prefix sflow;
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  include huawei-sflow-type;
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "sampling flow";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  container sflow {
+    description
+      "";
+    container sources {
+      description
+        "sources";
+      list source {
+        key "family";
+        max-elements 2;
+        description
+          "source";
+        leaf family {
+          type sflowIPFamily;
+          description
+            "IP family";
+        }
+        leaf ipv4Addr {
+          type inet:ipv4-address-no-zone;
+          must "not(../family='ipv6')";
+          description
+            "IPv4 address";
+          ext:allowDelete "true";
+        }
+        leaf ipv6Addr {
+          type inet:ipv6-address-no-zone;
+          must "not(../family='ipv4')";
+          description
+            "IPv6 address";
+          ext:allowDelete "true";
+        }
+      }
+    }
+    container agents {
+      description
+        "agents";
+      container agent {
+        description
+          "agent";
+        leaf family {
+          type sflowIPFamily;
+          default "ipv4";
+          description
+            "IP family";
+        }
+        leaf ipv4Addr {
+          type inet:ipv4-address-no-zone;
+          must "not(../family='ipv6')";
+          description
+            "IPv4 address";
+          ext:allowDelete "true";
+        }
+        leaf ipv6Addr {
+          type inet:ipv6-address-no-zone;
+          must "not(../family='ipv4')";
+          description
+            "IPv6 address";
+          ext:allowDelete "true";
+        }
+      }
+    }
+    container collectors {
+      description
+        "collectors";
+      list collector {
+        key "collectorID";
+        description
+          "collector";
+        leaf collectorID {
+          type uint32 {
+            range "1..2";
+          }
+          description
+            "collector Id";
+          ext:allowDelete "true";
+        }
+        leaf family {
+          type sflowIPFamily;
+          mandatory true;
+          description
+            "IP family";
+        }
+        leaf ipv4Addr {
+          type inet:ipv4-address-no-zone;
+          must "not(../family='ipv6')";
+          description
+            "IPv4 address";
+          ext:allowDelete "true";
+        }
+        leaf ipv6Addr {
+          type inet:ipv6-address-no-zone;
+          must "not(../family='ipv4')";
+          description
+            "IPv6 address";
+          ext:allowDelete "true";
+        }
+        leaf vrfName {
+          type leafref {
+            path "/l3vpn:l3vpn/l3vpn:l3vpncomm/l3vpn:l3vpnInstances/l3vpn:l3vpnInstance/l3vpn:vrfName";
+          }
+          mandatory true;
+          description
+            "vpn instance name";
+        }
+        leaf datagramSize {
+          type uint32 {
+            range "1024..8100";
+          }
+          mandatory true;
+          description
+            "datagram size";
+        }
+        leaf port {
+          type uint32 {
+            range "1..65535";
+          }
+          mandatory true;
+          description
+            "UDP port";
+        }
+        leaf description {
+          type string {
+            length "1..255";
+          }
+          description
+            "description of collector";
+          ext:allowDelete "true";
+        }
+        leaf meth {
+          type sflowMeth;
+          mandatory true;
+          description
+            "send packets mode";
+        }
+      }
+    }
+    container exports {
+      description
+        "exports";
+      list export {
+        key "ExportRoute";
+        description
+          "export";
+        leaf ExportRoute {
+          type sflowExportType;
+          description
+            "export route";
+        }
+      }
+    }
+    container samparps {
+      description
+        "host samplings";
+      list samparp {
+        key "packettype";
+        description
+          "host sampling";
+        leaf packettype {
+          type sflowPacketType;
+          description
+            "packettype";
+        }
+        leaf direction {
+          type sflowLDirectionType;
+          mandatory true;
+          description
+            "direction";
+        }
+        leaf rate {
+          type uint32 {
+            range "1..65535";
+          }
+          mandatory true;
+          description
+            "rate";
+        }
+      }
+    }
+    container samplings {
+      description
+        "samplings";
+      list sampling {
+        key "ifName";
+        description
+          "sampling";
+        leaf ifName {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          description
+            "name of interface";
+        }
+        leaf collectorID {
+          type collectorIDType;
+          mandatory true;
+          description
+            "collector Id";
+        }
+        leaf direction {
+          type sflowDirectionType;
+          mandatory true;
+          description
+            "direction";
+        }
+        leaf lengthType {
+          type sflowLengType;
+          mandatory true;
+          description
+            "length mode";
+        }
+        leaf length {
+          type uint16 {
+            range "18..512";
+          }
+          must "not(../lengthType='head-only')";
+          mandatory true;
+          description
+            "length";
+        }
+        leaf rate {
+          type uint32 {
+            range "1..4294967295";
+          }
+          mandatory true;
+          description
+            "rate";
+        }
+      }
+    }
+    container counters {
+      description
+        "counters";
+      list counter {
+        key "ifName";
+        description
+          "counter";
+        leaf ifName {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          description
+            "name of interface";
+        }
+        leaf collectorID {
+          type collectorIDType;
+          mandatory true;
+          description
+            "collector Id";
+        }
+        leaf interval {
+          type uint32 {
+            range "10..4294967295";
+          }
+          mandatory true;
+          description
+            "interval times";
+        }
+      }
+    }
+  }
+}

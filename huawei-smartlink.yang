@@ -1,0 +1,490 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-smartlink {
+  namespace "http://www.huawei.com/netconf/vrp/huawei-smartlink";
+  prefix smartlink;
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import ietf-yang-types {
+    prefix yang;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  include huawei-smartlink-action;
+  include huawei-smartlink-type;
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "Smart link configuration.";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  container smartlink {
+    description
+      "Smart link configuration.";
+    container smlkGrpCfgs {
+      description
+        "Smart link group configuration.";
+      list smlkGrpCfg {
+        key "smlkGrpId";
+        max-elements  "48";
+        description
+          "Smart link group configuration.";
+        leaf smlkGrpId {
+          type uint16 {
+            range "1..48";
+          }
+          description
+            "Smart link group index, ranging from integer 1 to 48.";
+        }
+        leaf smlkEnable {
+          type smlkEnableStatus;
+          default "disabled";
+          description
+            "Enable smart link function.";
+        }
+        leaf flushSndEnable {
+          type smlkEnableStatus;
+          default "disabled";
+          description
+            "Enable Flush packet sending when a link is switched.";
+        }
+        leaf smlkCtrlVlanId {
+          type uint16 {
+            range "1..4094";
+          }
+          must "../flushSndEnable='enable' or (not(../flushSndEnable='enable') and not(../smlkCtrlVlanId))";
+          description
+            "Control VLAN ID carried in sent Flush packets: an integer ranging from  1 to 4094.";
+          ext:allowDelete "true";
+        }
+        leaf smlkAuthMode {
+          type smlkAuthMode;
+          must "../flushSndEnable='enable' or (not(../flushSndEnable='enable') and ../smlkAuthMode='none')";
+          default "none";
+          description
+            "Specify authentication mode, default value is none.";
+        }
+        leaf smlkAuthInfo {
+          type pub-type:password;
+          must "../flushSndEnable='enable' or (../smlkAuthMode='none' and not(../smlkAuthInfo)) or not(../smlkAuthMode='none')";
+          description
+            "The password for verify flush, case sensitive, max length is 128.";
+          ext:allowDelete "true";
+        }
+        leaf protectinstId {
+          type pub-type:BIT_RANGE {
+            length "0..4096";
+            pattern "((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[0-9])?(-(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[0-9]))?(,((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[0-9])(-(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[0-9]))?))*)|((([\+|\-](409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[0-9]))|([\+|\-]\((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[0-9])-(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[0-9])\)))?(,(([\+|\-](409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[0-9]))|([\+|\-]\((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[0-9])-(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[0-9])\))))*)";
+          }
+          description
+            "Smart Link protection instance ID.";
+          ext:allowDelete "true";
+        }
+        leaf loadinstId {
+          type pub-type:BIT_RANGE {
+            length "0..9684";
+            pattern "((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[0-9])?(-(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[0-9]))?(,((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[0-9])(-(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[0-9]))?))*)|((([\+|\-](409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[0-9]))|([\+|\-]\((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[0-9])-(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[0-9])\)))?(,(([\+|\-](409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[0-9]))|([\+|\-]\((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[0-9])-(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[0-9])\))))*)";
+          }
+          description
+            "Smart Link load balancing instance ID.";
+          ext:allowDelete "true";
+        }
+        leaf smlkHoldTime {
+          type uint16 {
+            range "0..60";
+          }
+          default "0";
+          description
+            "Hold time";
+        }
+        leaf smlkRstEnable {
+          type smlkEnableStatus;
+          default "disabled";
+          description
+            "Switch traffic back to the master interface.";
+        }
+        leaf smlkWtrTime {
+          type uint16 {
+            range "30..1200";
+          }
+          default "60";
+          description
+            "Time after which traffic is switched back to the master interface, in seconds. The value is an integer ranging from 30 to 1200. The default value is 60.";
+        }
+        leaf smlkLock {
+          type smlkLockPos;
+          must "../smlkEnable='enable' or (not(../smlkEnable='enable') and ../smlkLock='unknown')";
+          default "unknown";
+          description
+            "Lock traffic on the master or slave interface. By default, traffic is not locked.";
+        }
+        leaf devID {
+          type pub-type:macAddress {
+            length "0..255";
+          }
+          config false;
+          description
+            "Device ID";
+        }
+        container smlkInterfaces {
+          description
+            "Information of Smart link interfaces.";
+          list smlkInterface {
+            key "ifName";
+            max-elements  "2";
+            description
+              "Information of Smart link interface.";
+            leaf ifName {
+              type leafref {
+                path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+              }
+              description
+                "Name of Smart link group member interface.";
+            }
+            leaf portRole {
+              type smlkPortRole;
+              mandatory true;
+              description
+                "Role of member interface.";
+            }
+            leaf instId {
+              type uint16 {
+                range "0..4094";
+              }
+              config false;
+              description
+                "Instance ID";
+            }
+            leaf piStatus {
+              type smlkPiStatus;
+              config false;
+              description
+                "Instance forward state on member interface.";
+            }
+            leaf flushPktCnt {
+              type uint32 {
+                range "0..4294967295";
+              }
+              config false;
+              description
+                "Number of sent Flush packets.";
+            }
+            leaf lastSndTime {
+              type yang:date-and-time;
+              config false;
+              description
+                "Last Time when Flush packets were sent. ";
+            }
+          }
+        }
+      }
+    }
+    container mtlkGrpCfgs {
+      description
+        "Configurations of Monitor Link groups.";
+      list mtlkGrpCfg {
+        key "mtlkGrpId";
+        max-elements  "24";
+        description
+          "Configurations of a Monitor Link group.";
+        leaf mtlkGrpId {
+          type uint16 {
+            range "1..24";
+          }
+          description
+            "Monitor Link group ID.";
+        }
+        leaf mtlkStatus {
+          type mtlkStatusType;
+          default "enable";
+          description
+            "Disable Monitor Link Group.";
+        }
+        leaf mtlkRcoverTime {
+          type uint16 {
+            range "3..60";
+          }
+          default "3";
+          description
+            "Monitor Link group switchback time. The default value is 3 seconds.";
+        }
+        container mtlkUpSmlks {
+          description
+            "Smart Link list of a Monitor Link group.";
+          list mtlkUpSmlk {
+            key "smlkGrpId";
+            max-elements  "16";
+            description
+              "Smart Link of a Monitor Link group.";
+            leaf smlkGrpId {
+              type uint16 {
+                range "1..48";
+              }
+              description
+                "Smart Link group ID.";
+            }
+            leaf mtlkPortState {
+              type mtlkPortState;
+              config false;
+              description
+                "Smart Link group status.";
+            }
+            leaf lastUpTime {
+              type yang:date-and-time;
+              config false;
+              description
+                "Last time when a Smart Link group became Up.";
+            }
+            leaf lastDwnTime {
+              type yang:date-and-time;
+              config false;
+              description
+                "Last time when a Smart Link group became Down.";
+            }
+          }
+        }
+        container mtlkUpIntfs {
+          description
+            "Uplink interface list of Monitor Link.";
+          list mtlkUpIntf {
+            key "ifName";
+            max-elements  "16";
+            description
+              "Uplink interface of a Monitor Link group.";
+            leaf ifName {
+              type leafref {
+                path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+              }
+              description
+                "Uplink interface name.";
+            }
+            leaf mtlkPortState {
+              type mtlkPortState;
+              config false;
+              description
+                "Uplink state.";
+            }
+            leaf lastUpTime {
+              type yang:date-and-time;
+              config false;
+              description
+                "Last time when an uplink interface became Up.";
+            }
+            leaf lastDwnTime {
+              type yang:date-and-time;
+              config false;
+              description
+                "Last time when an uplink interface became Down.";
+            }
+          }
+        }
+        container mtlkDwnLnks {
+          description
+            "Downlink list of a Monitor Link group.";
+          list mtlkDwnLnk {
+            key "ifName";
+            max-elements  "24";
+            description
+              "Downlink of a Monitor Link group.";
+            leaf ifName {
+              type leafref {
+                path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+              }
+              description
+                "Downlink interface name.";
+            }
+            leaf dwnLinkId {
+              type uint16 {
+                range "1..24";
+              }
+              description
+                "Downlink ID.";
+              ext:allowDelete "true";
+            }
+            leaf portState {
+              type mtlkPortState;
+              config false;
+              description
+                "Downlink state.";
+            }
+            leaf lastUpTime {
+              type yang:date-and-time;
+              config false;
+              description
+                "Last time when a downlink interface became Up.";
+            }
+            leaf lastDwnTime {
+              type yang:date-and-time;
+              config false;
+              description
+                "Last time when a downlink interface became Down.";
+            }
+          }
+        }
+      }
+    }
+    container flushRcvPorts {
+      description
+        "Interfaces that receive Flush packets.";
+      list flushRcvPort {
+        key "ifName";
+        description
+          "Interface that receives Flush packets.";
+        leaf ifName {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          description
+            "Name of the interface that receives Flush packets.";
+          ext:support-filter "true";
+        }
+        leaf smlkCtrlVlanId {
+          type uint16 {
+            range "1..4094";
+          }
+          description
+            "Receive interface control VLAN ID, ranging from 1 to 4094.";
+          ext:allowDelete "true";
+        }
+        leaf smlkAuthMode {
+          type smlkAuthMode;
+          default "none";
+          description
+            "Authentication mode on a receive interface. The default value is none.";
+        }
+        leaf smlkAuthInfo {
+          type pub-type:password;
+          must "not(../smlkAuthMode='none') or (../smlkAuthMode='none' and not(../smlkAuthInfo))";
+          description
+            "Authentication password on a receive interface: case sensitive and maximum length is 128 characters.";
+          ext:allowDelete "true";
+        }
+        leaf errPktRcvTime {
+          type yang:date-and-time;
+          config false;
+          description
+            "Error packet received time.";
+        }
+        leaf errPktData {
+          type string {
+            length "0..4500";
+          }
+          config false;
+          description
+            "Error packet information.";
+        }
+      }
+    }
+    container detectActLnkPorts {
+      description
+        "Interfaces enabled with active link detection.";
+      list detectActLnkPort {
+        key "ifName";
+        description
+          "Interface enabled with active link detection.";
+        leaf ifName {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          description
+            "Name of the interface enabled with active link detection.";
+          ext:support-filter "true";
+        }
+        leaf vlan {
+          type uint16 {
+            range "1..4094";
+          }
+          description
+            "Control VLAN for Flush packets.";
+          ext:allowDelete "true";
+        }
+      }
+    }
+    container macPurgePorts {
+      description
+        "Mac-purge Interfaces";
+      list macPurgePort {
+        key "ifName";
+        description
+          "Mac-purge Interface";
+        leaf ifName {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          description
+            "Name of the interface enabled with mac-purge vlan.";
+        }
+        leaf vlanBitMap {
+          type pub-type:VLAN_RANGE {
+            length "0..9682";
+          }
+          description
+            "The information of vlan.";
+          ext:allowDelete "true";
+        }
+      }
+    }
+    container flushPktInfo {
+      config false;
+      description
+        "Information about Flush packets.";
+      leaf rcvPktCnt {
+        type uint32 {
+          range "0..4294967295";
+        }
+        config false;
+        description
+          "Number of received Flush packets.";
+      }
+      leaf lastRcvIfName {
+        type pub-type:ifName;
+        config false;
+        description
+          "Interface that receives the last Flush packet.";
+      }
+      leaf lastRcvPktTime {
+        type yang:date-and-time;
+        config false;
+        description
+          "Receive last smartlink flush packet time.";
+      }
+      leaf lastRcvPktSMac {
+        type pub-type:macAddress {
+          length "0..255";
+        }
+        config false;
+        description
+          "Source MAC address that receives the last Flush packet.";
+      }
+      leaf lastRcvPktVlan {
+        type uint16 {
+          range "1..4094";
+        }
+        config false;
+        description
+          "Control VLAN that receives the last Flush packet.";
+      }
+    }
+  }
+}

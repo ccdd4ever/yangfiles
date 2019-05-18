@@ -1,0 +1,377 @@
+module huawei-stack {
+    namespace "http://www.huawei.com/netconf/vrp/huawei-stack";
+    prefix "stack";
+    import huawei-pub-type {
+        prefix "pub-type";
+    }
+    include huawei-stack-action;
+    include huawei-stack-type;
+    
+    organization "Huawei Technologies Co.,Ltd.";
+    contact "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+              People's Republic of China                    
+              Website: http://www.huawei.com Email: support@huawei.com";
+    description "stack.";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+    container stack {
+        container globalPara {
+            description "Global Stack Information.";
+            leaf stackLinkThreshold {
+                type uint32 {
+                    range "1..32";
+                }
+                default "1";
+                description "Alarm threshold of the stack link.";
+            }
+            leaf stackStatus {
+                type stackStatusType;
+                config false;
+                description "Stack status.";
+            }
+            leaf autoNegotiateResult {
+                type resultType;
+                config false;
+                description "SVF auto-negotiation result.";
+            }
+            leaf vstackStatus {
+                type vstackStatusType;
+                description "Whether SVF is enabled.";
+            }
+            leaf forwardModel {
+                type forwardModelType;
+                config false;
+                description "The current forward model.";
+            }
+            leaf nextForwardModel {
+                type forwardModelType;
+                description "The config forward model.";
+            }
+            leaf singleHomedAlarm {
+                type alarmSwitchType;
+                description "Single-homing alarm function.";
+            }
+            leaf mixLeafEnable {
+                type excludeLeafType;
+                description "Spine exclude leaf type.";
+            }
+            leaf singleLinkTopoAlarm {
+                type alarmSwitchType;
+                description "Single link topo alarm switch.";
+            }
+            leaf linkTopoAlarm {
+                type alarmSwitchType;
+                description "Link topo alarm switch.";
+            }
+            leaf portTypeDiffAlarm {
+                type alarmSwitchType;
+                description "Port type different alarm switch.";
+            }
+            leaf portTypeDiffDelayTime {
+                type uint32 {
+                    range "0..180";
+                }
+                description "Port type different alarm delay time.";
+            }
+        }
+        container stackMemberInfos {
+            description "Information of Stack Member.";
+            list stackMemberInfo {
+                key "memberID";
+                config false;
+                description "Information of Stack Member.";
+                leaf memberID {
+                    type uint32 {
+                        range "1..16";
+                    }
+                    description "The value of stack member ID, the default is 1.";
+                }
+                leaf nextMemberID {
+                    type uint32 {
+                        range "1..16";
+                    }
+                    default "1";
+                    description "The value of stack member ID, the default is 1.";
+                }
+                leaf deviceType {
+                    type stackDeviceType;
+                    description "The device type of Stack Member.";
+                }
+                leaf sysoid {
+                    type string;
+                    description "Sysoid.";
+                }
+                leaf enable {
+                    type boolean;
+                    default "false";
+                    description "stack enable.";
+                }
+                leaf role {
+                    type stackRoleType;
+                    description "The role of Stack Member.";
+                }
+                leaf mac {
+                    type pub-type:macAddress;
+                    description "The Mac of Stack Member.";
+                }
+                leaf priority {
+                    type uint32 {
+                        range "1..255";
+                    }
+                    default "100";
+                    description "The value of stack priority ID, the default is 100.";
+                }
+                leaf nextPriority {
+                    type uint32 {
+                        range "1..255";
+                    }
+                    default "100";
+                    description "The value of stack priority ID, the default is 100.";
+                }
+                leaf domain {
+                    type uint32 {
+                        range "1..65535";
+                    }
+                    description "The value of stack domain ID, the default is a random number.";
+                }
+                leaf nextDomain {
+                    type uint32 {
+                        range "1..65535";
+                    }
+                    description "The value of stack domain ID, the default is a random number.";
+                }
+                leaf linkType {
+                    type stackLinkType;
+                    default "MB";
+                    description "Stack link-type mode.";
+                }
+                leaf nextlinkType {
+                    type stackLinkType;
+                    default "MB";
+                    description "Stack link-type mode.";
+                }
+                leaf stackPort1State {
+                    type stackPortStateType;
+                    description "State of Stack Port 1.";
+                }
+                leaf stackPort1Neigbor {
+                    type uint32;
+                    description "Neigbor of Stack Port 1.";
+                }
+                leaf stackPort2State {
+                    type stackPortStateType;
+                    description "State of Stack Port 2.";
+                }
+                leaf stackPort2Neigbor {
+                    type uint32;
+                    description "Neigbor of Stack Port 2.";
+                }
+                leaf uplinkPort {
+                    type stackUplinkPort;
+                    description "The uplink port type.";
+                }
+                leaf nextUplinkPort {
+                    type stackUplinkPort;
+                    description "The next uplink port type.";
+                }
+                leaf switchMode {
+                    type stackSwitchMode;
+                    description "The switch mode.";
+                }
+                leaf nextSwitchMode {
+                    type stackSwitchMode;
+                    description "The next switch mode.";
+                }
+            }
+        }
+        container stackPhyPorts {
+            description "List of Stack Physical Port.";
+            list stackPhyPort {
+                key "portName";
+                config false;
+                description "List of Stack Physical Port.";
+                leaf portName {
+                    type pub-type:ifName;
+                    description "portName.";
+                }
+                leaf ifStackMode {
+                    type boolean;
+                    default "false";
+                    description "ifStackMode.";
+                }
+            }
+        }
+        container stackLogicPorts {
+            description "Stack Logic Port.";
+            list stackLogicPort {
+                key "logicPortName";
+                config false;
+                description "Stack Logic Port.";
+                leaf logicPortName {
+                    type pub-type:ifName;
+                    description "Name of Stack Port.";
+                }
+                leaf loadBalanceMode {
+                    type stackLoadBalanceType;
+                    default "src-dst-ip";
+                    description "Mode of LoadBalance.";
+                }
+                container stackPortMemGroups {
+                    description "List of Stack Member Port.";
+                    list stackPortMemGroup {
+                        min-elements 0;
+                        max-elements 32;
+                        key "portName";
+                        config false;
+                        description "List of Stack Member Port.";
+                        leaf portName {
+                            type leafref {
+                                path "/stack/stackPhyPorts/stackPhyPort/portName";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        container stackFabricPorts {
+            description "Fabric Port.";
+            list stackFabricPort {
+                key "fabricPortName";
+                config false;
+                description "Fabric Port.";
+                leaf fabricPortName {
+                    type pub-type:ifName;
+                    description "Name of Fabric Port.";
+                }
+                leaf memberID {
+                    type uint32 {
+                        range "101..254";
+                    }
+                    description "Bind Leaf MemberID.";
+                }
+                leaf loadBalanceMode {
+                    type stackLoadBalanceType;
+                    default "src-dst-ip";
+                    description "Mode of LoadBalance.";
+                }
+                leaf protocolStatus {
+                    type stackPortStateType;
+                    default "Down";
+                    description "Protocol Status of Fabric Port.";
+                }
+                container stackFabricMemGroups {
+                    description "List of Fabric Member Port.";
+                    list stackFabricMemGroup {
+                        min-elements 0;
+                        max-elements 8;
+                        key "portName";
+                        config false;
+                        description "List of Fabric Member Port.";
+                        leaf portName {
+                            type leafref {
+                                path "/stack/stackPhyPorts/stackPhyPort/portName";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        container leafMemberInfos {
+            description "List of Leaf Member Configuration.";
+            list leafMemberInfo {
+                key "memberID";
+                description "List of Leaf Member Configuration.";
+                leaf memberID {
+                    type uint32 {
+                        range "101..254";
+                    }
+                    description "leaf member ID.";
+                }
+                leaf sysoid {
+                    type string;
+                    config false;
+                    description "Sysoid.";
+                }
+                leaf mac {
+                    type pub-type:macAddress;
+                    config false;
+                    description "The Mac of Leaf Member.";
+                }
+                leaf deviceType {
+                    type stackDeviceType;
+                    description "The board type of Leaf Member Configuration .";
+                }
+                leaf serialNumber {
+                    type string {
+                        length "1..50";
+                    }
+                    description "The serial number of Leaf Member Configuration .";
+                }
+                leaf description {
+                    type string {
+                        length "1..80";
+                    }
+                    description "The description of Leaf Member.";
+                }
+            }
+        }
+        container svfLeafMemberInfos {
+            description "List of Leaf Member Information.";
+            list svfLeafMemberInfo {
+                key "memberID";
+                config false;
+                description "List of Leaf Member Information.";
+                leaf memberID {
+                    type uint32 {
+                        range "101..254";
+                    }
+                    description "leaf member ID.";
+                }
+                leaf sysoid {
+                    type string;
+                    description "Sysoid.";
+                }
+                leaf mac {
+                    type pub-type:macAddress;
+                    description "The Mac of Leaf Member.";
+                }
+                leaf deviceType {
+                    type stackDeviceType;
+                    description "The board type of Leaf Member.";
+                }
+                leaf description {
+                    type string {
+                        length "1..80";
+                    }
+                    description "The description of Leaf Member.";
+                }
+                leaf uplinkPort {
+                    type stackUplinkPort;
+                    description "The uplink port type.";
+                }
+                leaf nextUplinkPort {
+                    type stackUplinkPort;
+                    description "The next uplink port type.";
+                }
+                leaf switchMode {
+                    type stackSwitchMode;
+                    description "The switch mode.";
+                }
+                leaf nextSwitchMode {
+                    type stackSwitchMode;
+                    description "The next switch mode.";
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,434 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-hostdefend {
+  namespace "http://www.huawei.com/netconf/vrp/huawei-hostdefend";
+  prefix hostdefend;
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  include huawei-hostdefend-action;
+  include huawei-hostdefend-type;
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "Host Defend.";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  container hostdefend {
+    description
+      "";
+    container secgtsmstats {
+      config false;
+      description
+        "List of statistics about GTSM.";
+      list secgtsmstat {
+        key "secSlotId secProtocol";
+        config false;
+        description
+          "Statistics about GTSM.";
+        leaf secSlotId {
+          type string {
+            length "1..31";
+          }
+          config false;
+          description
+            "Slot number.";
+        }
+        leaf secProtocol {
+          type hostdefendGTSMPROTOCOL;
+          config false;
+          description
+            "Protocol number.";
+        }
+        leaf secTotalCount {
+          type uint64;
+          config false;
+          description
+            "Total counters.";
+        }
+        leaf secDropCount {
+          type uint64;
+          config false;
+          description
+            "Drop Counters.";
+        }
+        leaf secPassCount {
+          type uint64;
+          config false;
+          description
+            "Pass counters.";
+        }
+      }
+    }
+    container secHostCaptPkts {
+      description
+        "List of Host Capture Packet.";
+      list secHostCaptPkt {
+        key "captureIndex";
+        description
+          "Host Capture Packet.";
+        leaf captureIndex {
+          type uint8 {
+            range "1..8";
+          }
+          description
+            "Capture Packet Index.";
+        }
+        leaf ifName {
+          when "not(../hostCaptType='LinkType')";
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          description
+            "Name Of The Interface When Capture Packet.";
+          ext:allowDelete "true";
+        }
+        leaf ifName2 {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          description
+            "Name Of The Interface When Capture Packet.";
+          ext:allowDelete "true";
+        }
+        leaf ifName3 {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          description
+            "Name Of The Interface When Capture Packet.";
+          ext:allowDelete "true";
+        }
+        leaf ifName4 {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          description
+            "Name Of The Interface When Capture Packet.";
+          ext:allowDelete "true";
+        }
+        leaf captPktNum {
+          type uint32 {
+            range "1..1000";
+          }
+          default "10";
+          description
+            "Packet Amount, default value is 10.";
+          ext:allowDelete "true";
+        }
+        leaf captTimeOutDC {
+          type uint32 {
+            range "1..3600";
+          }
+          default "15";
+          description
+            "Packet Time Out, In Seconds, default value is 15.";
+          ext:allowDelete "true";
+        }
+        leaf captPktLenType {
+          type hostdefendPktLenType;
+          default "specifyPacket";
+          description
+            "Packet Length Type.";
+          ext:allowDelete "true";
+        }
+        leaf captPktLenDC {
+          when "not(../captPktLenType='totalPacket')";
+          type uint32 {
+            range "20..16384";
+          }
+          default "20";
+          description
+            "Packet Length,In Bytes, default value is 20.";
+          ext:allowDelete "true";
+        }
+        leaf captAclType {
+          type hostdefendAclType;
+          description
+            "ACL Type.";
+          ext:allowDelete "true";
+        }
+        leaf captAcl {
+          when "not(../captAclType='CaptIpv6Acl' or ../captAclType='InvalidAcl')";
+          type hostdefendCaptAcl_ncaGen001 {
+            length "1..32";
+          }
+          description
+            "IPv4 ACL.";
+          ext:allowDelete "true";
+        }
+        leaf captIpv6Acl {
+          when "not(../captAclType='CaptAcl' or ../captAclType='InvalidAcl')";
+          type hostdefendCaptIpv6Acl_ncaGen001 {
+            length "1..32";
+          }
+          description
+            "IPv6 ACL.";
+          ext:allowDelete "true";
+        }
+        leaf terminal {
+          type hostdefendDestType;
+          must "(../captureIndex and (../terminal='file') ) or ((not(../captureIndex) and (../terminal='file') ))";
+          description
+            "Show Packet Information To Terminal";
+          ext:allowDelete "true";
+        }
+        leaf fileNameDC {
+          type string {
+            length "5..64";
+          }
+          description
+            "Packet File.";
+          ext:allowDelete "true";
+        }
+        leaf vlanDC {
+          type uint32 {
+            range "1..4063";
+          }
+          description
+            "VlanID, default value is 0.";
+          ext:allowDelete "true";
+        }
+        leaf innerVlanDC {
+          type uint32 {
+            range "1..4094";
+          }
+          description
+            "Inner VlanID, default value is 0.";
+          ext:allowDelete "true";
+        }
+      }
+    }
+    container secSetPriority8021p {
+      description
+        "8021p Priority";
+      leaf secPriority8021p {
+        type uint8 {
+          range "0..7";
+        }
+        mandatory true;
+        description
+          "8021p Priority";
+        ext:allowDelete "true";
+      }
+    }
+    container secPolicyGtsm {
+      description
+        "Gtsm Policy.";
+      leaf secGtsmAction {
+        type hostdefendGtsmAction;
+        default "pass";
+        description
+          "Gtsm Policy.";
+      }
+    }
+    container secIsolate {
+      leaf secStatus {
+        type hostdefendIsolateStatus;
+        mandatory true;
+        description
+          "Switch management-plane isolate status";
+      }
+    }
+    container secHostIfStats {
+      config false;
+      description
+        "Interface receive host packet statistics table. ";
+      list secHostIfStat {
+        key "ifName";
+        config false;
+        max-elements  "10";
+        description
+          "Interface receive host packet statistics item.";
+        leaf ifName {
+          type string {
+            length "0..63";
+          }
+          config false;
+          description
+            "Interface name.";
+        }
+        leaf recvPacket {
+          type uint64;
+          config false;
+          description
+            "Receive packet statistics.";
+        }
+        container secIfProtocolStats {
+          config false;
+          description
+            "Interface receive host packet statistics by protocol table.";
+          list secIfProtocolStat {
+            config false;
+            description
+              "Interface receive host packet statistics by protocol item.";
+            leaf layer {
+              type hostIfStatsProtocolLayType;
+              default "LINK";
+              config false;
+              description
+                "Link layer.";
+            }
+            leaf protocol {
+              type hostIfStatsProtocolType;
+              default "ARP";
+              config false;
+              description
+                "Protocol type.";
+            }
+            leaf expectedPkts {
+              type uint32;
+              config false;
+              description
+                "Receive normal packet statistics.";
+            }
+            leaf unexpectedPkts {
+              type uint32;
+              config false;
+              description
+                "Receive unexpected packet statistics.";
+            }
+          }
+        }
+      }
+    }
+    container secIfProtocolCfgs {
+      description
+        "Interface statistics by protocol configure table.";
+      list secIfProtocolCfg {
+        key "ifName";
+        description
+          "Interface statistics by protocol configure item.";
+        leaf ifName {
+          type string {
+            length "0..63";
+          }
+          description
+            "Interface name.";
+        }
+      }
+    }
+    container secAntiAttackEnable {
+      description
+        "Anti-Attack Enable.";
+      leaf antiEnable {
+        type antiAttackEnableCfgType;
+        default "Enable";
+        description
+          "Enable Anti-Attack.";
+      }
+      leaf abnormalEnable {
+        type antiAttackEnableCfgType;
+        default "Enable";
+        description
+          "Enable Abnormal Attack.";
+      }
+      leaf udpFloodEnable {
+        type antiAttackEnableCfgType;
+        default "Enable";
+        description
+          "Enable Udp-Flood Attack.";
+      }
+      leaf tcpSynEnable {
+        type antiAttackEnableCfgType;
+        default "Enable";
+        description
+          "Enable Tcp-Syn Attack.";
+      }
+      leaf icmpFloodEnable {
+        type antiAttackEnableCfgType;
+        default "Enable";
+        description
+          "Enable Icmp-Flood Attack.";
+      }
+      leaf fragmentEnable {
+        type antiAttackEnableCfgType;
+        default "Enable";
+        description
+          "Enable Fragment Attack.";
+      }
+    }
+    container secAntiAttackCarCfg {
+      description
+        "Anti-Attack Car.";
+      leaf cirFrag {
+        type uint32 {
+          range "8000..155000000";
+        }
+        default "155000000";
+        description
+          "Fragment Packet Car (bit/s).";
+      }
+      leaf cirIcmp {
+        type uint32 {
+          range "8000..155000000";
+        }
+        default "155000000";
+        description
+          "Icmp Packet Car (bit/s).";
+      }
+      leaf cirTcp {
+        type uint32 {
+          range "8000..155000000";
+        }
+        default "155000000";
+        description
+          "Tcp-Syn Packet Car (bit/s).";
+      }
+    }
+    container secAntiAttackStats {
+      config false;
+      description
+        "Anti-Attack Statistics Table.";
+      list secAntiAttackStat {
+        key "attackType";
+        config false;
+        description
+          "Anti-Attack Statistics.";
+        leaf attackType {
+          type antiAttackType;
+          config false;
+          description
+            "Anti-Attack Type.";
+        }
+        leaf totalCount {
+          type uint64;
+          config false;
+          description
+            "TotalPacketNum.";
+        }
+        leaf dropCount {
+          type uint64;
+          config false;
+          description
+            "DropPacketNum.";
+        }
+        leaf passCount {
+          type uint64;
+          config false;
+          description
+            "PassPacketNum.";
+        }
+      }
+    }
+  }
+}

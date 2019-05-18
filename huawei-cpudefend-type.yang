@@ -1,0 +1,162 @@
+submodule huawei-cpudefend-type {
+    belongs-to "huawei-cpudefend" {
+        prefix "cpudefend";
+    }
+    
+    organization "Huawei Technologies Co.,Ltd.";
+    contact "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+              People's Republic of China                    
+              Website: http://www.huawei.com Email: support@huawei.com";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+    typedef CARType {
+        type enumeration {
+            enum "NA" {
+                value 0;
+                description "NA";
+            }
+            enum "bfd" {
+                value 1;
+                description "bfd packet";
+            }
+            enum "arp-miss" {
+                value 2;
+                description "arp-miss packet";
+            }
+            enum "arp" {
+                value 3;
+                description "arp packet";
+            }
+            enum "bgp" {
+                value 4;
+                description "bgp packet";
+            }
+            enum "gmac" {
+                value 5;
+                description "gmac packet";
+            }
+            enum "dhcp" {
+                value 6;
+                description "dhcp packet";
+            }
+            enum "dldp" {
+                value 7;
+                description "dldp packet";
+            }
+            enum "fib-hit" {
+                value 8;
+                description "fib-hit packet";
+            }
+            enum "ftp" {
+                value 9;
+                description "ftp packet";
+            }
+            enum "aaa" {
+                value 10;
+                description "aaa packet";
+            }
+            enum "icmp" {
+                value 11;
+                description "icmp packet";
+            }
+            enum "igmp" {
+                value 12;
+                description "igmp packet";
+            }
+            enum "unknown-multicast" {
+                value 13;
+                description "unknown-multicast packet";
+            }
+            enum "isis" {
+                value 14;
+                description "isis packet";
+            }
+            enum "lacp" {
+                value 15;
+                description "lacp packet";
+            }
+            enum "ldt" {
+                value 16;
+                description "ldt packet";
+            }
+            enum "lldp" {
+                value 17;
+                description "lldp packet";
+            }
+            enum "ntp" {
+                value 18;
+                description "ntp packet";
+            }
+            enum "ospf" {
+                value 19;
+                description "ospf packet";
+            }
+            enum "rip" {
+                value 20;
+                description "rip packet";
+            }
+            enum "snmp" {
+                value 21;
+                description "snmp packet";
+            }
+            enum "stp" {
+                value 22;
+                description "stp packet";
+            }
+            enum "telnet" {
+                value 23;
+                description "telnet packet";
+            }
+            enum "ttl-expired" {
+                value 24;
+                description "ttl-expired packet";
+            }
+            enum "udp-helper" {
+                value 25;
+                description "udp-helper packet";
+            }
+            enum "vrrp" {
+                value 26;
+                description "vrrp packet";
+            }
+            enum "fcoe" {
+                value 27;
+                description "fcoe packet";
+            }
+            enum "Trill" {
+                value 28;
+                description "Trill packet";
+            }
+            enum "mpls-ldp" {
+                value 29;
+                description "mpls-ldp packet";
+            }
+            enum "trill-management" {
+                value 30;
+                description "trill-management packet";
+            }
+            enum "nd" {
+                value 31;
+                description "nd packet";
+            }
+            enum "smart-link" {
+                value 32;
+                description "smart-link packet";
+            }
+            enum "bpdu-tunnel" {
+                value 33;
+                description "bpdu-tunnel packet";
+            }
+        }
+    }
+}

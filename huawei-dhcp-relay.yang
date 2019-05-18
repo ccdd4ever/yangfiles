@@ -1,0 +1,494 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-dhcp-relay {
+  belongs-to huawei-dhcp {
+    prefix dhcp;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-l3vpn {
+    prefix l3vpn;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  include huawei-dhcp-relay-type;
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "test.Description FOR submodule";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  grouping dhcpRelay_type {
+    description
+      "DHCP Relay";
+    container dhcpRelayIfCfgs {
+      description
+        "Used for configuration of DHCP relay enable on interface";
+      list dhcpRelayIfCfg {
+        key "interfaceName";
+        description
+          "Used for configuration of DHCP relay enable on interface";
+        leaf interfaceName {
+          type leafref {
+            path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+          }
+          description
+            "Interface name.";
+        }
+        leaf isEnable {
+          type boolean;
+          description
+            "Flag indicating whether DHCP relay is enabled.";
+        }
+        leaf isGateWayEnable {
+          type boolean;
+          description
+            "Flag indicating whether DHCP relay gateway switching is enabled.";
+        }
+        leaf serverGroupName {
+          when "not(../isUndoServerSelect='true')";
+          type string {
+            length "1..32";
+            pattern '([^\t]{0,})';
+          }
+          description
+            "DHCP server group name.";
+        }
+        leaf isUndoServerSelect {
+          type boolean;
+          description
+            "Disable Server Group.";
+        }
+        leaf giaddrOutIntfAddr {
+          type boolean;
+          description
+            "Set outgoing-interface-address as giaddr.";
+        }
+        container dhcpRelayOption82Cfg {
+          description
+            "Configure DHCP relay option82 on an interface.";
+          leaf vssControlEnable {
+            type boolean;
+            default "false";
+            description
+              "VSS Information Insert Enable Flag.";
+          }
+          leaf linkSelectionEnable {
+            type boolean;
+            default "false";
+            description
+              "Link Selection Information Insert Enable Flag.";
+          }
+          leaf serverIdOverrideEnable {
+            type boolean;
+            default "false";
+            description
+              "Server ID Override Enable Flag.";
+          }
+        }
+        container dhcpRelayServerAddress {
+          description
+            "Configure server addresses on interfaces.";
+          list dhcpRelayServerAddress {
+            key "serverAddr";
+            max-elements  "20";
+            description
+              "Configure a server address on an interface.";
+            leaf serverAddr {
+              type inet:ipv4-address-no-zone;
+              description
+                "Server address";
+            }
+          }
+        }
+        container dhcpRelayVpnServerAddresss {
+          description
+            "Configure server addresses on interfaces in VPN.";
+          list dhcpRelayVpnServerAddress {
+            key "serverAddr vrfName";
+            max-elements  "20";
+            description
+              "Configure a server address on an interface in VPN.";
+            leaf serverAddr {
+              type inet:ipv4-address-no-zone;
+              description
+                "Server address";
+            }
+            leaf vrfName {
+              type leafref {
+                path "/l3vpn:l3vpn/l3vpn:l3vpncomm/l3vpn:l3vpnInstances/l3vpn:l3vpnInstance/l3vpn:vrfName";
+              }
+              description
+                "VPN name specified in the server address of a relay interface.";
+            }
+          }
+        }
+        container dhcpRelayGiaddress {
+          description
+            "Configure gateway addresses for interfaces.";
+          list dhcpRelayGiaddress {
+            key "giAddr";
+            max-elements  "1";
+            description
+              "Configure a gateway address for an interface";
+            leaf giAddr {
+              type inet:ipv4-address-no-zone;
+              description
+                "Gateway address.";
+            }
+          }
+        }
+        container dhcpRelayInfoIntfs {
+          config false;
+          description
+            "DHCP relay configuration information list.";
+          list dhcpRelayInfoIntf {
+            key "giAddr serverAddr serverVpnName";
+            config false;
+            description
+              "DHCP relay configuration information list.";
+            leaf giAddr {
+              type inet:ipv4-address-no-zone;
+              config false;
+              description
+                "Gateway address.";
+            }
+            leaf serverAddr {
+              type inet:ipv4-address-no-zone;
+              config false;
+              description
+                "Server address.";
+            }
+            leaf serverVpnName {
+              type string {
+                length "0..32";
+              }
+              config false;
+              description
+                "Server VPN Name.";
+            }
+            leaf currentGiAddr {
+              type inet:ipv4-address-no-zone;
+              config false;
+              description
+                "Gateway address in use.";
+            }
+            leaf isGateWayEnable {
+              type boolean;
+              config false;
+              description
+                "DHCP relay gateway-switch enable flag";
+            }
+            leaf serverGroupName {
+              type string {
+                length "1..32";
+                pattern '([^\t]{0,})';
+              }
+              config false;
+              description
+                "DHCP server group name.";
+            }
+          }
+        }
+      }
+    }
+    container dhcpRelayServerGroups {
+      description
+        "Configure DHCP server groups.";
+      list dhcpRelayServerGroup {
+        key "serverGroupName";
+        description
+          "Configure a DHCP server group.";
+        leaf serverGroupName {
+          type string {
+            length "1..32";
+            pattern '([^\t]{0,})';
+          }
+          description
+            "DHCP server group name.";
+        }
+        leaf gateway {
+          type inet:ipv4-address-no-zone;
+          mandatory true;
+          description
+            "Gateway address.";
+        }
+        leaf isUndoGateway {
+          type boolean;
+          description
+            "Delete a gateway address.";
+        }
+        leaf vpnName {
+          type leafref {
+            path "/l3vpn:l3vpn/l3vpn:l3vpncomm/l3vpn:l3vpnInstances/l3vpn:l3vpnInstance/l3vpn:vrfName";
+          }
+          description
+            "VPN Name.";
+        }
+        container dhcpRelayGroupedServers {
+          description
+            "Configure IP addresses for servers in a server group.";
+          list dhcpRelayGroupedServer {
+            key "serverAddress";
+            max-elements  "20";
+            description
+              "Configure an IP address for a server in a server group.";
+            leaf serverAddress {
+              type inet:ipv4-address-no-zone;
+              description
+                "Server IP address.";
+            }
+            leaf serverIndex {
+              type uint8 {
+                range "0..19";
+              }
+              description
+                "Server IP address index.";
+            }
+          }
+        }
+        container dhcpRelaySerGrpStats {
+          config false;
+          description
+            "DHCP server group statistics.";
+          list dhcpRelaySerGrpStats {
+            key "serverIpAddr";
+            config false;
+            description
+              "DHCP server group statistics.";
+            leaf serverIpAddr {
+              type inet:ipv4-address-no-zone;
+              config false;
+              description
+                "Server address.";
+            }
+            leaf badPktsReceive {
+              type uint32;
+              config false;
+              mandatory true;
+              description
+                "Number of error packets received.";
+            }
+            leaf pktsReceiveFromClient {
+              type uint32;
+              config false;
+              mandatory true;
+              description
+                "Number of packets received from clients.";
+            }
+            leaf discoverPktsReceive {
+              type uint32;
+              config false;
+              description
+                "Number of DHCP DISCOVER packets received.";
+            }
+            leaf requestPktsReceive {
+              type uint32;
+              config false;
+              description
+                "Number of DHCP REQUEST packets received.";
+            }
+            leaf releasePktsReceive {
+              type uint32;
+              config false;
+              description
+                "Number of DHCP RELEASE packets received.";
+            }
+            leaf informPktsRecevie {
+              type uint32;
+              config false;
+              mandatory true;
+              description
+                "Number of DHCP INFORM packets received.";
+            }
+            leaf declinePktsReceive {
+              type uint32;
+              config false;
+              mandatory true;
+              description
+                "Number of DHCP DECLINE packets received.";
+            }
+            leaf pktsReceiveFromServers {
+              type uint32;
+              config false;
+              mandatory true;
+              description
+                "Number of packets received from servers.";
+            }
+            leaf offerPktsReceive {
+              type uint32;
+              config false;
+              mandatory true;
+              description
+                "Number of DHCP OFFER packets received.";
+            }
+            leaf ackPktsReceive {
+              type uint32;
+              config false;
+              mandatory true;
+              description
+                "Number of DHCP ACK packets received.";
+            }
+            leaf nakPktsReceive {
+              type uint32;
+              config false;
+              mandatory true;
+              description
+                "Number of DHCP NAK packets received.";
+            }
+            leaf pktsSentToServers {
+              type uint32;
+              config false;
+              mandatory true;
+              description
+                "Number of packets sent to servers.";
+            }
+            leaf pktsSentToClients {
+              type uint32;
+              config false;
+              mandatory true;
+              description
+                "Number of packets sent to clients.";
+            }
+            leaf unicastPktsSentToClients {
+              type uint32;
+              config false;
+              mandatory true;
+              description
+                "Number of unicast packets sent to clients.";
+            }
+            leaf broadcastPktsSentToClients {
+              type uint32;
+              config false;
+              mandatory true;
+              description
+                "Number of broadcast packets sent to clients.";
+            }
+          }
+        }
+      }
+    }
+    container dhcpRelayStatistics {
+      config false;
+      description
+        "DHCP relay statistics.";
+      leaf badPacketsRecvd {
+        type uint32;
+        config false;
+        description
+          "Number of error packets received.";
+      }
+      leaf packetsRecvdFromClient {
+        type uint32;
+        config false;
+        description
+          "Number of packets received from clients.";
+      }
+      leaf discoverPacketsRecvd {
+        type uint32;
+        config false;
+        description
+          "Number of DHCP DISCOVER packets received.";
+      }
+      leaf requestPacketsRecvd {
+        type uint32;
+        config false;
+        description
+          "Number of DHCP REQUEST packets received.";
+      }
+      leaf informPacketsRecvd {
+        type uint32;
+        config false;
+        description
+          "Number of DHCP INFORM packets received.";
+      }
+      leaf declinePacketsRecvd {
+        type uint32;
+        config false;
+        description
+          "Number of DHCP DECLINE packets received.";
+      }
+      leaf releasePacketsRecvd {
+        type uint32;
+        config false;
+        description
+          "Number of RELEASE packets received.";
+      }
+      leaf packetsRecvdFromServers {
+        type uint32;
+        config false;
+        description
+          "Number of packets received from servers.";
+      }
+      leaf offerPacketsRecvd {
+        type uint32;
+        config false;
+        description
+          "Number of DHCP OFFER packets received.";
+      }
+      leaf ackPacketsRecvd {
+        type uint32;
+        config false;
+        description
+          "Number of DHCP ACK packets received.";
+      }
+      leaf nakPacketsRecvd {
+        type uint32;
+        config false;
+        description
+          "Number of DHCP NAK packets received.";
+      }
+      leaf packetsSentToServers {
+        type uint32;
+        config false;
+        description
+          "Number of packets sent to servers.";
+      }
+      leaf packetsSentToClients {
+        type uint32;
+        config false;
+        description
+          "Number of packets sent to clients.";
+      }
+      leaf unicastPacketsSentToClients {
+        type uint32;
+        config false;
+        description
+          "Number of unicast packets sent to clients.";
+      }
+      leaf broadcastPacketsSentToClients {
+        type uint32;
+        config false;
+        description
+          "Number of broadcast packets sent to clients.";
+      }
+      leaf releasePacketsSentToServers {
+        type uint32;
+        config false;
+        description
+          "Number of dhcp release packets sent to servers.";
+      }
+    }
+  }
+}

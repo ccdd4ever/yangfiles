@@ -1,0 +1,607 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-qos-cbqos-type {
+  belongs-to "huawei-qos" {
+    prefix "qos";
+  }
+  
+  organization "Huawei Technologies Co.,Ltd.";
+  contact "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+              People's Republic of China                    
+              Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "Enum type of Quality of service.";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  typedef qosMacType {
+    type enumeration {
+      enum "source" {
+        description
+          "Source MAC address.";
+      }
+      enum "destination" {
+        description
+          "Destination MAC address.";
+      }
+    }
+    description
+      "MAC address type.";
+  }
+  typedef qosPriorityType {
+    type enumeration {
+      enum "8021p" {
+        description
+          "802.1p priority.";
+      }
+      enum "ipPrecedence" {
+        description
+          "IP precedence.";
+      }
+      enum "dscp" {
+        description
+          "DSCP priority.";
+      }
+      enum "mplsExp" {
+        description
+          "MPLS-EXP priority.";
+      }
+      enum "dscp6" {
+        description
+          "IPv6 DSCP priority.";
+      }
+    }
+    description
+      "Priority type.";
+  }
+  typedef qosMatchPriorityType {
+    type enumeration {
+      enum "8021p" {
+        description
+          "802.1p priority.";
+      }
+      enum "dscp" {
+        description
+          "DSCP priority.";
+      }
+      enum "dscpv6" {
+        description
+          "IPV6 DSCP priority.";
+      }
+    }
+    description
+      "Match priority type.";
+  }
+  typedef qosRemarkPriorityType {
+    type enumeration {
+      enum "8021p" {
+        description
+          "802.1p priority.";
+      }
+      enum "dscp" {
+        description
+          "DSCP priority.";
+      }
+    }
+    description
+      "Remark priority type.";
+  }
+  typedef qosLoadBalanceType {
+    type enumeration {
+      enum "flow" {
+        description
+          "Flow by flow.";
+      }
+      enum "packet" {
+        description
+          "Packet by packet.";
+      }
+    }
+    description
+      "Load balance type.";
+  }
+  typedef qosSampleType {
+    type enumeration {
+      enum "fixPackets" {
+        description
+          "Sampling based on the fixed number of packets.";
+      }
+    }
+    description
+      "Sample type.";
+  }
+  typedef qosEnableFlag {
+    type enumeration {
+      enum "enable" {
+        description
+          "Enable";
+      }
+    }
+    description
+      "Enable flag.";
+  }
+  typedef qosFilterFlag {
+    type enumeration {
+      enum "permit" {
+        description
+          "Permit.";
+      }
+      enum "deny" {
+        description
+          "Deny.";
+      }
+    }
+    description
+      "Filter flag.";
+  }
+  typedef qosPortMirror {
+    type enumeration {
+      enum "enable" {
+        description
+          "Enable mirroring.";
+      }
+    }
+    description
+      "Mirroring flag.";
+  }
+  typedef qosAddressType {
+    type enumeration {
+      enum "source" {
+        description
+          "Source address.";
+      }
+      enum "destination" {
+        description
+          "Destination address.";
+      }
+    }
+    description
+      "Address flag.";
+  }
+  typedef qosIPFamily {
+    type enumeration {
+      enum "ipv4" {
+        description
+          "IPv4 protocol family.";
+      }
+      enum "ipv6" {
+        description
+          "IPv6 protocol family.";
+      }
+    }
+    description
+      "Protofamily Type.";
+  }
+  typedef qosIPv4Family {
+    type enumeration {
+      enum "ipv4" {
+        description
+          "IPv4 protocol family.";
+      }
+    }
+    description
+      "IPv4 protofamily.";
+  }
+  typedef qosIPv6Family {
+    type enumeration {
+      enum "ipv6" {
+        description
+          "IPv6 protocol family.";
+      }
+    }
+    description
+      "IPv6 protofamily.";
+  }
+  typedef qosUrpfCheckType {
+    type enumeration {
+      enum "strict" {
+        description
+          "Strict.";
+      }
+      enum "loose" {
+        description
+          "Loose.";
+      }
+    }
+    description
+      "URPF check type.";
+  }
+  typedef qosClassOperator {
+    type enumeration {
+      enum "or" {
+        description
+          "Or.";
+      }
+      enum "and" {
+        description
+          "And.";
+      }
+    }
+    description
+      "Class operator.";
+  }
+  typedef qosActionCar {
+    type enumeration {
+      enum "car" {
+        description
+          "CAR action.";
+      }
+    }
+    description
+      "CAR action.";
+  }
+  typedef qosActionFilter {
+    type enumeration {
+      enum "filter" {
+        description
+          "Filter.";
+      }
+    }
+    description
+      "Filter action.";
+  }
+  typedef qosActionUrpf {
+    type enumeration {
+      enum "urpf" {
+        description
+          "URPF action.";
+      }
+    }
+    description
+      "URPF action.";
+  }
+  typedef qosActionLoadBalance {
+    type enumeration {
+      enum "loadBalance" {
+        description
+          "Load balancing action.";
+      }
+    }
+    description
+      "Load balancing action.";
+  }
+  typedef qosActionServiceClass {
+    type enumeration {
+      enum "serviceClass" {
+        description
+          "Service class action.";
+      }
+    }
+    description
+      "Service class action.";
+  }
+  typedef qosActionRedirectNextHop {
+    type enumeration {
+      enum "redirectNextHop" {
+        description
+          "redirectNextHop:";
+      }
+    }
+    description
+      "Redirect nexthop action.";
+  }
+  typedef qosActionRedirectMultiHop {
+    type enumeration {
+      enum "redirectMultiHop" {
+        description
+          "redirectMultiHop:";
+      }
+    }
+    description
+      "Redirect multihop action.";
+  }
+  typedef qosActionRedirectNextHop6 {
+    type enumeration {
+      enum "redirectNextHop6" {
+        description
+          "redirectNextHop6:";
+      }
+    }
+    description
+      "Redirect IPv6 nexthop action.";
+  }
+  typedef qosActionRedirectLsp {
+    type enumeration {
+      enum "redirectLsp" {
+        description
+          "Action of redirecting to the public network LSP.";
+      }
+    }
+    description
+      "Redirect lsp action.";
+  }
+  typedef qosActionRedirectVpnGroup {
+    type enumeration {
+      enum "redirectVpnGroup" {
+        description
+          "Action of redirecting to the VPN-Instance group.";
+      }
+    }
+    description
+      "Redirect VPN group action.";
+  }
+  typedef qosActionRedirectIf {
+    type enumeration {
+      enum "redirectIf" {
+        description
+          "Action of redirecting to inteface.";
+      }
+    }
+    description
+      "Redirect interface action.";
+  }
+  typedef qosActionPortMirror {
+    type enumeration {
+      enum "portMirror" {
+        description
+          "Flow mirroring action.";
+      }
+    }
+    description
+      "Flow mirroring action.";
+  }
+  typedef qosActionRemark {
+    type enumeration {
+      enum "remark8021p" {
+        description
+          "Re-mark 802.1p priority action.";
+      }
+      enum "remarkIpv4Dscp" {
+        description
+          "Re-mark DSCP action.";
+      }
+      enum "remarkIpv6Dscp" {
+        description
+          "Re-mark IPv6 DSCP action.";
+      }
+      enum "remarkLocalPrecedence" {
+        description
+          "Remark IP precedence action.";
+      }
+      enum "remarkMplsExp" {
+        description
+          "Re-mark MPLS-EXP action.";
+      }
+    }
+    description
+      "Remark action.";
+  }
+  typedef qosActionRedirectMultiHop6 {
+    type enumeration {
+      enum "redirectMultiHop6" {
+        description
+          "redirectMultiHop6:";
+      }
+    }
+    description
+      "Redirect IPv6 multihop action.";
+  }
+  typedef qosRdrType {
+    type enumeration {
+      enum "rdrIpv4Nhp" {
+        description
+          "redirect IPv4 nexhop.";
+      }
+      enum "rdrIpv6Nhp" {
+        description
+          "redirect IPv6 nexhop.";
+      }
+      enum "rdrIpv4EcmpNhp" {
+        description
+          "redirect load-balance IPv4 nexhop.";
+      }
+      enum "rdrIpv6EcmpNhp" {
+        description
+          "redirect load-balance IPv6 nexhop.";
+      }
+    }
+    description
+      "Redirect type.";
+  }
+  typedef qosLspRdrType {
+    type enumeration {
+      enum "destAddr" {
+        description
+          "Destination IP address.";
+      }
+      enum "nhp" {
+        description
+          "Nexthop address.";
+      }
+      enum "interface" {
+        description
+          "Interface.";
+      }
+      enum "secondary" {
+        description
+          "Secondary LSP.";
+      }
+    }
+    description
+      "Redirect lsp type.";
+  }
+  typedef qosNsFlowType {
+    type enumeration {
+      enum "ipv4" {
+        description
+          "IPv4.";
+      }
+      enum "ipv6" {
+        description
+          "IPv6.";
+      }
+    }
+    description
+      "NetStream flow type.";
+  }
+  typedef qosTunnelType {
+    type enumeration {
+      enum "single-tag vxlan" {
+        description
+          "VXLAN Packets with single inner VLAN.";
+      }
+      enum "gre" {
+        description
+          "GRE packets.";
+      }
+      enum "mpls" {
+        description
+          "MPLS packets.";
+      }
+      enum "none-tag vxlan" {
+        description
+          "VXLAN Packets without inner VLAN.";
+      }
+      enum "transit single-tag vxlan" {
+        description
+          "transit VXLAN Packets with single inner VLAN.";
+      }
+      enum "transit none-tag vxlan" {
+        description
+          "transit VXLAN Packets without inner VLAN.";
+      }
+    }
+    description
+      "Tunnel type.";
+  }
+  typedef qosCarColorMode {
+    type enumeration {
+      enum "color-blind" {
+        description
+          "Color Blind.";
+      }
+      enum "color-aware" {
+        description
+          "Color Aware.";
+      }
+    }
+    description
+      "CAR color mode.";
+  }
+  typedef qosCarFirstShareMode {
+    type enumeration {
+      enum "aggregation" {
+        description
+          "Aggregation.";
+      }
+    }
+    description
+      "CAR Share mode.";
+  }
+  typedef qosTypeVxlan {
+    type enumeration {
+      enum "vxlan" {
+        description
+          "vxlan.";
+      }
+    }
+    description
+      "VXLAN.";
+  }
+  typedef qosTypeIPID {
+    type enumeration {
+      enum "ipid" {
+        description
+          "ipid.";
+      }
+    }
+    description
+      "IPID.";
+  }
+  typedef qosTypeLocalId {
+    type enumeration {
+      enum "local-id" {
+        description
+          "local-id.";
+      }
+    }
+    description
+      "Local ID.";
+  }
+  typedef qosTypeAppState {
+    type enumeration {
+      enum "success" {
+        description
+          "Success.";
+      }
+      enum "fail" {
+        description
+          "Fail.";
+      }
+      enum "waiting" {
+        description
+          "Waiting.";
+      }
+      enum "processing" {
+        description
+          "Processing.";
+      }
+      enum "timeout" {
+        description
+          "Timeout.";
+      }
+      enum "offline" {
+        description
+          "Offline.";
+      }
+    }
+    description
+      "Apply state.";
+  }
+  typedef qosACLTunnelType {
+    type enumeration {
+      enum "single-tag vxlan" {
+        description
+          "single-tag vxlan.";
+      }
+      enum "none-tag vxlan" {
+        description
+          "none-tag vxlan.";
+      }
+      enum "no-tunnel" {
+        description
+          "no-tunnel.";
+      }
+      enum "transit single-tag vxlan" {
+        description
+          "transit VXLAN Packets with single inner VLAN.";
+      }
+      enum "transit none-tag vxlan" {
+        description
+          "transit VXLAN Packets without inner VLAN.";
+      }
+    }
+    description
+      "Tunnel type.";
+  }
+  typedef qosTypeRdrSrvPath {
+    type enumeration {
+      enum "rdrSrvPathType" {
+        description
+          "Redirect Service-path.";
+      }
+    }
+    description
+      "Redirect service path action.";
+  }
+  typedef qosTypeRdrEmcpTeTnl {
+    type enumeration {
+      enum "rdrEcmpTeTnl" {
+        description
+          "redirect load-balance interface";
+      }
+    }
+    description
+      "Redirect ECMP tunnel action.";
+  } 
+}

@@ -1,0 +1,229 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-dhcp-server-type {
+  belongs-to huawei-dhcp {
+    prefix dhcp;
+  }
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "test.Description FOR submodule";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  typedef dhcpSvrNtbsType {
+    type enumeration {
+      enum "Invalid" {
+        description
+          "-";
+      }
+      enum "b-node" {
+        description
+          "B-Node.";
+      }
+      enum "h-node" {
+        description
+          "H-Node.";
+      }
+      enum "m-node" {
+        description
+          "M-Node.";
+      }
+      enum "p-node" {
+        description
+          "P-Node.";
+      }
+    }
+    description
+      "description of dhcp_dhcpSvrNtbsType_type";
+  }
+  typedef dhcpSvrOptionMode {
+    type enumeration {
+      enum "asciiMode" {
+        description
+          "ASCII mode.";
+      }
+      enum "hexMode" {
+        description
+          "The value in hexadecimal notation can contain only letters A to F or a to f, with less than 254 characters, spaces not counted.";
+      }
+      enum "ipMode" {
+        description
+          "IP Mode.";
+      }
+      enum "cipherMode" {
+        description
+          "Cipher Mode";
+      }
+      enum "subOptMode" {
+        description
+          "SubOpt Mode.";
+      }
+    }
+    description
+      "description of dhcp_dhcpSvrOptionMode_type";
+  }
+  typedef dhcpSvrSubOptionMode {
+    type enumeration {
+      enum "asciiMode" {
+        description
+          "Ascii Mode.";
+      }
+      enum "hexMode" {
+        description
+          "The value in hexadecimal notation can contain only letters A to F or a to f, with less than 254 characters, spaces not counted.";
+      }
+      enum "ipMode" {
+        description
+          "IP Mode.";
+      }
+      enum "cipherMode" {
+        description
+          "Cipher Mode";
+      }
+    }
+    description
+      "description of dhcp_dhcpSvrSubOptionMode_type";
+  }
+  typedef dhcpSvrSelectType {
+    type enumeration {
+      enum "interface" {
+        description
+          "dhcp select interface";
+      }
+      enum "global" {
+        description
+          "dhcp select global";
+      }
+    }
+    description
+      "description of dhcp_dhcpSvrSelectType_type";
+  }
+  typedef ipPoolType {
+    type enumeration {
+      enum "server" {
+        description
+          "server";
+      }
+    }
+    description
+      "description of dhcp_ipPoolType_type";
+  }
+  typedef ipPoolStatusType {
+    type enumeration {
+      enum "Locked" {
+        description
+          "server";
+      }
+      enum "Unlocked" {
+        description
+          "server";
+      }
+    }
+    description
+      "description of dhcp_ipPoolStatusType_type";
+  }
+  typedef ipPoolAddressStatusType {
+    type enumeration {
+      enum "idle" {
+        description
+          "address idle";
+      }
+      enum "used" {
+        description
+          "address used";
+      }
+      enum "conflict" {
+        description
+          "address conflict";
+      }
+      enum "disable" {
+        description
+          "address forbidden";
+      }
+      enum "reserved" {
+        description
+          "address reserved";
+      }
+      enum "static-bind" {
+        description
+          "static bind address";
+      }
+    }
+    description
+      "description of dhcp_ipPoolAddressStatusType_type";
+  }
+  typedef ipPoolAddressResetType {
+    type enumeration {
+      enum "all" {
+        description
+          "All.";
+      }
+      enum "used" {
+        description
+          "Used.";
+      }
+      enum "conflict" {
+        description
+          "Conflict.";
+      }
+      enum "expired" {
+        description
+          "Expired.";
+      }
+    }
+    description
+      "description of dhcp_ipPoolAddressResetType_type";
+  }
+  typedef dhcpSvrConflictType {
+    type enumeration {
+      enum "conflict" {
+        description
+          "set to conflict";
+      }
+      enum "idle" {
+        description
+          "set to idle";
+      }
+    }
+    description
+      "description of dhcp_dhcpSvrConflictType_type";
+  }
+  typedef ipPoolName {
+    type string {
+      length "1..32";
+    }
+    description
+      "description of dhcp_ipPoolName_type";
+  }
+  typedef dhcpSvrSipMode {
+    type string;
+    description
+      "description of dhcp_dhcpSvrSipMode_type";
+  }
+  typedef dhcpSvrReplySubOptMode {
+    type string;
+    description
+      "description of dhcp_dhcpSvrReplySubOptMode_type";
+  }
+  typedef dhcpReplyType {
+    type string;
+    description
+      "description of dhcp_dhcpReplyType_type";
+  }
+}

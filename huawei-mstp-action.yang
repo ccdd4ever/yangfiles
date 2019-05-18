@@ -1,0 +1,76 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-mstp-action {
+  belongs-to huawei-mstp {
+    prefix mstp;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  include huawei-mstp-type;
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "submodule mstp_action";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  rpc resetStpStat {
+    description
+      "Reset All Statistics";
+  }
+  rpc processmcheck {
+    description
+      "Configure all ports bound to the current MSTP process to automatically switch back to the RSTP/MSTP mode.";
+    input {
+      leaf processId {
+        type uint32 {
+          range "0..256";
+        }
+        description
+          "MSTP process ID.";
+      }
+    }
+  }
+  rpc portmcheck {
+    description
+      "Configure the current port to automatically switch back to the RSTP/MSTP mode.";
+    input {
+      leaf ifName {
+        type pub-type:ifName;
+        description
+          "Interface name.";
+      }
+    }
+  }
+  rpc resetStpPortStat {
+    description
+      "Clear STP statistics on the interface.";
+    input {
+      leaf ifName {
+        type pub-type:ifName;
+        description
+          "Interface name.";
+      }
+    }
+  }
+  rpc resetStpErrorPkt {
+    description
+      "Clear statistics about error STP packets.";
+  }
+}

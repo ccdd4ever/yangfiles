@@ -1,0 +1,164 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-fei {
+  namespace "http://www.huawei.com/netconf/vrp/huawei-fei";
+  prefix fei;
+  import huawei-extension {
+    prefix ext;
+  }
+  include huawei-fei-type;
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "Global Configuration";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  container fei {
+    config false;
+    description
+      "Global Configuration";
+    container hardDiffs {
+      config false;
+      description
+        "Hard Rule Tables";
+      list hardDiff {
+        key "opMode entityPara parentPara schemaSpec elementXPath bindType bindNodeXPath bindParentXPath boardType boardVersion subCardType interfaceType ifMainSubType";
+        config false;
+        description
+          "Hard Rule Table";
+        leaf opMode {
+          type uint32;
+          config false;
+          description
+            "Operate Mode";
+          ext:support-filter "true";
+        }
+        leaf entityPara {
+          type string {
+            length "0..256";
+          }
+          config false;
+          description
+            "Entity Parameter";
+          ext:support-filter "true";
+        }
+        leaf parentPara {
+          type string {
+            length "0..256";
+          }
+          config false;
+          description
+            "Entity Parent Parameter";
+          ext:support-filter "true";
+        }
+        leaf schemaSpec {
+          type string {
+            length "0..256";
+          }
+          config false;
+          description
+            "Schema name";
+          ext:support-filter "true";
+        }
+        leaf elementXPath {
+          type string {
+            length "0..256";
+          }
+          config false;
+          description
+            "The Xpath of element";
+        }
+        leaf bindType {
+          type uint32;
+          config false;
+          description
+            "Bind Type";
+        }
+        leaf bindNodeXPath {
+          type string {
+            length "0..256";
+          }
+          config false;
+          description
+            "The Xpath of bind node";
+        }
+        leaf bindParentXPath {
+          type string {
+            length "0..256";
+          }
+          config false;
+          description
+            "The Xpath of bind parent node";
+        }
+        leaf boardType {
+          type uint32;
+          config false;
+          description
+            "Board Type";
+        }
+        leaf boardVersion {
+          type uint32;
+          config false;
+          description
+            "Board Version";
+        }
+        leaf subCardType {
+          type uint32;
+          config false;
+          description
+            "SubCard Type";
+        }
+        leaf interfaceType {
+          type uint32;
+          config false;
+          description
+            "Interface Type";
+        }
+        leaf ifMainSubType {
+          type uint32;
+          config false;
+          description
+            "Main Or Sub";
+        }
+        leaf isSupport {
+          type uint32;
+          config false;
+          description
+            "Support or not";
+        }
+        leaf range {
+          type string {
+            length "0..1024";
+          }
+          config false;
+          description
+            "Range";
+        }
+        leaf default {
+          type string {
+            length "0..256";
+          }
+          config false;
+          description
+            "Default";
+        }
+      }
+    }
+  }
+}

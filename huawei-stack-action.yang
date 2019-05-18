@@ -1,0 +1,44 @@
+submodule huawei-stack-action {
+    belongs-to "huawei-stack" {
+        prefix "stack";
+    }
+    import huawei-pub-type {
+        prefix "pub-type";
+    }
+    include huawei-stack-type;
+    
+    organization "Huawei Technologies Co.,Ltd.";
+    contact "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+              People's Republic of China                    
+              Website: http://www.huawei.com Email: support@huawei.com";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+    rpc autoNegotiate {
+        input {
+            leaf autoNegotiateEnable {
+                type boolean;
+                description "Information of Auto Negotiates.";
+            }
+        }
+    }
+    rpc stackFastUpgrade {
+        input {
+            leaf fastUpgradeRollbackTimer {
+                type uint32 {
+                    range "30..240";
+                }
+                description "Timeout period for a fast stack upgrade.";
+            }
+        }
+    }
+}

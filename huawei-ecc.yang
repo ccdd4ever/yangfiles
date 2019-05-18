@@ -1,0 +1,143 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-ecc {
+  namespace "http://www.huawei.com/netconf/vrp/huawei-ecc";
+  prefix ecc;
+  import huawei-extension {
+    prefix ext;
+  }
+  include huawei-ecc-type;
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "ECC";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  container ecc {
+    description
+      "ECC";
+    container eccLocalKeys {
+      description
+        "local key table";
+      container eccLocalKey {
+        description
+          "local key code.";
+        leaf keySize {
+          type eccECCKeyType;
+          default "521";
+          description
+            "key size(256/384/521)";
+        }
+        leaf hostKeyName {
+          type string {
+            length "0..264";
+          }
+          config false;
+          description
+            "Hostkey name";
+        }
+        leaf hostKeyCode {
+          type string {
+            length "0..1024";
+          }
+          config false;
+          description
+            "Hostkey code";
+        }
+        leaf hostKeyPEM {
+          type string {
+            length "0..1024";
+          }
+          config false;
+          description
+            "Hostkey code in PEM format";
+        }
+      }
+    }
+    container eccPeerKeys {
+      description
+        "peer key table";
+      list eccPeerKey {
+        key "keyName";
+        description
+          "peer key code.";
+        leaf keyName {
+          type string {
+            length "1..30";
+          }
+          description
+            "key name";
+        }
+        leaf keyCode {
+          type string {
+            length "1..1024";
+          }
+          mandatory true;
+          description
+            "key code";
+        }
+      }
+    }
+    container eccKeyPairCfgs {
+      description
+        "ECC keypair labels";
+      list eccKeyPairCfg {
+        key "keyPairLabel";
+        max-elements  "20";
+        description
+          "ECC keypair label";
+        leaf keyPairLabel {
+          type string {
+            length "0..35";
+            pattern '[a-zA-Z0-9_]*';
+          }
+          description
+            "Keypair Label Name : It only contains underscores (_), case-insensitive letters and digits";
+        }
+        leaf keySize {
+          type eccECCKeyType;
+          mandatory true;
+          description
+            "Size of Keypair";
+        }
+        leaf hostKeyCode {
+          type string {
+            length "0..2048";
+          }
+          config false;
+          description
+            "ECC hostkey code";
+        }
+      }
+    }
+    container eccGlobalCfg {
+      description
+        "Global Configuration ";
+      leaf maxKeyPair {
+        type int32 {
+          range "1..20";
+        }
+        default "20";
+        description
+          "Maximum keypair value";
+        ext:allowDelete "true";
+      }
+    }
+  }
+}

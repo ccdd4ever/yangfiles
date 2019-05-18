@@ -1,0 +1,414 @@
+submodule huawei-stack-type {
+    belongs-to "huawei-stack" {
+        prefix "stack";
+    }
+    
+    organization "Huawei Technologies Co.,Ltd.";
+    contact "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+              People's Republic of China                    
+              Website: http://www.huawei.com Email: support@huawei.com";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+    typedef stackLoadBalanceType {
+        type enumeration {
+            enum "src-ip" {
+                value 0;
+                description "According to source IP hash arithmetic.";
+            }
+            enum "dst-ip" {
+                value 1;
+                description "According to destination IP hash arithmetic.";
+            }
+            enum "src-dst-ip" {
+                value 2;
+                description "According to source/destination IP hash arithmetic.";
+            }
+            enum "src-mac" {
+                value 3;
+                description "According to destination MAC hash arithmetic.";
+            }
+            enum "dst-mac" {
+                value 4;
+                description "According to destination MAC hash arithmetic.";
+            }
+            enum "src-dst-mac" {
+                value 5;
+                description "According to source/destination MAC hash arithmetic.";
+            }
+            enum "enhanced" {
+                value 6;
+                description "According to enhanced hash arithmetic.";
+            }
+        }
+    }
+    typedef stackRoleType {
+        type enumeration {
+            enum "Master" {
+                value 0;
+                description "Master.";
+            }
+            enum "Standby" {
+                value 1;
+                description "Standby.";
+            }
+            enum "Slave" {
+                value 2;
+                description "Slave.";
+            }
+        }
+    }
+    typedef stackDeviceType {
+        type enumeration {
+            enum "S6700" {
+                value 0;
+                description "S6700.";
+            }
+            enum "CE6850-48S4Q-EI" {
+                value 1;
+                description "CE6850-48S4Q-EI.";
+            }
+            enum "CE5850-48T4S2Q-EI" {
+                value 2;
+                description "CE5850-48T4S2Q-EI.";
+            }
+            enum "CE6850-48T4Q-EI" {
+                value 3;
+                description "CE6850-48T4Q-EI.";
+            }
+            enum "CE12804" {
+                value 4;
+                description "CE12804.";
+            }
+            enum "CE12808" {
+                value 5;
+                description "CE12808.";
+            }
+            enum "CE12812" {
+                value 6;
+                description "CE12812.";
+            }
+            enum "CE12816" {
+                value 7;
+                description "CE12816.";
+            }
+            enum "CE5810-24T4S-EI" {
+                value 8;
+                description "CE5810-24T4S-EI.";
+            }
+            enum "CE5810-48T4S-EI" {
+                value 9;
+                description "CE5810-48T4S-EI.";
+            }
+            enum "CE5850-48T4S2Q-HI" {
+                value 10;
+                description "CE5850-48T4S2Q-HI.";
+            }
+            enum "CE6810-48S4Q-EI" {
+                value 11;
+                description "CE6810-48S4Q-EI.";
+            }
+            enum "CE6810-48S4Q-EI-CDR" {
+                value 12;
+                description "CE6810-48S4Q-EI-CDR.";
+            }
+            enum "CE7850-32Q-EI" {
+                value 13;
+                description "CE7850-32Q-EI.";
+            }
+            enum "CE6810-48S4Q-LI" {
+                value 14;
+                description "CE6810-48S4Q-LI.";
+            }
+            enum "CE6810-48S-LI" {
+                value 15;
+                description "CE6810-48S-LI.";
+            }
+            enum "CE6850-48S6Q-HI" {
+                value 16;
+                description "CE6850-48S6Q-HI.";
+            }
+            enum "CE6850U-48S6Q-HI" {
+                value 17;
+                description "CE6850U-48S6Q-HI.";
+            }
+            enum "CE12804S" {
+                value 18;
+                description "CE12804S.";
+            }
+            enum "CE12808S" {
+                value 19;
+                description "CE12808S.";
+            }
+            enum "CE6850-48T6Q-HI" {
+                value 20;
+                description "CE6850-48T6Q-HI.";
+            }
+            enum "CE6810-32T16S4Q-LI" {
+                value 21;
+                description "CE6810-32T16S4Q-LI.";
+            }
+            enum "CE5810-48T4S-HI" {
+                value 22;
+                description "CE5810-48T4S-HI.";
+            }
+            enum "CE6810-24S2Q-LI" {
+                value 23;
+                description "CE6810-24S2Q-LI.";
+            }
+            enum "CE6850U-24S2Q-HI" {
+                value 24;
+                description "CE6850U-24S2Q-HI.";
+            }
+            enum "CE5855-48T4S2Q-EI" {
+                value 25;
+                description "CE5855-48T4S2Q-EI.";
+            }
+            enum "CE5855-24T4S2Q-EI" {
+                value 26;
+                description "CE5855-24T4S2Q-EI.";
+            }
+            enum "CE6851-48S6Q-HI" {
+                value 27;
+                description "CE6851-48S6Q-HI.";
+            }
+            enum "CE8860-4C-EI" {
+                value 28;
+                description "CE8860-4C-EI.";
+            }
+            enum "CE6855-48T6Q-HI" {
+                value 29;
+                description "CE6855-48T6Q-HI.";
+            }
+            enum "CE6855-48S6Q-HI" {
+                value 30;
+                description "CE6855-48S6Q-HI.";
+            }
+            enum "CE6870-24S6CQ-EI" {
+                value 31;
+                description "CE6870-24S6CQ-EI.";
+            }
+            enum "CE6870-48S6CQ-EI" {
+                value 32;
+                description "CE6870-48S6CQ-EI.";
+            }
+            enum "CE6860-48S6CQ-EI" {
+                value 33;
+                description "CE6860-48S6CQ-EI.";
+            }
+            enum "CE6860-48S8CQ-EI" {
+                value 34;
+                description "CE6860-48S8CQ-EI.";
+            }
+            enum "CE6860-48S18CQ-EI" {
+                value 35;
+                description "CE6860-48S18CQ-EI.";
+            }
+            enum "CE7855-32Q-EI" {
+                value 36;
+                description "CE7855-32Q-EI.";
+            }
+            enum "CE8850-32CQ-EI" {
+                value 37;
+                description "CE8850-32CQ-EI.";
+            }
+            enum "CE6880-48S4Q2CQ-EI" {
+                value 38;
+                description "CE6880-48S4Q2CQ-EI.";
+            }
+            enum "CE6880-24S4Q2CQ-EI" {
+                value 39;
+                description "CE6880-24S4Q2CQ-EI.";
+            }
+            enum "CE6880-48T4Q2CQ-EI" {
+                value 40;
+                description "CE6880-48T4Q2CQ-EI.";
+            }
+            enum "CE6880-48S4Q2CQ-EI-TCAM" {
+                value 41;
+                description "CE6880-48S4Q2CQ-EI-TCAM";
+            }
+            enum "CE6880-24S4Q2CQ-EI-TCAM" {
+                value 42;
+                description "CE6880-24S4Q2CQ-EI-TCAM";
+            }
+            enum "CE12804E" {
+                value 43;
+                description "CE12804E.";
+            }
+            enum "CE12808E" {
+                value 44;
+                description "CE12808E.";
+            }
+            enum "CE12812E" {
+                value 45;
+                description "CE12812E.";
+            }
+            enum "CE12816E" {
+                value 46;
+                description "CE12816E.";
+            }
+            enum "CE12816M" {
+                value 47;
+                description "CE12816M.";
+            }
+        }
+    }
+    typedef stackPortStateType {
+        type enumeration {
+            enum "Up" {
+                value 0;
+                description "up.";
+            }
+            enum "Down" {
+                value 1;
+                description "down.";
+            }
+        }
+    }
+    typedef stackLinkType {
+        type enumeration {
+            enum "MB" {
+                value 0;
+                description "MB.";
+            }
+            enum "LC" {
+                value 1;
+                description "LC.";
+            }
+        }
+    }
+    typedef stackStatusType {
+        type enumeration {
+            enum "Stack" {
+                value 0;
+                description "Stack.";
+            }
+            enum "NotStack" {
+                value 1;
+                description "NotStack.";
+            }
+        }
+    }
+    typedef vstackStatusType {
+        type enumeration {
+            enum "VStack" {
+                value 0;
+                description "SVF enable.";
+            }
+            enum "NotVStack" {
+                value 1;
+                description "SVF not enable.";
+            }
+        }
+    }
+    typedef resultType {
+        type enumeration {
+            enum "Succeed" {
+                value 0;
+                description "Succeed.";
+            }
+            enum "Failed" {
+                value 1;
+                description "Failed.";
+            }
+            enum "NA" {
+                value 2;
+                description "NA.";
+            }
+        }
+    }
+    typedef stackUplinkPort {
+        type enumeration {
+            enum "auto" {
+                value 0;
+                description "AutoNegotiation.";
+            }
+            enum "8*10GE" {
+                value 1;
+                description "8*10GE.";
+            }
+            enum "4*40GE" {
+                value 2;
+                description "4*40GE.";
+            }
+            enum "4*10GE" {
+                value 3;
+                description "4*10GE.";
+            }
+            enum "2*40GE" {
+                value 4;
+                description "2*40GE.";
+            }
+            enum "6*40GE" {
+                value 5;
+                description "6*40GE.";
+            }
+        }
+    }
+    typedef stackSwitchMode {
+        type enumeration {
+            enum "auto" {
+                value 0;
+                description "AutoNegotiation.";
+            }
+            enum "leaf" {
+                value 1;
+                description "leaf.";
+            }
+            enum "stack" {
+                value 2;
+                description "stack.";
+            }
+        }
+    }
+    typedef forwardModelType {
+        type enumeration {
+            enum "distributed" {
+                value 0;
+                description "distributed.";
+            }
+            enum "centralized" {
+                value 1;
+                description "centralized.";
+            }
+            enum "hybrid" {
+                value 2;
+                description "hybrid.";
+            }
+        }
+    }
+    typedef alarmSwitchType {
+        type enumeration {
+            enum "enable" {
+                value 0;
+                description "enable.";
+            }
+            enum "disable" {
+                value 1;
+                description "disable.";
+            }
+        }
+    }
+    typedef excludeLeafType {
+        type enumeration {
+            enum "default" {
+                value 0;
+                description "default.";
+            }
+            enum "CE5810EI" {
+                value 1;
+                description "CE5810EI.";
+            }
+        }
+    }
+}

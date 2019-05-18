@@ -1,0 +1,1698 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+module huawei-qos {
+  namespace "http://www.huawei.com/netconf/vrp/huawei-qos";
+  prefix "qos";
+  import huawei-pub-type {
+    prefix "pub-type";
+  }
+  import ietf-inet-types {
+    prefix "inet";
+  }
+  import huawei-extension {
+    prefix "ext";
+  }
+  include huawei-qos-action;
+  include huawei-qos-type;
+  include huawei-qos-hqos;
+  include huawei-qos-cbqos;
+  include huawei-qos-wred;
+  include huawei-qos-cbqos-type;
+  include huawei-qos-hqos-type;
+  
+  organization "Huawei Technologies Co.,Ltd.";
+  contact "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+              People's Republic of China                    
+              Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "Quality of service.";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  container qos {
+    description
+      "Quality of service.";
+    container qosWred {
+    description
+      "Wred.";
+      uses qos:qos_wred_type;
+    }
+    container qosCbQos {
+    description
+      "Traffic policy.";
+      uses qos:qos_cbqos_type;
+    }
+    container qosHQos {
+    description
+      "QoS.";
+      uses qos:qos_hqos_type;
+    }
+    container qosDss {
+      description
+        "List of Diff-Serv domains.";
+      list qosDs {
+        key "dsName";
+        max-elements 7;
+        description
+          "Diff-Serv domain.";
+        leaf dsName {
+          type qosDsName;
+          description
+            "Name of a Diff-Serv domain.";
+        }
+        container qosBas {
+          description
+            "List of the mappings between inbound and outbound priorities.";
+          list qosBa {
+            key "baType baValue";
+            description
+              "Mapping between the outbound and inbound priorities for inbound traffic.";
+            leaf baType {
+              type qosBaType;
+              description
+                "Priority type.";
+            }
+            leaf baValue {
+              type uint8 {
+                range "0..63";
+              }
+              description
+                "Priority value.";
+            }
+            leaf serviceClass {
+              type qosServiceClass;
+              mandatory true;
+              description
+                "Class of service.";
+            }
+            leaf color {
+              type qosColor;
+              must "(../serviceClass='af1' and (../color='green' or ../color='yellow' or ../color='red') ) or (../serviceClass='af2' and (../color='green' or ../color='yellow' or ../color='red') ) or (../serviceClass='af3' and (../color='green' or ../color='yellow' or ../color='red') ) or (../serviceClass='af4' and (../color='green' or ../color='yellow' or ../color='red') ) or (../serviceClass='be' and (../color='green' or ../color='yellow' or ../color='red') ) or (../serviceClass='cs6' and (../color='green' or ../color='yellow' or ../color='red') ) or (../serviceClass='cs7' and (../color='green' or ../color='yellow' or ../color='red') ) or (../serviceClass='ef' and (../color='green' or ../color='yellow' or ../color='red') ) or not(../serviceClass='af1' or ../serviceClass='af2' or ../serviceClass='af3' or ../serviceClass='af4' or ../serviceClass='be' or ../serviceClass='cs6' or ../serviceClass='cs7' or ../serviceClass='ef')";
+              mandatory true;
+              description
+                "Color marked to the data flows after measurement.";
+            }
+          }
+        }
+        container qosPhbs {
+          description
+            "List of outbound priority mappings.";
+          list qosPhb {
+            key "phbType serviceClass color";
+            description
+              "Mapping between the outbound and inbound priorities for outbound traffic.";
+            leaf phbType {
+              type qosBaType;
+              description
+                "Priority type.";
+            }
+            leaf serviceClass {
+              type qosServiceClass;
+              description
+                "Class of service.";
+            }
+            leaf color {
+              type qosColor;
+              description
+                "Color marked to the data flows after measurement.";
+            }
+            leaf phbValue {
+              type uint8 {
+                range "0..63";
+              }
+              mandatory true;
+              description
+                "Priority value.";
+            }
+          }
+        }
+      }
+    }
+    container qosQppbPolicys {
+      description
+        "QPPB local policy list.";
+      list qosQppbPolicy {
+        key "policyName";
+        description
+          "QPPB local policy.";
+        leaf policyName {
+          type string {
+            length "1..31";
+          }
+          description
+            "Local-policy name.";
+        }
+        leaf statFlag {
+          type boolean;
+          default "false";
+          description
+            "Statistics flag.";
+        }
+        container qosLocalIDs {
+          description
+            "Local ID list.";
+          list qosLocalID {
+            key "localID";
+            max-elements 23;
+            description
+              "Local ID.";
+            leaf localID {
+              type uint32 {
+                range "1..24";
+              }
+              description
+                "Local ID value.";
+            }
+            leaf behaviorName {
+              type qosPolicyName;
+              mandatory true;
+              description
+                "Behavior name.";
+            }
+          }
+        }
+      }
+    }
+    container qosIfQoss {
+    description
+      "QoS based on interface.";
+      container qosIfTrusts {
+        description
+          "Trust dscp or 8021p list.";
+        list qosIfTrust {
+          key "ifName";
+          description
+            "Trust dscp or 8021p.";
+          leaf ifName {
+            type pub-type:ifName;
+            description
+              "Name of an interface.";
+          }
+          leaf trustType {
+            type qosTrustType;
+            mandatory true;
+            description
+              "to select trusting dscp, or 8021p.";
+          }
+        }
+      }
+      container qosIfTrustUps {
+        description
+          "Trust DS domain list.";
+        list qosIfTrustUp {
+          key "ifName";
+          description
+            "Trust DS domain.";
+          leaf ifName {
+            type pub-type:ifName;
+            description
+              "Name of an interface.";
+          }
+          leaf dsName {
+            type qosDsName;
+            default "default";
+            description
+              "Name of a DS domain.";
+            ext:allowDelete true;
+          }
+        }
+      }
+      container qosPortTrustUps {
+        description
+          "Trust DS domain list.";
+        list qosPortTrustUp {
+          key "ifName";
+          description
+            "Trust DS domain.";
+          leaf ifName {
+            type pub-type:ifName;
+            description
+              "Name of an interface.";
+          }
+          leaf dsName {
+            type qosDsName;
+            default "default";
+            description
+              "Name of a DS domain.";
+            ext:allowDelete true;
+          }
+        }
+      }
+      container qosIfPhbs {
+        description
+          "List of the PHB operation.";
+        container qosIfPhb {
+          description
+            "PHB operation.";
+          leaf operateType {
+            type qosPhbOperateType;
+            description
+              "to select enable or disable phb.";
+          }
+          leaf dsName {
+            type qosDsName;
+            description
+              "Name of a DS domain.";
+          }
+        }
+      }
+      container qosDefaultServiceClasss {
+        description
+          "List of forced traffic classification.";
+        container qosDefaultServiceClass {
+          description
+            "Forced traffic classification.";
+          leaf serviceClass {
+            type qosServiceClass;
+            description
+              "Class of service.";
+          }
+        }
+      }
+      container qosIfCars {
+        description
+          "List of interfaces applying CAR(Committed Access Rate).";
+        list qosIfCar {
+          key "ifName direction";
+          description
+            "Interfaces applying CAR(Committed Access Rate).";
+          leaf ifName {
+            type pub-type:ifName;
+            description
+              "Name of an interface.";
+          }
+          leaf direction {
+            type qosDirectionType;
+            description
+              "Direction. ";
+          }
+          leaf carTmplName {
+            type string {
+              length "1..31";
+            }
+            mandatory true;
+            description
+              "Name of a CAR template";
+          }
+        }
+      }
+      container qosPolicyApplys {
+        description
+          "List of traffic policy applications.";
+        list qosPolicyApply {
+          key "direction";
+          max-elements 2;
+          description
+            "Application of a traffic policy.";
+          leaf direction {
+            type qosDirectionType;
+            description
+              "Direction.";
+          }
+          leaf policyName {
+            type qosPolicyName;
+            mandatory true;
+            description
+              "Policy name.";
+          }
+          leaf layer {
+            type qosPolicyApplyLayer;
+            default "none";
+            description
+              "Classification based on Layer 2 or Layer 3 information.";
+          }
+          container qosPolicyStats {
+            description
+              "List of traffic policy statistics.";
+            uses qos:qos_cbqosPolicyStats_type;
+          }
+        }
+      }
+      container qosIfPolicyApplys {
+        description
+          "Interface Policy Apply Lists";
+        list qosIfPolicyApply {
+          key "ifName policyName direction";
+          description
+            "Interface Policy Apply";
+          leaf ifName {
+            type string {
+              length "1..32";
+            }
+            description
+              "InterfaceName.";
+          }
+          leaf policyName {
+            type string {
+              length "1..31";
+            }
+            description
+              "Policy name.";
+          }
+          leaf direction {
+            type qosPolicyApplyDirection;
+            description
+              "Direction.";
+          }
+          container qosIfClassifierStats {
+            description
+              "List of traffic classifier statistics.";
+            uses qos:qos_cbqosIfClassifierStats_type;
+          }
+          container qosIfPolicyApplyStates {
+            description
+              "Traffic Policy Applied-record Lists.";
+            uses qos:qos_cbqosIfPolicyApplyStates_type;
+          }
+        }
+      }
+      container qosPortQueues {
+        description
+          "List of generic traffic shaping.";
+        list qosPortQueue {
+          key "ifName queueId";
+          description
+            "generic traffic shaping on interface.";
+          leaf ifName {
+            type pub-type:ifName;
+            description
+              "Name of an interface.";
+          }
+          leaf queueId {
+            type QUEUEID;
+            description
+              "Interface Queue";
+          }
+          leaf cir {
+            type uint32 {
+              range "64..100000000";
+            }
+            mandatory true;
+            description
+              "Committed information rate (unit: Kbit/s).";
+          }
+          leaf pir {
+            type uint32 {
+              range "64..100000000";
+            }
+            description
+              "Peak information rate (unit: Kbit/s).";
+            ext:allowDelete true;
+          }
+          leaf cbs {
+            type uint32 {
+              range "10000..536870912";
+            }
+            description
+              "Committed burst size (unit: Byte).";
+            ext:allowDelete true;
+          }
+          leaf pbs {
+            type uint32 {
+              range "10000..536870912";
+            }
+            description
+              "Peak burst size (unit: Byte).";
+            ext:allowDelete true;
+          }
+        }
+      }
+      container qosIfLrs {
+        description
+          "List of interface traffic rate limits.";
+        list qosIfLr {
+          key "ifName";
+          description
+            "Limit on the rate of traffic on an interface";
+          leaf ifName {
+            type pub-type:ifName;
+            description
+              "Name of an interface.";
+          }
+          leaf cir {
+            type uint32 {
+              range "64..100000000";
+            }
+            mandatory true;
+            description
+              "Committed Information Rate (unit: Kbit/s).";
+          }
+          leaf cbs {
+            type uint32 {
+              range "10000..536870912";
+            }
+            description
+              "Committed burst size (unit: Byte).";
+            ext:allowDelete true;
+          }
+        }
+      }
+      container qosMcWeights {
+        description
+          "Interface multicast weight List.";
+        container qosMcWeight {
+          description
+            "Interface multicast weight.";
+          leaf weight {
+            type uint8 {
+              range "0..100";
+            }
+            description
+              "Weight value.";
+          }
+        }
+      }
+      container qosIfDeis {
+        description
+          "Interface DEI List";
+        list qosIfDei {
+          key "ifName";
+          description
+            "Interface DEI";
+          leaf ifName {
+            type pub-type:ifName;
+            description
+              "Name of an interface.";
+          }
+          leaf cfiFlag {
+            type ENABLEFLAG;
+            default "disable";
+            description
+              "Interface DEI enable flag";
+          }
+        }
+      }
+      container qosIfPrioritys {
+        description
+          "Interface default priority list";
+        list qosIfPriority {
+          key "ifName";
+          description
+            "Interface default priority";
+          leaf ifName {
+            type pub-type:ifName;
+            description
+              "Name of an interface.";
+          }
+          leaf defPriority {
+            type QUEUEID;
+            default "0";
+            description
+              "Interface default priority";
+          }
+        }
+      }
+      container qosIfQueueEcns {
+        description
+          "Interface Queue Ecn List";
+        list qosIfQueueEcn {
+          key "ifName priority";
+          description
+            "Interface Queue Ecn";
+          leaf ifName {
+            type pub-type:ifName;
+            description
+              "Name of an interface.";
+          }
+          leaf priority {
+            type QUEUEID;
+            description
+              "Interface Queue";
+          }
+          leaf ecnFlag {
+            type ENABLEFLAG;
+            default "disable";
+            description
+              "Ecn Enable Flag";
+          }
+        }
+      }
+      container qosIfQueueLengths {
+        description
+          "Interface Queue Length List";
+        list qosIfQueueLength {
+          key "ifName queueid";
+          description
+            "Interface Queue Length";
+          leaf ifName {
+            type pub-type:ifName;
+            description
+              "Name of an interface.";
+          }
+          leaf queueid {
+            type QUEUEID;
+            description
+              "Interface Queue";
+          }
+          leaf length {
+            type uint32 {
+              range "0..1000000000";
+            }
+            mandatory true;
+            description
+              "length";
+          }
+        }
+      }
+      container qosIfBursts {
+        description
+          "Interface Burst List";
+        list qosIfBurst {
+          key "ifName burstMode";
+          description
+            "Interface Burst";
+          leaf ifName {
+            type pub-type:ifName;
+            description
+              "Name of an interface.";
+          }
+          leaf burstMode {
+            type BURSTMODE;
+            description
+              "burst mode";
+          }
+        }
+      }
+      container qosIfPortMirrors {
+        description
+          "Interface Mirror Lists";
+        list qosIfPortMirror {
+          key "ifName observerIndex direction";
+          description
+            "Interface Mirror";
+          leaf ifName {
+            type pub-type:ifName;
+            description
+              "Name of an interface.";
+          }
+          leaf observerIndex {
+            type uint32 {
+              range "1..8";
+            }
+            description
+              "observer index";
+          }
+          leaf direction {
+            type MIRRORDIRECTION;
+            description
+              "direction";
+          }
+        }
+      }
+      container qosIfQueueSchedules {
+        description
+          "Queue Schedules Lists";
+        list qosIfQueueSchedule {
+          key "ifName queueid";
+          description
+            "Queue Schedule";
+          leaf ifName {
+            type pub-type:ifName;
+            description
+              "Name of an interface.";
+          }
+          leaf queueid {
+            type QUEUEID;
+            description
+              "Interface Queue";
+          }
+          leaf scheduleMode {
+            type SCHEDULEMODE;
+            mandatory true;
+            description
+              "schedule mode";
+          }
+          leaf weight {
+            type uint32 {
+              range "1..100";
+            }
+            mandatory true;
+            description
+              "weight";
+            ext:allowDelete true;
+          }
+        }
+      }
+    }
+    container qosIfCarTmpls {
+      description
+        "CAR template List";
+      list qosIfCarTmpl {
+        key "carTmplName";
+        max-elements 512;
+        description
+          "CAR template";
+        leaf carTmplName {
+          type string {
+            length "1..31";
+          }
+          description
+            "Name of a CAR template";
+        }
+        leaf cir {
+          type uint32 {
+            range "8..100000000";
+          }
+          mandatory true;
+          description
+            "Committed information rate (unit: Kbit/s).";
+        }
+        leaf pir {
+          type uint32 {
+            range "8..100000000";
+          }
+          description
+            "Peak information rate (unit: Kbit/s).";
+          ext:allowDelete true;
+        }
+        leaf cbs {
+          type uint32 {
+            range "10000..536870912";
+          }
+          description
+            "Committed burst size (unit: Byte).";
+          ext:allowDelete true;
+        }
+        leaf pbs {
+          type uint32 {
+            range "10000..536870912";
+          }
+          description
+            "Peak burst size (unit: Byte).";
+          ext:allowDelete true;
+        }
+      }
+    }
+    container qosGlobalCfgs {
+    description
+      "QoS based on global.";
+      container qosLocalPriMaps {
+        description
+          "Local priority map List";
+        list qosLocalPriMap {
+          key "vsName serviceClass";
+          description
+            "Local priority map";
+          leaf vsName {
+            type string {
+              length "1..63";
+            }
+            description
+              "virtual system name";
+          }
+          leaf serviceClass {
+            type SERVICECLASS;
+            description
+              "service class";
+          }
+          leaf queueID {
+            type QUEUEID;
+            default "0";
+            description
+              "Queue id";
+          }
+        }
+      }
+      container qosGlobalBursts {
+        description
+          "global bursts";
+        list qosGlobalBurst {
+          key "vsName burstMode";
+          description
+            "global burst";
+          leaf vsName {
+            type string {
+              length "1..63";
+            }
+            description
+              "virtual system name";
+          }
+          leaf burstMode {
+            type BURSTMODEGLB;
+            description
+              "burst mode";
+          }
+        }
+      }
+      container qosGlobalEcns {
+        description
+          "global Ecns";
+        list qosGlobalEcn {
+          key "vsName";
+          description
+            "global Ecn";
+          leaf vsName {
+            type string {
+              length "1..63";
+            }
+            description
+              "ECN VS name";
+          }
+        }
+      }
+      container qosGlobalPhbs {
+        description
+          "Global Phb list";
+        list qosGlobalPhb {
+          key "phbType";
+          description
+            "Global phb";
+          leaf phbType {
+            type PHBTYPE;
+            description
+              "Phb type";
+          }
+          leaf enableFlag {
+            type ENABLEFLAG;
+            default "disable";
+            description
+              "phb enable flag";
+          }
+        }
+      }
+      container qosGlobalSlotBursts {
+        description
+          "global slot burst lists";
+        list qosGlobalSlotBurst {
+          key "slotid burstMode";
+          description
+            "global slot burst";
+          leaf slotid {
+            type string {
+              length "1..63";
+            }
+            description
+              "slot id";
+          }
+          leaf burstMode {
+            type BURSTMODE;
+            description
+              "burst mode";
+          }
+        }
+      }
+      container qosGlobalObservers {
+        description
+          "observer port Lists";
+        list qosGlobalObserver {
+          key "observerIndex";
+          description
+            "observer port";
+          leaf observerIndex {
+            type uint32 {
+              range "1..8";
+            }
+            description
+              "observer index";
+            ext:allowDelete true;
+          }
+          leaf ifName {
+            type pub-type:ifName;
+            mandatory true;
+            description
+              "Name of an interface.";
+          }
+          leaf vlanid {
+            type uint32 {
+              range "0..4094";
+            }
+            description
+              "vlan id";
+            ext:allowDelete true;
+          }
+          leaf dstIp {
+            type inet:ipv4-address-no-zone;
+            description
+              "Destination IP";
+            ext:allowDelete true;
+          }
+          leaf srcIp {
+            type inet:ipv4-address-no-zone;
+            description
+              "Source IP";
+            ext:allowDelete true;
+          }
+          leaf dscp {
+            type uint32 {
+              range "0..63";
+            }
+            description
+              "dscp";
+            ext:allowDelete true;
+          }
+          leaf erspanId {
+            type uint32 {
+              range "0..1023";
+            }
+            description
+              "erspanId";
+            ext:allowDelete true;
+          }
+        }
+      }
+      container qosGlobalPolicyApplys {
+        description
+          "Global Policy Apply Lists.";
+        list qosGlobalPolicyApply {
+          key "policyName direction";
+          max-elements 4;
+          description
+            "Global Policy Apply.";
+          leaf policyName {
+            type string {
+              length "1..31";
+            }
+            description
+              "Policy Name.";
+          }
+          leaf direction {
+            type qosPolicyApplyDirection;
+            description
+              "Direction.";
+          }
+          container qosGlobalClassifierStats {
+            description
+              "List of traffic classifier statistics.";
+            uses qos:qos_cbqosGlobalClassifierStats_type;
+          }
+          container qosGlobalPolicyApplyStates {
+            description
+              "Traffic Policy Applied-record Lists.";
+            uses qos:qos_cbqosGlobalPolicyApplyStates_type;
+          }
+        }
+      }
+    }
+    container qosVlanQoss {
+    description
+      "QoS based on vlan.";
+      container qosVlanDss {
+        description
+          "VLAN binding diffserv lists";
+        list qosVlanDs {
+          key "vlanid";
+          description
+            "VLAN binding diffserv ";
+          leaf vlanid {
+            type vlanID;
+            description
+              "VLAN ID";
+          }
+          leaf dsName {
+            type qosDsName;
+            default "default";
+            description
+              "Diffserv tamplate name";
+          }
+        }
+      }
+      container qosVlanPolicyApplys {
+        description
+          "VLAN Policy Apply Lists";
+        list qosVlanPolicyApply {
+          key "vlanId policyName direction";
+          description
+            "VLAN Policy Apply";
+          leaf vlanId {
+            type vlanID;
+            description
+              "VLAN ID.";
+          }
+          leaf policyName {
+            type string {
+              length "1..31";
+            }
+            description
+              "Policy name.";
+          }
+          leaf direction {
+            type qosPolicyApplyDirection;
+            description
+              "Direction.";
+          }
+          container qosVlanClassifierStats {
+            description
+              "List of traffic classifier statistics.";
+            uses qos:qos_cbqosVlanClassifierStats_type;
+          }
+          container qosVlanPolicyApplyStates {
+            description
+              "Traffic Policy Applied-record Lists.";
+            uses qos:qos_cbqosVlanPolicyApplyStates_type;
+          }
+        }
+      }
+    }
+    container qosSlotQoss {
+    description
+      "QoS based on vlan.";
+      container qosSlotPolicyApplys {
+        description
+          "Slot Policy Apply Lists.";
+        list qosSlotPolicyApply {
+          key "policyName slotId direction";
+          description
+            "Slot Policy Apply.";
+          leaf policyName {
+            type qosPolicyName;
+            description
+              "Policy Name.";
+          }
+          leaf slotId {
+            type qosSlotPath;
+            description
+              "slot Id.";
+          }
+          leaf direction {
+            type qosPolicyApplyDirection;
+            description
+              "Direction.";
+          }
+          container qosSlotClassifierStats {
+            description
+              "List of traffic classifier statistics.";
+            uses qos:qos_cbqosSlotClassifierStats_type;
+          }
+          container qosSlotPolicyApplyStates {
+            description
+              "Traffic Policy Applied-record Lists.";
+            uses qos:qos_cbqosSlotPolicyApplyStates_type;
+          }
+        }
+      }
+    }
+    container qosVpnQoss {
+      description
+        "VPN QoS Lists";
+      container qosVpnPolicyApplys {
+        description
+          "VPN Policy Apply Lists";
+        list qosVpnPolicyApply {
+          key "vpnInstanceName policyName direction";
+          description
+            "VPN Policy Apply";
+          leaf vpnInstanceName {
+            type string {
+              length "1..31";
+            }
+            description
+              "VPN Instance Name";
+          }
+          leaf policyName {
+            type string {
+              length "1..31";
+            }
+            description
+              "Policy Name";
+          }
+          leaf direction {
+            type qosPolicyApplyDirection;
+            description
+              "Direction";
+          }
+          leaf groupId {
+            type uint16 {
+              range "1..128";
+            }
+            description
+              "GroupId";
+            ext:allowDelete true;
+          }
+          container qosVpnClassifierStats {
+            description
+              "List of traffic classifier statistics.";
+            uses qos:qos_cbqosVpnClassifierStats_type;
+          }
+          container qosVpnPolicyApplyStates {
+            description
+              "Traffic Policy Applied-record Lists.";
+            uses qos:qos_cbqosVpnPolicyApplyStates_type;
+          }
+        }
+      }
+    }
+    container qosPortQoss {
+      description
+        "QoS Port Lists";
+      container qosPortGroups {
+        description
+          "QoS Port-group Lists";
+        list qosPortGroup {
+          key "groupId";
+          max-elements 128;
+          description
+            "QoS Port-group";
+          leaf groupId {
+            type uint16 {
+              range "1..128";
+            }
+            description
+              "QoS Port-group ID";
+          }
+          container qosPortGroupMems {
+            description
+              "QoS Port-group Member Lists";
+            list qosPortGroupMem {
+              key "ifName";
+              max-elements 64;
+              description
+                "QoS Port-group Member";
+              leaf ifName {
+                type pub-type:ifName;
+                description
+                  "Interface Name";
+              }
+            }
+          }
+        }
+      }
+    }
+    container qosSlotBufUsageStats {
+      config false;
+      description
+        "List of slot buffer usage.";
+      list qosSlotBufUsageStat {
+        key "slotId";
+        config false;
+        description
+          "Slot buffer usage.";
+        leaf slotId {
+          type qosSlotPath;
+          config false;
+          description
+            "Slot Id.";
+        }
+        leaf total {
+          type uint64;
+          config false;
+          description
+            "Total buffer size.";
+        }
+        leaf currentUsed {
+          type uint64;
+          config false;
+          description
+            "Current used buffer size.";
+        }
+        leaf remained {
+          type uint64;
+          config false;
+          description
+            "Remained buffer size.";
+        }
+        leaf peakUsed {
+          type uint64;
+          config false;
+          description
+            "Peak buffer size.";
+        }
+        leaf averageUsed {
+          type uint64;
+          config false;
+          description
+            "Average buffer size.";
+        }
+      }
+    }
+    container qosPortBufUsageStats {
+      config false;
+      description
+        "List of port buffer usage.";
+      list qosPortBufUsageStat {
+        key "slotId ifName";
+        config false;
+        description
+          "Port buffer usage.";
+        leaf slotId {
+          type qosSlotPath;
+          config false;
+          description
+            "Slot Id.";
+        }
+        leaf ifName {
+          type pub-type:ifName;
+          config false;
+          description
+            "Interface Name";
+        }
+        leaf total {
+          type uint64;
+          config false;
+          description
+            "Total buffer size.";
+        }
+        leaf currentUsed {
+          type uint64;
+          config false;
+          description
+            "Current used buffer size.";
+        }
+        leaf remained {
+          type uint64;
+          config false;
+          description
+            "Remained buffer size.";
+        }
+        leaf peakUsed {
+          type uint64;
+          config false;
+          description
+            "Peak buffer size.";
+        }
+        leaf averageUsed {
+          type uint64;
+          config false;
+          description
+            "Average buffer size.";
+        }
+      }
+    }
+    container qosQueueBufUsageStats {
+      config false;
+      description
+        "List of queue buffer usage.";
+      list qosQueueBufUsageStat {
+        key "slotId ifName queueId";
+        config false;
+        description
+          "queue buffer usage.";
+        leaf slotId {
+          type qosSlotPath;
+          config false;
+          description
+            "Slot Id.";
+        }
+        leaf ifName {
+          type pub-type:ifName;
+          config false;
+          description
+            "Interface Name";
+        }
+        leaf queueId {
+          type QUEUEID;
+          config false;
+          description
+            "Interface Queue";
+        }
+        leaf currentUsed {
+          type uint64;
+          config false;
+          description
+            "Current used buffer size.";
+        }
+        leaf peakUsed {
+          type uint64;
+          config false;
+          description
+            "Peak buffer size.";
+        }
+        leaf averageUsed {
+          type uint64;
+          config false;
+          description
+            "Average buffer size.";
+        }
+      }
+    }
+    container qosQueueStats {
+      config false;
+      description
+        "List of queue statistics.";
+      list qosQueueStat {
+        key "ifName queueId";
+        config false;
+        description
+          "Queue statistics.";
+        leaf ifName {
+          type pub-type:ifName;
+          config false;
+          description
+            "Interface Name.";
+        }
+        leaf queueId {
+          type QUEUEID;
+          config false;
+          description
+            "Interface Queue.";
+        }
+        leaf totalPackets {
+          type uint64;
+          config false;
+          description
+            "Total pakcets.";
+        }
+        leaf totalBytes {
+          type uint64;
+          config false;
+          description
+            "Total bytes.";
+        }
+        leaf passedPackets {
+          type uint64;
+          config false;
+          description
+            "Passed Packets.";
+        }
+        leaf passedBytes {
+          type uint64;
+          config false;
+          description
+            "Passed Bytes.";
+        }
+        leaf discardedPackets {
+          type uint64;
+          config false;
+          description
+            "Discarded Packets.";
+        }
+        leaf discardedBytes {
+          type uint64;
+          config false;
+          description
+            "Discarded Bytes.";
+        }
+        leaf passedPacketRate {
+          type uint64;
+          config false;
+          description
+            "Passed Packet rate.";
+        }
+        leaf passedByteRate {
+          type uint64;
+          config false;
+          description
+            "Passed Byte rate.";
+        }
+        leaf discardedPacketRate {
+          type uint64;
+          config false;
+          description
+            "Discarded Packet rate.";
+        }
+        leaf discardedByteRate {
+          type uint64;
+          config false;
+          description
+            "Discarded Byte rate.";
+        }
+        leaf discardedTime {
+          type string {
+            length "1..31";
+          }
+          config false;
+          description
+            "Discarded time.";
+        }
+      }
+    }
+    container qosQueueBuffOverRuns {
+      description
+        "Buffer overrun alarm and history.";
+      container qosQueueBuffOverRunEnables {
+        description
+          "Buffer overrun alarm enable list.";
+        container qosQueueBuffOverRunEnable {
+          description
+            "Buffer overrun alarm enable.";
+          leaf statusFlag {
+            type ENABLE;
+            description
+              "Enable flag.";
+          }
+        }
+      }
+      container qosQueueBuffOverRunThresholds {
+        description
+          "Buffer overrun threshold percent list.";
+        container qosQueueBuffOverRunThreshold {
+          description
+            "Buffer overrun threshold percent.";
+          leaf thresholdPercent {
+            type uint32 {
+              range "1..100";
+            }
+            description
+              "Percent value.";
+          }
+        }
+      }
+      container qosQueueBuffOverRunHistorys {
+        config false;
+        description
+          "Query buffer usage overrun history list.";
+        list qosQueueBuffOverRunHistory {
+          key "slotId ifName queueId";
+          config false;
+          description
+            "Query buffer usage overrun history.";
+          leaf slotId {
+            type qosSlotPath;
+            config false;
+            description
+              "Slot Id.";
+          }
+          leaf ifName {
+            type pub-type:ifName;
+            config false;
+            description
+              "Interface Name.";
+          }
+          leaf queueId {
+            type QUEUEID;
+            config false;
+            description
+              "Interface Queue.";
+          }
+          leaf bufferCells {
+            type uint64;
+            config false;
+            description
+              "Used buffer cells.";
+          }
+          leaf bufferBytes {
+            type uint64;
+            config false;
+            description
+              "Used buffer bytes.";
+          }
+          leaf overRunTime {
+            type string {
+              length "1..31";
+            }
+            config false;
+            description
+              "Buffer overrun happened time.";
+          }
+        }
+      }
+    }
+    container qosFlowTables {
+      config false;
+      description
+        "Flow table.";
+      list qosFlowTable {
+        key "entryId";
+        config false;
+        description
+          "Flow table.";
+        leaf entryId {
+          type uint32;
+          config false;
+          description
+            "ID of entry.";
+        }
+        leaf priority {
+          type uint16 {
+            range "0..65535";
+          }
+          config false;
+          description
+            "priority.";
+        }
+        leaf matchProtocol {
+          type uint16;
+          config false;
+          description
+            "matching protocol.";
+        }
+        leaf matchSrcIp {
+          type inet:ipv4-address-no-zone;
+          config false;
+          description
+            "matching source IP.";
+        }
+        leaf matchSrcIpMask {
+          type inet:ipv4-address-no-zone;
+          default "255.255.255.255";
+          config false;
+          description
+            "matching source IP mask.";
+        }
+        leaf matchDestIp {
+          type inet:ipv4-address-no-zone;
+          config false;
+          description
+            "matching destination IP.";
+        }
+        leaf matchDestIpMask {
+          type inet:ipv4-address-no-zone;
+          default "255.255.255.255";
+          config false;
+          description
+            "matching destination IP mask.";
+        }
+        leaf matchSrcPort {
+          type uint16 {
+            range "0..65535";
+          }
+          config false;
+          description
+            "matching source port.";
+        }
+        leaf matchDestPort {
+          type uint16 {
+            range "0..65535";
+          }
+          config false;
+          description
+            "matching destination port.";
+        }
+        leaf matchDscp {
+          type uint8 {
+            range "0..63";
+          }
+          config false;
+          description
+            "matching DSCP.";
+        }
+        leaf rmkDscp {
+          type uint8 {
+            range "0..63";
+          }
+          config false;
+          description
+            "remark DSCP.";
+        }
+        leaf rdrIfName {
+          type pub-type:ifName;
+          config false;
+          description
+            "redirect interface.";
+        }
+        leaf rdrNextHop {
+          type inet:ipv4-address-no-zone;
+          config false;
+          description
+            "redirect nexthop.";
+        }
+        leaf rdrFailAction {
+          type qosActRdrFailAction;
+          config false;
+          description
+            "redirect nexthop fail-action.";
+        }
+      }
+    }
+    container qosBdQoss {
+      description
+        "QoS BD Lists.";
+      container qosBdPolicyApplys {
+        description
+          "BD Policy Apply Lists";
+        list qosBdPolicyApply {
+          key "bdId policyName direction";
+          description
+            "BD Policy Apply List.";
+          leaf bdId {
+            type uint32 {
+              range "1..16777215";
+            }
+            description
+              "Value of BD.";
+          }
+          leaf policyName {
+            type string {
+              length "1..31";
+            }
+            description
+              "Policy Name.";
+          }
+          leaf direction {
+            type qosPolicyApplyDirection;
+            description
+              "Direction.";
+          }
+          container qosBdClassifierStats {
+            description
+              "List of traffic classifier statistics.";
+            uses qos:qos_cbqosBdClassifierStats_type;
+          }
+          container qosBdPolicyApplyStates {
+            description
+              "Traffic Policy Applied-record Lists.";
+            uses qos:qos_cbqosBdPolicyApplyStates_type;
+          }
+        }
+      }
+    }
+    container qosDropHistorys {
+      config false;
+      description
+        "Drop history list.";
+      list qosDropHistory {
+        key "slotId ifName queueId";
+        config false;
+        description
+          "Drop history.";
+        leaf slotId {
+          type qosSlotPath;
+          config false;
+          description
+            "Slot Id.";
+        }
+        leaf ifName {
+          type pub-type:ifName;
+          config false;
+          description
+            "Interface Name.";
+        }
+        leaf queueId {
+          type QUEUEID;
+          config false;
+          description
+            "Interface Queue.";
+        }
+        leaf dropedPackets {
+          type uint32;
+          config false;
+          description
+            "Droped packets.";
+        }
+        leaf dropedBytes {
+          type uint32;
+          config false;
+          description
+            "Droped bytes.";
+        }
+        leaf dropedTime {
+          type string {
+            length "1..31";
+          }
+          config false;
+          description
+            "Droped time.";
+        }
+      }
+    }
+    container qosGroupQoss {
+    description
+      "QoS based on QoS group.";
+      container qosGroups {
+        description
+          "QoS group.";
+        list qosGroup {
+          key "groupName";
+          max-elements 256;
+          description
+            "QoS group.";
+          leaf groupName {
+            type qosPolicyName;
+            description
+              "QoS group name.";
+          }
+          container qosGroupVlanMems {
+            description
+              "group member vlan.";
+            container qosGroupVlanMem {
+              description
+                "group member vlan.";
+              leaf vlans {
+                type pub-type:VLAN_BITMAP;
+                description
+                  "vlan ID.";
+              }
+            }
+          }
+          container qosGroupIntfMems {
+            description
+              "group member interface.";
+            list qosGroupIntfMem {
+              key "ifName";
+              description
+                "group member interface.";
+              leaf ifName {
+                type pub-type:ifName;
+                description
+                  "ifName.";
+              }
+            }
+          }
+          container qosGroupSipMems {
+            description
+              "group member source.";
+            list qosGroupSipMem {
+              key "srcIp srcIpMask";
+              max-elements 2048;
+              description
+                "group member source.";
+              leaf srcIp {
+                type inet:ipv4-address-no-zone;
+                description
+                  "source IP address.";
+              }
+              leaf srcIpMask {
+                type inet:ipv4-address-no-zone;
+                description
+                  "source IP mask.";
+              }
+            }
+          }
+        }
+      }
+      container qosGroupApplys {
+        description
+          "QoS group apply policy.";
+        list qosGroupApply {
+          key "groupName policyName direction";
+          description
+            "QoS group apply policy.";
+          leaf groupName {
+            type qosPolicyName;
+            description
+              "QoS group.";
+          }
+          leaf policyName {
+            type qosPolicyName;
+            description
+              "Policy Name.";
+          }
+          leaf direction {
+            type qosPolicyApplyInbound;
+            description
+              "direction.";
+          }
+          container qosGroupClassifierStats {
+            description
+              "List of traffic classifier statistics.";
+            uses qos:qos_cbqosGroupClassifierStats_type;
+          }
+          container qosGroupPolicyApplyStates {
+            description
+              "Traffic Policy Applied-record Lists.";
+            uses qos:qos_cbqosGroupPolicyApplyStates_type;
+          }
+        }
+      }
+    }
+  }
+}

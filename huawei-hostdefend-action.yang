@@ -1,0 +1,76 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-hostdefend-action {
+  belongs-to huawei-hostdefend {
+    prefix hostdefend;
+  }
+  include huawei-hostdefend-type;
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "hostdefend action";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  rpc secResetGtsmStat {
+    description
+      "Reset statistics of GTSM.";
+    input {
+      leaf secSlotId {
+        type string {
+          length "0..32";
+        }
+        description
+          "Slot number.";
+      }
+      leaf secProtocol {
+        type hostdefendGTSMPROTOCOL;
+        description
+          "Protocol Number.";
+      }
+    }
+  }
+  rpc secResetHostIfProStat {
+    description
+      "Reset host protocol statistics.";
+    input {
+      leaf ifName {
+        type string {
+          length "1..63";
+        }
+        description
+          "Interface name.";
+      }
+    }
+  }
+  rpc secResetHostIfStat {
+    description
+      "Reset all host interface statistics.";
+  }
+  rpc secResetAntiAttackStat {
+    description
+      "Reset Anti-Attack Statistics.";
+    input {
+      leaf attackType {
+        type antiAttackType;
+        description
+          "Anti-Attack Type.";
+      }
+    }
+  }
+}

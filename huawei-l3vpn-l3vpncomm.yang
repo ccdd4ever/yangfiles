@@ -1,0 +1,378 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-l3vpn-l3vpncomm {
+  belongs-to huawei-l3vpn {
+    prefix l3vpn;
+  }
+  import huawei-ifm {
+    prefix ifm;
+  }
+  import huawei-pub-type {
+    prefix pub-type;
+  }
+  import huawei-rtp {
+    prefix rtp;
+  }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import ietf-yang-types {
+    prefix yang;
+  }
+  import huawei-extension {
+    prefix ext;
+  }
+  include huawei-l3vpn-l3vpncomm-type;
+  include huawei-l3vpn-mpls;
+  include huawei-l3vpn-netslice;
+  include huawei-l3vpn-staticfrr;
+  include huawei-l3vpn-tnl;
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "the submodule of l3vpn:l3vpncomm";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  grouping l3vpn_l3vpncomm_l3vpncomm_type {
+    description
+      "";
+    container l3vpnInstances {
+      description
+        "List of VPN instances. VPN instances are established to separate VPN routes from public network routes, and separate the routes of different VPNs. Some software features can be bound to multiple VPN instances so that multiple instances can provide a same feature. For example, RIP, OSPF, IS-IS, and BGP multiple instances.";
+      list l3vpnInstance {
+        key "vrfName";
+        description
+          "VPN instances. VPN instances are established to separate VPN routes from public network routes, and separate the routes of different VPNs. Multiple software features can be bound to multiple VPN instances to form a multi-instance that provides multiple features, for example, RIP multi-instance, OSPF multi-instance, IS-IS multi-instance, and BGP multi-instance.";
+        leaf vrfName {
+          type string {
+            length "1..31";
+          }
+          description
+            "VPN instance name. It uniquely identifies a VPN instance. The name is a string of case-sensitive characters.";
+        }
+        leaf vrfDescription {
+          when "not(../vrfName='_public_')";
+          type string {
+            length "1..242";
+            pattern '([^?]*)';
+          }
+          description
+            "The description of a VPN instance. The value is a string of 1 to 242 characters, with spaces supported.";
+          ext:allowDelete "true";
+        }
+        leaf cfgRouterId {
+          when "../vrfName='_public_'";
+          type inet:ipv4-address-no-zone;
+          default "0.0.0.0";
+          description
+            "The router id of router manager. The default value is 0.0.0.0 .";
+        }
+        leaf sysRouterId {
+          type inet:ipv4-address-no-zone;
+          default "0.0.0.0";
+          config false;
+          description
+            "The router id of current use.";
+        }
+        leaf vrfId {
+          type uint32 {
+            range "0..4294967295";
+          }
+          default "0";
+          config false;
+          description
+            "Vpn Instances ID.";
+        }
+        container vpnInstAFs {
+          must "../vrfName='_public_' or (not(../vrfName='_public_') and count(vpnInstAF)>=0)";
+          description
+            "List of VPN address families.A VPN instance supports the configurations and functions of an address family only after the address family is configured on the instance.";
+          list vpnInstAF {
+            when "not(../../vrfName='_public_')";
+            key "afType";
+            max-elements  "2";
+            description
+              "Address families of the VPN instance.A VPN instance supports the configurations and functions of an address family only after the address family is configured on the instance.";
+            leaf afType {
+              type l3vpncommonL3vpnPrefixType;
+              description
+                "Types of the VPN address families.";
+            }
+            leaf vrfRD {
+              when "not(../../../vrfName='_public_')";
+              type string {
+                length "3..21";
+              }
+              description
+                "A VPN address family takes effect only after it is configured with a RD.The format of an RD are as follows:
+(1) 16-bit AS number :32-bit user-defined number, for example, 101:3. An AS number ranges from 0 to 65535, and a user-defined number ranges from 0 to 4294967295. The AS number and user-defined number cannot be both 0s. This means that the RD value cannot be 0:0.
+(2) 32-bit IP address:16-bit user-defined number, for example: 192.168.122.15:1.The IP address ranges from 0.0.0.0 to 255.255.255.255, and the user-defined number ranges from 0 to 65535.
+(3) 32-bit AS number :16-bit user-defined number, for example, 10.11:3. An AS number ranges from 0.0 to 65535.65535 or 0 to 4294967295, and a user-defined number ranges from 0 to 65535. The AS number and user-defined number cannot be both 0s. This means that the RD value cannot be 0.0:0.";
+              ext:allowDelete "true";
+            }
+            container vpnTargets {
+              must "../../../vrfName='_public_' or (not(../../../vrfName='_public_') and count(vpnTarget)>=0)";
+              description
+                "A group of RTs. The number of RTs in the group ranges from 1 to 8.";
+              list vpnTarget {
+                when "not(../../../../vrfName='_public_')";
+                key "vrfRTValue vrfRTType";
+                description
+                  "RT(VPN Target)s configured to control route advertisement between network nodes. Before sending a VPN route to a PE, the local PE adds an Export RT to the route. After receiving a route from another PE, the local PE determines whether the route will be added to the VPN instance based on the local Import RT and the Export RT that is added to the VPN route.";
+                leaf vrfRTValue {
+                  type string {
+                    length "3..21";
+                  }
+                  description
+                    "The formats of a VPN target value are as follows:
+(1) 16-bit AS number : 32-bit user-defined number, for example, 1:3. An AS number ranges from 0 to 65535, and a user-defined number ranges from 0 to 4294967295. The AS number and user-defined number cannot be both 0s. This means that the VPN Target value cannot be 0:0.
+(2) 32-bit IP address: 16-bit user-defined number, for example: 192.168.122.15:1.The IP address ranges from 0.0.0.0 to 255.255.255.255, and the user-defined number ranges from 0 to 65535.
+(3) 32-bit AS number :16-bit user-defined number, for example, 10.11:3. An AS number ranges from 0.0 to 65535.65535 or 0 to 4294967295, and a user-defined number ranges from 0 to 65535. The AS number and user-defined number cannot be both 0s. This means that the VPN Target value cannot be 0.0:0.";
+                }
+                leaf vrfRTType {
+                  type l3vpncommonVrfRtType;
+                  description
+                    "RT types are as follows:
+export-extcommunity: Specifies the value of the extended community attribute of the route from an outbound interface to the destination VPN. import-extcommunity: Receives routes that carry the specified extended community attribute value.";
+                }
+              }
+            }
+            leaf imPolicyName {
+              when "not(../../../vrfName='_public_' or ../imRtFilterName)";
+              type leafref {
+                path "/rtp:rtp/rtp:routePolicys/rtp:routePolicy/rtp:name";
+              }
+              description
+                "Name of a route import policy. The policy is associating the VPN instance with an inbound routing policy. If a mode that is more accurate than the extended community attribute mode is required for filtering import VPN instance routes, the inbound routing policy can be adopted. The inbound routing policy can filter imported routes and set routing attributes for the qualified routes. If the inbound routing policy is not configured, all routes matching the VPN-target attribute are added to the VPN instance. ";
+              ext:allowDelete "true";
+            }
+            leaf exPolicyName {
+              when "not(../../../vrfName='_public_' or ../exRtFilterName)";
+              type leafref {
+                path "/rtp:rtp/rtp:routePolicys/rtp:routePolicy/rtp:name";
+              }
+              description
+                "Name of a route export policy. The policy is associating the VPN instance with an outbound routing policy. If a mode that is more accurate than the extended community attribute mode is required to control the advertisement ofVPN instance routes, the outbound routing policy can be adopted. The outbound routing policy can filter the routes to be advertised and set routing attributes for the qualified routes. If the outbound routing policy is not configured, all routes can be advertised.";
+              ext:allowDelete "true";
+            }
+            leaf exPolicyAddErtFirst {
+              type boolean;
+              default "false";
+              description
+                "Advertise routes to vpnv4 add ERT first.";
+              ext:allowDelete "true";
+            }
+            container vrfAFVerboseInfo {
+              config false;
+              description
+                "The verbose information of Address families of the VPN instance.";
+              leaf vrfCreateTime {
+                type yang:date-and-time;
+                config false;
+                description
+                  "The createtime of Address families of the VPN instance.";
+              }
+              leaf vrfUpTime {
+                type pub-type:timeTick {
+                  range "0..4294967295";
+                }
+                config false;
+                description
+                  "The uptime of Address families of the VPN instance.";
+              }
+              leaf vrfStatus {
+                type l3vpncommonVrfStatus;
+                config false;
+                description
+                  "VPN instance status. A VPN instance is up when there is at least one interface associated with the VRF whose ifOperStatus is up.  A VRF is down when:
+  a. There does not exist at least one interface whose ifOperStatus is up.
+  b. There are no interfaces associated with the VRF.
+";
+              }
+            }
+            container routingTables {
+              config false;
+              description
+                "Routing table of a specified VPN instance address family.";
+              list routingTable {
+                key "prefix maskLength protocolId ifName processId directNexthop";
+                config false;
+                description
+                  "A route in the VPN instance routing table.";
+                leaf prefix {
+                  type inet:ip-address-no-zone;
+                  config false;
+                  description
+                    "Destination IP address. It identifies the destination IP address or the destination network address of an IP packet.";
+                }
+                leaf maskLength {
+                  type uint32 {
+                    range "0..128";
+                  }
+                  config false;
+                  description
+                    "Length of a subnet mask. It ranges from 0 to 128 characters.";
+                }
+                leaf protocolId {
+                  type rmbaseProtocolType;
+                  config false;
+                  description
+                    "Protocol used to learn routes. For example, static routing protocol, direct routing protocol, and dynamic routing protocols (BGP,OSPF,ISIS).";
+                }
+                leaf preference {
+                  type uint32 {
+                    range "0..255";
+                  }
+                  config false;
+                  description
+                    "Different routing protocols, including the static routing protocol may discover different routes to the same destination, but not all these routes are optimal. At a certain moment, only one routing protocol determines the preferred route to a certain destination. To select the optimal route, routes of these routing protocols (including static routes) are configured with priorities. When there are multiple protocol types of routes, the route learned by the routing protocol with the highest priority becomes the optimal route. The smaller the value, the higher the priority. 0 indicates the direct route and 255 indicates any route learnt from unreliable sources. The smaller the value, the higher the priority.";
+                }
+                leaf cost {
+                  type uint32 {
+                    range "0..65535";
+                  }
+                  config false;
+                  description
+                    "Route cost.";
+                }
+                leaf flags {
+                  type rmbaseRouteFlag;
+                  config false;
+                  description
+                    "Route flag. R indicates an iterated route and D indicates that a route is advertised to the FIB table.";
+                }
+                leaf nextHop {
+                  type inet:ip-address-no-zone;
+                  config false;
+                  description
+                    "Next router that an IP packet will passes.";
+                }
+                leaf ifName {
+                  type pub-type:ifName;
+                  config false;
+                  description
+                    "An interface from which packets are sent to the next router.";
+                }
+                leaf relayNexthop {
+                  type inet:ip-address-no-zone;
+                  config false;
+                  description
+                    "Iterated next hop. If the received next hop address is not the address of a directly-connected router, a direct next hop needs to be iterated for traffic forwarding. ";
+                }
+                leaf isActive {
+                  type boolean;
+                  config false;
+                  description
+                    "Flag that indicates that a route is active. An inactive route is not advertised to the forwarding table for packet forwarding.";
+                }
+                leaf processId {
+                  type uint32;
+                  config false;
+                  description
+                    "ID of a routing protocol process.";
+                }
+                leaf tag {
+                  type uint32 {
+                    range "0..65535";
+                  }
+                  config false;
+                  description
+                    "Tag that indicates whether a route has been imported.  ";
+                }
+                leaf priority {
+                  type rmbaseRoutePriority;
+                  config false;
+                  description
+                    "Advertisement priority. The route with a higher priority is advertised preferentially.";
+                }
+                leaf label {
+                  type uint32;
+                  config false;
+                  description
+                    "Label that is used for tunnel forwarding. If a label is applied for by an LSP, the label is saved in the VPN routing table. When the label is added to the packet, the packet enters the LSP tunnel and is forwarded over the tunnel.";
+                }
+                leaf indirectID {
+                  type pub-type:hexBinary;
+                  config false;
+                  description
+                    "IID index of a route. Multiple routes may have a same next hop. If these routes are all saved, the next hop will be saved for many times. When the reachability of the next hop is affected or the next hop of some routes changes, all of these routes will be re-traversed. An IID can be used to identify repeated next hops so that the same next hop is saved only for one time. This consumes less storage space and enhances the response efficiency when the next hop changes.";
+                }
+                leaf state {
+                  type rmbaseRouteState;
+                  config false;
+                  description
+                    "Route state. The following route states are supported: active (indicates that a route is active), invalid (indicates that a route is invalid), inactive (indicates that a route is inactive), no advertise (indicates that a route cannot be advertised), advertise (indicates that a route can be advertised), relied (indicates that a route is iterated to the next hop or the outbound interface, or to a tunnel), stale (indicates that a route carries a stale tag. The state tag is used in GR).";
+                }
+                leaf neighbour {
+                  type inet:ip-address-no-zone;
+                  config false;
+                  description
+                    "Neighbor sending the route to the local NE";
+                }
+                leaf age {
+                  type string {
+                    length "0..20";
+                  }
+                  config false;
+                  description
+                    "Keepalive time of a route. Length of the time from the generation of a route to the current time. ";
+                }
+                leaf directNexthop {
+                  type inet:ip-address-no-zone;
+                  config false;
+                  description
+                    "Direct next hop. It is the address of a direct interface.";
+                }
+              }
+            }
+          }
+        }
+        container l3vpnIfs {
+          description
+            "List of the interfaces that are bound to the VPN instance.";
+          list l3vpnIf {
+            key "ifName";
+            description
+              "Interfaces bound to the VPN instance. After a VPN instance is configured, an interface bound to the instance needs to be associated with the instance. Otherwise, the interface is a public network interface.
+Associating the interface with the VPN instance or canceling the association relationship will clear the configured Layer 3 attributes such as the IPv4 address, IPv6 address, and routing protocol on the interface. If these Layer 3 attributes are still required, you need to configure them again.";
+            leaf ifName {
+              type leafref {
+                path "/ifm:ifm/ifm:interfaces/ifm:interface/ifm:ifName";
+              }
+              description
+                "Interface name. The formats of interface names are defined based on interface types and device types, for example, the loopback interface: loopback0, and the Ethernet interface: ethernet 0/3/0/7.";
+            }
+            leaf ipv4Addr {
+              type inet:ipv4-address-no-zone;
+              description
+                "Interface IP address. It is in dotted decimal notation, for example: 100.1.1.1.";
+              ext:allowDelete "true";
+            }
+            leaf subnetMask {
+              type inet:ipv4-address-no-zone;
+              description
+                "Mask of an interface address. It is in dotted decimal notation, for example: 255.255.0.0.";
+              ext:allowDelete "true";
+            }
+          }
+        }
+      }
+    }
+  }
+}

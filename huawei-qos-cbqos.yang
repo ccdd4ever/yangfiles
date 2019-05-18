@@ -1,0 +1,3575 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-qos-cbqos {
+  belongs-to "huawei-qos" {
+    prefix "qos";
+  }
+  import huawei-pub-type {
+    prefix "pub-type";
+  }
+  import ietf-inet-types {
+    prefix "inet";
+  }
+  import ietf-yang-types {
+    prefix "yang";
+  }
+  import huawei-extension {
+    prefix "ext";
+  }
+  include huawei-qos-type;
+  include huawei-qos-cbqos-type;
+  
+  organization "Huawei Technologies Co.,Ltd.";
+  contact "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+              People's Republic of China                    
+              Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "Traffic policy.";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  grouping qos_cbqos_type {
+    description
+      "";
+    container qosVpnGroups {
+      description
+        "List of VPN-Instance groups.";
+      list qosVpnGroup {
+        key "vpnGroupName";
+        description
+          "VPN-Instance group.";
+        leaf vpnGroupName {
+          type qosPolicyName;
+          description
+            "Name of a VPN-Instance group.";
+        }
+        container qosVpnInstances {
+          description
+            "VPN-Instance list.";
+          list qosVpnInstance {
+            key "vrfName";
+            max-elements 8;
+            description
+              "VPN-Instance.";
+            leaf vrfName {
+              type pub-type:vrfName;
+              description
+                "VPN-Instance name .";
+            }
+          }
+        }
+      }
+    }
+    container qosClassifiers {
+      description
+        "List of traffic classifiers.";
+      list qosClassifier {
+        key "classifierName";
+        max-elements 512;
+        description
+          "Traffic classifier.";
+        leaf classifierName {
+          type qosPolicyName;
+          description
+            "Name of a traffic classifier.";
+        }
+        leaf description {
+          type string {
+            length "0..127";
+          }
+          description
+            "Description.";
+          ext:allowDelete true;
+        }
+        leaf type {
+          type qosClassOperator;
+          default "or";
+          description
+            "Logical operator of a rule.";
+        }
+        container qosRuleAnys {
+          description
+            "List of the rules matching all packets.";
+          container qosRuleAny {
+            description
+              "Rule matching all packets.";
+            leaf anyFlag {
+              type qosEnableFlag;
+              description
+                "Any Flag.";
+            }
+          }
+        }
+        container qosRuleMacs {
+          description
+            "List of the rules matching MAC addresses.";
+          list qosRuleMac {
+            key "macType";
+            max-elements 2;
+            description
+              "Rule matching MAC addresses.";
+            leaf macType {
+              type qosMacType;
+              description
+                "Type of a MAC address.";
+            }
+            leaf macAddr {
+              type pub-type:macAddress;
+              mandatory true;
+              description
+                "MAC address.";
+            }
+            leaf macMask {
+              type pub-type:macAddress;
+              default "0000-0000-0000";
+              description
+                "MAC address mask.";
+              ext:allowDelete true;
+            }
+          }
+        }
+        container qosRuleProto6s {
+          description
+            "List of the rules matching IPv6 extended headers.";
+          list qosRuleProto6 {
+            key "protoFamily protocol";
+            max-elements 16;
+            description
+              "Rule matching IPv6 extended headers.";
+            leaf protoFamily {
+              type qosIPv6Family;
+              description
+                "Protocol family.";
+            }
+            leaf protocol {
+              type uint8;
+              description
+                "Protocol number.";
+            }
+          }
+        }
+        container qosRuleIPv6Addrs {
+          description
+            "List of the rules matching IPv6 addresses.";
+          list qosRuleIPv6Addr {
+            key "addressType ipAddress6 prefixLen";
+            max-elements 16;
+            description
+              "Rule matching IPv6 addresses.";
+            leaf addressType {
+              type qosAddressType;
+              description
+                "Type of an IPv6 address.";
+            }
+            leaf ipAddress6 {
+              type inet:ipv6-address-no-zone;
+              description
+                "IPv6 address.";
+            }
+            leaf prefixLen {
+              type uint8;
+              description
+                "Length of the IPv6 address prefix.";
+            }
+          }
+        }
+        container qosRuleTcpFlags {
+          description
+            "List of the rules matching TCP flags.";
+          list qosRuleTcpFlag {
+            key "tcpFlag";
+            max-elements 16;
+            description
+              "Rule matching TCP flags.";
+            leaf tcpFlag {
+              type uint8 {
+                range "0..63";
+              }
+              description
+                "TCP flag value. ";
+            }
+          }
+        }
+        container qosRuleAcls {
+          description
+            "List of the rules matching ACLs.";
+          list qosRuleAcl {
+            key "aclFamily aclName";
+            max-elements 2048;
+            description
+              "Rule matching ACLs.";
+            leaf aclFamily {
+              type qosIPv4Family;
+              description
+                "ACL protocol family. ";
+            }
+            leaf aclName {
+              type string {
+                length "1..32";
+              }
+              description
+                "ACL number or name.";
+            }
+            leaf tunnelType {
+              type qosACLTunnelType;
+              default "no-tunnel";
+              description
+                "Tunnel Type.";
+            }
+          }
+        }
+        container qosRulePrioritys {
+          description
+            "List of the rules matching precedence.";
+          list qosRulePriority {
+            key "priorityType priorityValue";
+            max-elements 16;
+            description
+              "Rule matching precedence.";
+            leaf priorityType {
+              type qosPriorityType;
+              description
+                "Priority type. ";
+            }
+            leaf priorityValue {
+              type uint8 {
+                range "0..63";
+              }
+              description
+                "Priority value.  When Priority type is DSCP priority or IPv6 DSCP priority the Priority Value is 0~63, otherwise is 0~7.";
+            }
+          }
+        }
+        container qosRuleTnls {
+          description
+            "Inner fields of tunnel packets to match";
+          container qosRuleTnl {
+            description
+              "The inner field of tunnel packet";
+            leaf protoFamily {
+              type qosIPv4Family;
+              description
+                "Protocl family of tunnel to match(IPv4/IPv6)";
+            }
+            leaf tunnelType {
+              type qosTunnelType;
+              description
+                "Tunnel packets to match";
+            }
+            leaf vniId {
+              when "not(../tunnelType='gre' or ../tunnelType='mpls') or ../tunnelType='none-tag vxlan' or ../tunnelType='single-tag vxlan'";
+              type uint32 {
+                range "1..16000000";
+              }
+              description
+                "VNI ID";
+              ext:allowDelete true;
+            }
+            leaf innerEthTypeStr {
+              when "not(../tunnelType='gre' or ../tunnelType='mpls') or ../tunnelType='none-tag vxlan' or ../tunnelType='single-tag vxlan'";
+              type string {
+                length "3..6";
+                pattern '0[xX][0-9abcdefABCDEF]{1,4}';
+              }
+              description
+                "Inner ethernet type";
+              ext:allowDelete true;
+            }
+            leaf innerSrcMac {
+              when "not(../tunnelType='gre' or ../tunnelType='mpls') or ../tunnelType='none-tag vxlan' or ../tunnelType='single-tag vxlan'";
+              type pub-type:macAddress;
+              description
+                "Inner source MAC address";
+              ext:allowDelete true;
+            }
+            leaf innerSrcMacMask {
+              when "../tunnelType='none-tag vxlan' or ../tunnelType='single-tag vxlan'";
+              type pub-type:macAddress;
+              description
+                "Mask of inner source MAC address";
+              ext:allowDelete true;
+            }
+            leaf innerDstMac {
+              when "not(../tunnelType='gre' or ../tunnelType='mpls') or ../tunnelType='none-tag vxlan' or ../tunnelType='single-tag vxlan'";
+              type pub-type:macAddress;
+              description
+                "Inner destination MAC address";
+              ext:allowDelete true;
+            }
+            leaf innerDstMacMask {
+              when "../tunnelType='none-tag vxlan' or ../tunnelType='single-tag vxlan'";
+              type pub-type:macAddress;
+              description
+                "Mask of inner destination MAC address";
+              ext:allowDelete true;
+            }
+            leaf innerSrcIp {
+              when "../tunnelType='gre' or ../tunnelType='mpls' or ../tunnelType='none-tag vxlan' or ../tunnelType='single-tag vxlan'";
+              type inet:ipv4-address-no-zone;
+              description
+                "Inner source IP";
+              ext:allowDelete true;
+            }
+            leaf innerSrcIpMask {
+              when "../tunnelType='gre' or ../tunnelType='mpls' or ../tunnelType='none-tag vxlan' or ../tunnelType='single-tag vxlan'";
+              type uint32 {
+                range "0..32";
+              }
+              description
+                "Mask length of inner source IP";
+              ext:allowDelete true;
+            }
+            leaf innerDstIp {
+              when "../tunnelType='gre' or ../tunnelType='mpls' or ../tunnelType='none-tag vxlan' or ../tunnelType='single-tag vxlan'";
+              type inet:ipv4-address-no-zone;
+              description
+                "Inner destination IP";
+              ext:allowDelete true;
+            }
+            leaf innerDstIpMask {
+              when "../tunnelType='gre' or ../tunnelType='mpls' or ../tunnelType='none-tag vxlan' or ../tunnelType='single-tag vxlan'";
+              type uint32 {
+                range "0..32";
+              }
+              description
+                "Mask length of inner destination IP";
+              ext:allowDelete true;
+            }
+            leaf innerProtoType {
+              when "../tunnelType='gre' or ../tunnelType='mpls' or ../tunnelType='none-tag vxlan' or ../tunnelType='single-tag vxlan'";
+              type uint8 {
+                range "0..255";
+              }
+              description
+                "Inner protocol type";
+              ext:allowDelete true;
+            }
+            leaf innerL4SrcPortBeg {
+              when "../tunnelType='gre' or ../tunnelType='mpls' or ../tunnelType='none-tag vxlan' or ../tunnelType='single-tag vxlan'";
+              type uint16 {
+                range "0..65535";
+              }
+              description
+                "Start value of inner L4 source port";
+              ext:allowDelete true;
+            }
+            leaf innerL4DstPortBeg {
+              when "../tunnelType='gre' or ../tunnelType='mpls' or ../tunnelType='none-tag vxlan' or ../tunnelType='single-tag vxlan'";
+              type uint16 {
+                range "0..65535";
+              }
+              description
+                "Start value of inner L4 destination port";
+              ext:allowDelete true;
+            }
+            leaf innerIpId {
+              type uint16 {
+                range "0..65535";
+              }
+              description
+                "Inner ip-id.";
+              ext:allowDelete true;
+            }
+            leaf innerIpIdMask {
+              type string {
+                length "3..6";
+                pattern '0[xX][0-9abcdefABCDEF]{1,4}';
+              }
+              description
+                "Inner ip-id mask.";
+              ext:allowDelete true;
+            }
+            leaf innerTcpFlagEstablished {
+              when "../innerProtoType=6";
+              type boolean;
+              default "false";
+              description
+                "innerTcpFlagEstablished.";
+              ext:allowDelete true;
+            }
+            leaf innerL4SrcPortEnd {
+              type uint16 {
+                range "0..65535";
+              }
+              description
+                "innerL4SrcPortEnd.";
+              ext:allowDelete true;
+            }
+            leaf innerL4DstPortEnd {
+              type uint16 {
+                range "0..65535";
+              }
+              description
+                "innerL4DstPortEnd.";
+              ext:allowDelete true;
+            }
+          }
+        }
+        container qosRuleVxlanRsvs {
+          description
+            "Matching vxlan reserved list.";
+          container qosRuleVxlanRsv {
+            description
+              "Matching vxlan reserved value.";
+            leaf matchType {
+              type qosTypeVxlan;
+              description
+                "Matching type.";
+            }
+            leaf vxlanReserved {
+              type string {
+                length "3..8";
+                pattern '0[xX][0-9abcdefABCDEF]{1,6}';
+              }
+              mandatory true;
+              description
+                "Vxlan reserved value.";
+            }
+          }
+        }
+        container qosRuleLocalIds {
+          description
+            "Matching local-id list.";
+          container qosRuleLocalId {
+            description
+              "Matching local-id.";
+            leaf matchType {
+              type qosTypeLocalId;
+              description
+                "Matching type.";
+            }
+            leaf localId {
+              type uint32 {
+                range "1..511";
+              }
+              mandatory true;
+              description
+                "local-id value.";
+            }
+          }
+        }
+        container qosIPIDs {
+          description
+            "Matching ip-id list.";
+          container qosIPID {
+            description
+              "Matching ip-id.";
+            leaf matchType {
+              type qosTypeIPID;
+              description
+                "match tpye.";
+            }
+            leaf ipId {
+              type uint16 {
+                range "0..65535";
+              }
+              mandatory true;
+              description
+                "ip-id value.";
+            }
+            leaf mask {
+              type string {
+                length "3..6";
+                pattern '0[xX][0-9abcdefABCDEF]{1,4}';
+              }
+              description
+                "ip-id mask.";
+              ext:allowDelete true;
+            }
+          }
+        }
+        container qosMatchPrioritys {
+          description
+            "Match priority.";
+          list qosMatchPriority {
+            key "matchType priorityValue";
+            description
+              "Match priority.";
+            leaf matchType {
+              type qosMatchPriorityType;
+              description
+                "Match priority type.";
+            }
+            leaf priorityValue {
+              type uint16 {
+                range "0..63";
+              }
+              description
+                "Match priority value.";
+              ext:allowDelete true;
+            }
+          }
+        }
+      }
+    }
+    container qosBehaviors {
+      description
+        "List of traffic behaviors.";
+      list qosBehavior {
+        key "behaviorName";
+        max-elements 512;
+        description
+          "Traffic behavior.";
+        leaf behaviorName {
+          type qosPolicyName;
+          description
+            "Name of a traffic behavior.";
+        }
+        leaf description {
+          type string {
+            length "0..127";
+          }
+          description
+            "Description.";
+          ext:allowDelete true;
+        }
+        container qosActFilters {
+          description
+            "List of filtering actions.";
+          container qosActFilter {
+            description
+              "Filtering action.";
+            leaf actionType {
+              type qosActionFilter;
+              mandatory true;
+              description
+                "Type of a filtering action.";
+            }
+            leaf filter {
+              type qosFilterFlag;
+              mandatory true;
+              description
+                "Filtering type. ";
+            }
+          }
+        }
+        container qosActPortMirrors {
+          description
+            "List of flow mirroring actions.";
+          container qosActPortMirror {
+            description
+              "Flow mirroring action.";
+            leaf observerIndex {
+              type uint32 {
+                range "1..8";
+              }
+              description
+                "Observe port index.";
+            }
+            leaf sampleRate {
+              type uint32 {
+                range "1..65535";
+              }
+              description
+                "Mirroring sample rate.";
+              ext:allowDelete true;
+            }
+          }
+        }
+        container qosActCars {
+          description
+            "List of CAR actions.";
+          container qosActCar {
+            description
+              "CAR action.";
+            leaf actionType {
+              type qosActionCar;
+              description
+                "Type of a CAR action.";
+            }
+            leaf cir {
+              type uint32 {
+                range "8..100000000";
+              }
+              mandatory true;
+              description
+                "Committed information rate (unit: Kbit/s).";
+            }
+            leaf pir {
+              type uint32 {
+                range "8..100000000";
+              }
+              description
+                "Peak information rate (unit: Kbit/s).";
+              ext:allowDelete true;
+            }
+            leaf cbs {
+              type uint32 {
+                range "10000..536870912";
+              }
+              description
+                "Committed burst size (unit: Byte).";
+              ext:allowDelete true;
+            }
+            leaf pbs {
+              type uint32 {
+                range "10000..536870912";
+              }
+              description
+                "Peak burst size (unit: Byte).";
+              ext:allowDelete true;
+            }
+            leaf greenAction {
+              type qosCarGreenActionType;
+              description
+                "Action performed to the green packets. ";
+              ext:allowDelete true;
+            }
+            leaf greenServiceClass {
+              when "not(../greenAction='discard') or ../greenAction='pass'";
+              type qosServiceClass;
+              description
+                "Service class marked to the green packets. ";
+              ext:allowDelete true;
+            }
+            leaf greenColor {
+              when "not(../greenAction='discard') or ../greenAction='pass'";
+              type qosColor;
+              must "(../greenServiceClass='af1' and (../greenColor='green' or ../greenColor='yellow' or ../greenColor='red') ) or (../greenServiceClass='af2' and (../greenColor='green' or ../greenColor='yellow' or ../greenColor='red') ) or (../greenServiceClass='af3' and (../greenColor='green' or ../greenColor='yellow' or ../greenColor='red') ) or (../greenServiceClass='af4' and (../greenColor='green' or ../greenColor='yellow' or ../greenColor='red') ) or (../greenServiceClass='be' and (../greenColor='green' or ../greenColor='yellow' or ../greenColor='red') ) or (../greenServiceClass='cs6' and (../greenColor='green' or ../greenColor='yellow' or ../greenColor='red') ) or (../greenServiceClass='cs7' and (../greenColor='green' or ../greenColor='yellow' or ../greenColor='red') ) or (../greenServiceClass='ef' and (../greenColor='green' or ../greenColor='yellow' or ../greenColor='red') ) or not(../greenServiceClass='af1' or ../greenServiceClass='af2' or ../greenServiceClass='af3' or ../greenServiceClass='af4' or ../greenServiceClass='be' or ../greenServiceClass='cs6' or ../greenServiceClass='cs7' or ../greenServiceClass='ef')";
+              description
+                "Color marked to the green packets. ";
+              ext:allowDelete true;
+            }
+            leaf yellowAction {
+              type qosCarRedActionType;
+              description
+                "Action performed to the yellow packets.";
+              ext:allowDelete true;
+            }
+            leaf yellowServiceClass {
+              when "not(../yellowAction='discard') or ../yellowAction='pass'";
+              type qosServiceClass;
+              description
+                "Service class marked to the yellow packets. ";
+              ext:allowDelete true;
+            }
+            leaf yellowColor {
+              when "not(../yellowAction='discard') or ../yellowAction='pass'";
+              type qosColor;
+              must "(../yellowServiceClass='af1' and (../yellowColor='green' or ../yellowColor='yellow' or ../yellowColor='red') ) or (../yellowServiceClass='af2' and (../yellowColor='green' or ../yellowColor='yellow' or ../yellowColor='red') ) or (../yellowServiceClass='af3' and (../yellowColor='green' or ../yellowColor='yellow' or ../yellowColor='red') ) or (../yellowServiceClass='af4' and (../yellowColor='green' or ../yellowColor='yellow' or ../yellowColor='red') ) or (../yellowServiceClass='be' and (../yellowColor='green' or ../yellowColor='yellow' or ../yellowColor='red') ) or (../yellowServiceClass='cs6' and (../yellowColor='green' or ../yellowColor='yellow' or ../yellowColor='red') ) or (../yellowServiceClass='cs7' and (../yellowColor='green' or ../yellowColor='yellow' or ../yellowColor='red') ) or (../yellowServiceClass='ef' and (../yellowColor='green' or ../yellowColor='yellow' or ../yellowColor='red') ) or not(../yellowServiceClass='af1' or ../yellowServiceClass='af2' or ../yellowServiceClass='af3' or ../yellowServiceClass='af4' or ../yellowServiceClass='be' or ../yellowServiceClass='cs6' or ../yellowServiceClass='cs7' or ../yellowServiceClass='ef')";
+              description
+                "Color marked to the yellow packets. ";
+              ext:allowDelete true;
+            }
+            leaf redAction {
+              type qosCarRedActionType;
+              description
+                "Action performed to the red packets. ";
+              ext:allowDelete true;
+            }
+            leaf redServiceClass {
+              when "not(../redAction='discard') or ../redAction='pass'";
+              type qosServiceClass;
+              description
+                "Service class marked to the red packets. ";
+              ext:allowDelete true;
+            }
+            leaf redColor {
+              when "not(../redAction='discard') or ../redAction='pass'";
+              type qosColor;
+              must "(../redServiceClass='af1' and (../redColor='green' or ../redColor='yellow' or ../redColor='red') ) or (../redServiceClass='af2' and (../redColor='green' or ../redColor='yellow' or ../redColor='red') ) or (../redServiceClass='af3' and (../redColor='green' or ../redColor='yellow' or ../redColor='red') ) or (../redServiceClass='af4' and (../redColor='green' or ../redColor='yellow' or ../redColor='red') ) or (../redServiceClass='be' and (../redColor='green' or ../redColor='yellow' or ../redColor='red') ) or (../redServiceClass='cs6' and (../redColor='green' or ../redColor='yellow' or ../redColor='red') ) or (../redServiceClass='cs7' and (../redColor='green' or ../redColor='yellow' or ../redColor='red') ) or (../redServiceClass='ef' and (../redColor='green' or ../redColor='yellow' or ../redColor='red') ) or not(../redServiceClass='af1' or ../redServiceClass='af2' or ../redServiceClass='af3' or ../redServiceClass='af4' or ../redServiceClass='be' or ../redServiceClass='cs6' or ../redServiceClass='cs7' or ../redServiceClass='ef')";
+              description
+                "Color marked to the red packets.";
+              ext:allowDelete true;
+            }
+            leaf colorMode {
+              type qosCarColorMode;
+              description
+                "Color Mode.";
+              ext:allowDelete true;
+            }
+            leaf shareMode {
+              type qosCarFirstShareMode;
+              description
+                "Share Mode.";
+              ext:allowDelete true;
+            }
+          }
+        }
+        container qosActRemarks {
+          description
+            "List of re-mark actions.";
+          container qosActRemark {
+            description
+              "Re-mark action.";
+            leaf actionType {
+              type qosActionRemark;
+              description
+                "Type of a re-mark action.";
+            }
+            leaf remarkValue {
+              type uint8 {
+                range "0..7";
+              }
+			  must "(../actionType='remark8021p' and ../remarkValue<=7) or (../actionType='remarkIpPrecedence' and ../remarkValue<=7) or (../actionType='remarkMplsExp' and ../remarkValue<=7) or not(../actionType='remark8021p' or ../actionType='remarkIpPrecedence' or ../actionType='remarkMplsExp')";
+              mandatory true;
+              description
+                "Priority Value.";
+            }
+            leaf color {
+              type qosColor;
+              description
+                "Color value.";
+              ext:allowDelete true;
+            }
+          }
+        }
+        container qosActRemarkPrioritys {
+          description
+            "Remark priority.";
+          container qosActRemarkPriority {
+            description
+              "Remark priority.";
+            leaf remarkType {
+              type qosRemarkPriorityType;
+              description
+                "Remark priority type.";
+            }
+            leaf remarkValue {
+              type uint8 {
+                range "0..63";
+              }
+              description
+                "Remark priority value.";
+              ext:allowDelete true;
+            }
+          }
+        }
+        container qosActSrvClss {
+          description
+            "List of service class actions.";
+          container qosActSrvCls {
+            description
+              "Service class action.";
+            leaf actionType {
+              type qosActionServiceClass;
+              description
+                "Type of a service class action.";
+            }
+            leaf serviceClass {
+              type qosServiceClass;
+              mandatory true;
+              description
+                "CoS.";
+            }
+            leaf color {
+              type qosColor;
+              must "(../serviceClass='af1' and (../color='green' or ../color='yellow' or ../color='red') ) or (../serviceClass='af2' and (../color='green' or ../color='yellow' or ../color='red') ) or (../serviceClass='af3' and (../color='green' or ../color='yellow' or ../color='red') ) or (../serviceClass='af4' and (../color='green' or ../color='yellow' or ../color='red') ) or not(../serviceClass='af1' or ../serviceClass='af2' or ../serviceClass='af3' or ../serviceClass='af4')";
+              mandatory true;
+              description
+                "Color.";
+            }
+          }
+        }
+        container qosActUrpfs {
+          description
+            "List of URPF actions.";
+          container qosActUrpf {
+            description
+              "URPF action.";
+            leaf actionType {
+              type qosActionUrpf;
+              description
+                "Type of a URPF action.";
+            }
+            leaf checkType {
+              type qosUrpfCheckType;
+              mandatory true;
+              description
+                "Type of the URPF check. ";
+            }
+            leaf allowDefault {
+              type qosSwitchFlag;
+              default "disable";
+              description
+                "To check the default route.";
+            }
+          }
+        }
+        container qosActLoads {
+          description
+            "List of load balancing actions.";
+          container qosActLoad {
+            description
+              "Load balancing action.";
+            leaf actionType {
+              type qosActionLoadBalance;
+              description
+                "Type of a load balancing action.";
+            }
+            leaf balanceType {
+              type qosLoadBalanceType;
+              mandatory true;
+              description
+                "Load balancing type. ";
+            }
+          }
+        }
+        container qosActNsSamplers {
+          description
+            "List of Netstream sampling actions.";
+          list qosActNsSampler {
+            key "flowType";
+            max-elements 2;
+            description
+              "Netstream sampling action.";
+            leaf flowType {
+              type qosNsFlowType;
+              description
+                "Flow type.";
+            }
+            leaf sampleType {
+              type qosSampleType;
+              mandatory true;
+              description
+                "Sampling type. ";
+            }
+            leaf sampleValue {
+              type uint16 {
+                range "1..65535";
+              }
+              mandatory true;
+              description
+                "Sampling parameter.";
+            }
+          }
+        }
+        container qosActRdrNhps {
+          description
+            "List of the actions of redirecting to a IPv4 next hop.";
+          container qosActRdrNhp {
+            description
+              "Action of redirecting to a IPv4 next hop.";
+            leaf rdrType {
+              type qosRdrType;
+              description
+                "Redirect type.";
+            }
+            leaf nextHop {
+              type inet:ipv4-address-no-zone;
+              mandatory true;
+              description
+                "Next hop address.";
+            }
+            leaf ifName {
+              when "not(../rdrType='backup') or ../rdrType='direct'";
+              type pub-type:ifName;
+              mandatory true;
+              description
+                "Outbound interface name.";
+            }
+          }
+        }
+        container qosActRdrMhps {
+          description
+            "List of the actions of redirecting to IPv4 multiple next hops.";
+          list qosActRdrMhp {
+            key "rdrType";
+            max-elements 16;
+            description
+              "Action of redirecting to IPv4 multiple next hops.";
+            leaf rdrType {
+              type qosRdrType;
+              description
+                "Redirect type.";
+            }
+            leaf loadBalance {
+              type boolean;
+              description
+                "Load balance.";
+            }
+            container qosRdrNhps {
+              description
+                "Nexthop list.";
+              container qosRdrNhp {
+                description
+                  "Nexthop.";
+                leaf nextHop {
+                  type inet:ipv4-address-no-zone;
+                  description
+                    "Nexthop address.";
+                }
+              }
+            }
+          }
+        }
+        container qosActRdrNhp6s {
+          description
+            "List of the actions of redirecting to IPv6 next hops.";
+          container qosActRdrNhp6 {
+            description
+              "Action of redirecting to the IPv6 next hop.";
+            leaf rdrType {
+              type qosRdrType;
+              description
+                "Redirect type.";
+            }
+            leaf nextHop {
+              type inet:ipv6-address-no-zone;
+              mandatory true;
+              description
+                "Next hop address.";
+            }
+            leaf ifName {
+              when "not(../rdrType='backup') or ../rdrType='direct'";
+              type pub-type:ifName;
+              mandatory true;
+              description
+                "Outbound interface name.";
+            }
+          }
+        }
+        container qosActRdrMhp6s {
+          description
+            "List of the actions of redirecting to IPv6 multiple next hops.";
+          list qosActRdrMhp6 {
+            key "rdrType";
+            max-elements 16;
+            description
+              "Action of redirecting to IPv6 multiple next hops.";
+            leaf rdrType {
+              type qosRdrType;
+              description
+                "Redirect type.";
+            }
+            leaf loadBalance {
+              type boolean;
+              description
+                "Load balance.";
+            }
+            container qosRdrNhp6s {
+              description
+                "Nexthop list.";
+              list qosRdrNhp6 {
+                key "nextHop";
+                max-elements 16;
+                description
+                  "Nexthop.";
+                leaf nextHop {
+                  type inet:ipv6-address-no-zone;
+                  description
+                    "Nexthop address.";
+                }
+              }
+            }
+          }
+        }
+        container qosActRdrVpns {
+          description
+            "List of the actions of redirecting to VPN-Instance groups.";
+          container qosActRdrVpn {
+            description
+              "Action of redirecting to the VPN-Instance group.";
+            leaf actionType {
+              type qosActionRedirectVpnGroup;
+              description
+                "Type of the action of redirecting to the VPN-Instance group.";
+            }
+            leaf vpnGroupName {
+              type qosPolicyName;
+              mandatory true;
+              description
+                "Name of a VPN-Instance group.";
+            }
+          }
+        }
+        container qosActRdrLsps {
+          description
+            "List of the actions of redirecting to public network LSPs.";
+          container qosActRdrLsp {
+            description
+              "Action of redirecting to the public network LSP.";
+            leaf actionType {
+              type qosActionRedirectLsp;
+              description
+                "Action type.";
+            }
+            leaf configType {
+              type qosLspRdrType;
+              mandatory true;
+              description
+                "Redirect LSP type.";
+            }
+            leaf destAddr {
+              type inet:ipv4-address-no-zone;
+              mandatory true;
+              description
+                "Destination address.";
+            }
+            leaf nextHop {
+              when "not(../configType='destAddr' or ../configType='interface' or ../configType='secondary') or ../configType='nhp'";
+              type inet:ipv4-address-no-zone;
+              mandatory true;
+              description
+                "Next hop address.";
+            }
+            leaf ifName {
+              when "not(../configType='destAddr' or ../configType='nhp' or ../configType='secondary') or ../configType='interface'";
+              type pub-type:ifName;
+              mandatory true;
+              description
+                "Outbound interface name.";
+            }
+            leaf secondary {
+              when "not(../configType='destAddr' or ../configType='interface' or ../configType='nhp') or ../configType='secondary'";
+              type qosEnableFlag;
+              mandatory true;
+              description
+                "Secondary LSP.";
+            }
+          }
+        }
+        container qosActRedirects {
+          description
+            "Action of Redirecting.";
+          container qosActRedirect {
+            description
+              "Action of Redirecting.";
+            leaf qosRdrType {
+              type qosRdrType;
+              description
+                "Type of Redirecting.";
+            }
+            leaf vpnInstanceName {
+              type string {
+                length "1..31";
+              }
+              description
+                "VPN Instance Name.";
+              ext:allowDelete true;
+            }
+            leaf ipNum {
+              type uint32 {
+                range "1..16";
+              }
+              mandatory true;
+              description
+                "Number of IP Address.";
+            }
+            leaf ipAddress1 {
+              type inet:ipv4-address-no-zone;
+              mandatory true;
+              description
+                "IP Address.";
+              ext:allowDelete true;
+            }
+            leaf ipAddress2 {
+              type inet:ipv4-address-no-zone;
+              description
+                "IP Address.";
+              ext:allowDelete true;
+            }
+            leaf ipAddress3 {
+              type inet:ipv4-address-no-zone;
+              description
+                "IP Address.";
+              ext:allowDelete true;
+            }
+            leaf ipAddress4 {
+              type inet:ipv4-address-no-zone;
+              description
+                "IP Address.";
+              ext:allowDelete true;
+            }
+            leaf ipAddress5 {
+              type inet:ipv4-address-no-zone;
+              description
+                "IP Address.";
+              ext:allowDelete true;
+            }
+            leaf ipAddress6 {
+              type inet:ipv4-address-no-zone;
+              description
+                "IP Address.";
+              ext:allowDelete true;
+            }
+            leaf ipAddress7 {
+              type inet:ipv4-address-no-zone;
+              description
+                "IP Address.";
+              ext:allowDelete true;
+            }
+            leaf ipAddress8 {
+              type inet:ipv4-address-no-zone;
+              description
+                "IP Address.";
+              ext:allowDelete true;
+            }
+            leaf ipAddress9 {
+              type inet:ipv4-address-no-zone;
+              description
+                "IP Address.";
+              ext:allowDelete true;
+            }
+            leaf ipAddress10 {
+              type inet:ipv4-address-no-zone;
+              description
+                "IP Address.";
+              ext:allowDelete true;
+            }
+            leaf ipAddress11 {
+              type inet:ipv4-address-no-zone;
+              description
+                "IP Address.";
+              ext:allowDelete true;
+            }
+            leaf ipAddress12 {
+              type inet:ipv4-address-no-zone;
+              description
+                "IP Address.";
+              ext:allowDelete true;
+            }
+            leaf ipAddress13 {
+              type inet:ipv4-address-no-zone;
+              description
+                "IP Address.";
+              ext:allowDelete true;
+            }
+            leaf ipAddress14 {
+              type inet:ipv4-address-no-zone;
+              description
+                "IP Address.";
+              ext:allowDelete true;
+            }
+            leaf ipAddress15 {
+              type inet:ipv4-address-no-zone;
+              description
+                "IP Address.";
+              ext:allowDelete true;
+            }
+            leaf ipAddress16 {
+              type inet:ipv4-address-no-zone;
+              description
+                "IP Address.";
+              ext:allowDelete true;
+            }
+          }
+        }
+        container qosActStats {
+          description
+            "Statistics Action";
+          container qosActStat {
+            description
+              "Statistics Action";
+            leaf statFlag {
+              type qosEnableFlag;
+              description
+                "Statistics Enable Flag";
+            }
+          }
+        }
+        container qosActRdrIfs {
+          description
+            "List of Actions of Redirecting to Interfaces.";
+          container qosActRdrIf {
+            description
+              "Action of Redirecting to Interface.";
+            leaf actionType {
+              type qosActionRedirectIf;
+              description
+                "Action type.";
+            }
+            leaf ifName {
+              type pub-type:ifName;
+              mandatory true;
+              description
+                "Interface Name.";
+            }
+          }
+        }
+        container qosActRemarkVxlanRsvs {
+          description
+            "ReMark vxlan reserved List.";
+          container qosActRemarkVxlanRsv {
+            description
+              "ReMark vxlan reserved.";
+            leaf remarkType {
+              type qosTypeVxlan;
+              description
+                "Remark type.";
+            }
+            leaf remarkVxlanRsv {
+              type string {
+                length "3..8";
+                pattern '0[xX][0-9abcdefABCDEF]{1,6}';
+              }
+              mandatory true;
+              description
+                "vxlan reserved value.";
+            }
+          }
+        }
+        container qosActRemarkLocalIds {
+          description
+            "ReMark local-id List.";
+          container qosActRemarkLocalId {
+            description
+              "ReMark local-id.";
+            leaf remarkType {
+              type qosTypeLocalId;
+              description
+                "Remark type.";
+            }
+            leaf remarkLocalId {
+              type uint32 {
+                range "1..511";
+              }
+              mandatory true;
+              description
+                "local-id value.";
+            }
+          }
+        }
+        container qosActRemoteRedirects {
+          description
+            "Remote Redirect Lists.";
+          container qosActRemoteRedirect {
+            description
+              "Remote Redirect List.";
+            leaf rdrType {
+              type qosTypeRemoteRedirect;
+              description
+                "Redirect Type.";
+            }
+            leaf vpnInstanceName {
+              type string {
+                length "1..31";
+              }
+              description
+                "VPN Instance Name.";
+              ext:allowDelete true;
+            }
+            leaf ipAddress {
+              type inet:ipv4-address-no-zone;
+              mandatory true;
+              description
+                "IP Address.";
+            }
+          }
+        }
+        container qosActRdrSrvPaths {
+          description
+            "Redirect Service-path Lists.";
+          container qosActRdrSrvPath {
+            description
+              "Redirect Service-path List.";
+            leaf rdrType {
+              type qosTypeRdrSrvPath;
+              description
+                "Redirect Type.";
+            }
+            leaf servicePath {
+              type uint32 {
+                range "1..16777215";
+              }
+              description
+                "Service Path.";
+              ext:allowDelete true;
+            }
+            leaf serviceIndex {
+              type uint16 {
+                range "1..255";
+              }
+              mandatory true;
+              description
+                "Service Index.";
+            }
+          }
+        }
+        container qosActRdrEcmpTnls {
+          description
+            "List of Actions of Redirecting to Mutiple Tunnel.";
+          container qosActRdrEcmpTnl {
+            description
+              "Action of Redirecting to Mutiple Tunnel.";
+            leaf rdrType {
+              type qosTypeRdrEmcpTeTnl;
+              description
+                "Redirect type.";
+            }
+            leaf tunnelNum {
+              type uint32 {
+                range "1..64";
+              }
+              default "1";
+              description
+                "Tunnel number.";
+              ext:allowDelete true;
+            }
+            leaf ifName1 {
+              type string {
+                length "1..31";
+              }
+              mandatory true;
+              description
+                "Tunnel name.";
+            }
+            leaf ifName2 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+            }
+            leaf ifName3 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName4 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName5 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName6 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName7 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName8 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName9 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName10 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName11 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName12 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName13 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName14 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName15 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName16 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName17 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName18 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName19 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName20 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName21 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName22 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName23 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName24 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName25 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName26 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName27 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName28 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName29 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName30 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName31 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName32 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName33 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName34 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName35 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName36 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName37 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName38 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName39 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName40 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName41 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName42 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName43 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName44 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName45 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName46 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName47 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName48 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName49 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName50 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName51 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName52 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName53 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName54 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName55 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName56 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName57 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName58 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName59 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName60 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName61 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName62 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName63 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+            leaf ifName64 {
+              type string {
+                length "0..31";
+              }
+              description
+                "Tunnel name.";
+              ext:allowDelete true;
+            }
+          }
+        }
+      }
+    }
+    container qosPolicys {
+      description
+        "List of traffic policies.";
+      list qosPolicy {
+        key "policyName";
+        max-elements 512;
+        description
+          "Traffic policy.";
+        leaf policyName {
+          type qosPolicyName;
+          description
+            "Policy name.";
+        }
+        leaf description {
+          type string {
+            length "0..127";
+          }
+          description
+            "Description.";
+          ext:allowDelete true;
+        }
+        leaf step {
+          type uint16 {
+            range "1..20";
+          }
+          default "5";
+          description
+            "Step.";
+        }
+        leaf shareMode {
+          type qosSwitchFlag;
+          default "enable";
+          description
+            "Sharing mode.";
+        }
+        leaf statFlag {
+          type qosSwitchFlag;
+          default "disable";
+          description
+            "Flag for enabling statistics.";
+        }
+        container qosPolicyNodes {
+          description
+            "List of the mappings between classifiers and behaviors.";
+          list qosPolicyNode {
+            key "classifierName";
+            max-elements 512;
+            description
+              "Classifier behavior.";
+            leaf classifierName {
+              type qosPolicyName;
+              description
+                "Name of a traffic classifier.";
+            }
+            leaf behaviorName {
+              type qosPolicyName;
+              mandatory true;
+              description
+                "Name of a traffic behavior.";
+            }
+            leaf precedence {
+              type uint16;
+              description
+                "Priority of a classifier behavior.";
+              ext:allowDelete true;
+            }
+          }
+        }
+      }
+    }
+  }
+  grouping qos_cbqosPolicyStats_type {
+    description
+      "";
+    list qosPolicyStat {
+      config false;
+      description
+        "Traffic policy statistics.";
+      leaf slotIdPath {
+        type string {
+          length "1..127";
+          pattern '^(\d+/)?\d+$';
+        }
+        config false;
+        description
+          "Slot ID. The chassis ID must also be specified when have multi chassis, such as 3, clc1/3 or ccc1/3.";
+      }
+      leaf applyTime {
+        type yang:date-and-time;
+        config false;
+        description
+          "Time of applying a policy.";
+      }
+      leaf statEnableTime {
+        type yang:date-and-time;
+        config false;
+        description
+          "Time of enabling statistics.";
+      }
+      leaf statClearTime {
+        type yang:date-and-time;
+        config false;
+        description
+          "Time of clearing statistics.";
+      }
+      leaf statClearFlag {
+        type boolean;
+        config false;
+        description
+          "Flag of clearing statistics";
+      }
+      leaf matchPackets {
+        type uint64;
+        config false;
+        description
+          "Number of matched packets.";
+      }
+      leaf matchBytes {
+        type uint64;
+        config false;
+        description
+          "Number of matched bytes.";
+      }
+      leaf matchPktRate {
+        type uint64;
+        config false;
+        description
+          "Rate of matched packets (unit: packet/s).";
+      }
+      leaf matchByteRate {
+        type uint64;
+        config false;
+        description
+          "Rate of matched bytes (unit: bit/s).";
+      }
+      leaf missPackets {
+        type uint64;
+        config false;
+        description
+          "Number of unmatched packets.";
+      }
+      leaf missBytes {
+        type uint64;
+        config false;
+        description
+          "Number of unmatched bytes.";
+      }
+      leaf matchPassPkts {
+        type uint64;
+        config false;
+        description
+          "Number of matched and passed packets.";
+      }
+      leaf matchPassBytes {
+        type uint64;
+        config false;
+        description
+          "Number of matched and passed bytes.";
+      }
+      leaf matchDropPkts {
+        type uint64;
+        config false;
+        description
+          "Number of matched but discarded packets.";
+      }
+      leaf matchDropBytes {
+        type uint64;
+        config false;
+        description
+          "Number of matched but discarded bytes.";
+      }
+      leaf missPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of the packets that do not match the policy (unit: packet/s).";
+      }
+      leaf missBytesRate {
+        type uint64;
+        config false;
+        description
+          "Rate of the bytes that do not match the policy (unit: bit/s).";
+      }
+      leaf matchPassPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of the packets that match the policy and passed (unit: packet/s).";
+      }
+      leaf matchPassBytesRate {
+        type uint64;
+        config false;
+        description
+          "Rate of the bytes that match the policy and passed (unit: bit/s).";
+      }
+      leaf matchDropPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of the packets that match the policy but are discarded (unit: packet/s).";
+      }
+      leaf matchDropBytesRate {
+        type uint64;
+        config false;
+        description
+          "Rate of the bytes that match the policy but are discarded.";
+      }
+      leaf urpfPackets {
+        type uint64;
+        config false;
+        description
+          "Number of packets discarded by URPF";
+      }
+      leaf urpfBytes {
+        type uint64;
+        config false;
+        description
+          "Number of bytes discarded by URPF";
+      }
+      leaf urpfPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of packets discarded by URPF (unit: packet/s)";
+      }
+      leaf urpfBytesRate {
+        type uint64;
+        config false;
+        description
+          "Rate of bytes discarded by URPF (unit: bit/s)";
+      }
+      leaf carPackets {
+        type uint64;
+        config false;
+        description
+          "Number of packets processed by CAR";
+      }
+      leaf carBytes {
+        type uint64;
+        config false;
+        description
+          "Number of bytes processed by CAR";
+      }
+      leaf carPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of packets processed by CAR (unit: packet/s)";
+      }
+      leaf carBytesRate {
+        type uint64;
+        config false;
+        description
+          "Rate of bytes processed by CAR (unit: bit/s)";
+      }
+      leaf filterPackets {
+        type uint64;
+        config false;
+        description
+          "Number of filtered packets";
+      }
+      leaf filterBytes {
+        type uint64;
+        config false;
+        description
+          "Number of filtered bytes";
+      }
+      leaf filterPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of filtered packets (unit: packet/s)";
+      }
+      leaf filterBytesRate {
+        type uint64;
+        config false;
+        description
+          "Rate of filtered bytes  (unit: bit/s)";
+      }
+      container qosClassifierStats {
+        config false;
+        description
+          "List of traffic classifier statistics.";
+        list qosClassifierStat {
+          config false;
+          description
+            "Traffic classifier statistics.";
+          leaf classifierName {
+            type qosPolicyName;
+            config false;
+            description
+              "Name of a traffic classifier.";
+          }
+          leaf matchPackets {
+            type uint64;
+            config false;
+            description
+              "Number of matched packets.";
+          }
+          leaf matchBytes {
+            type uint64;
+            config false;
+            description
+              "Number of matched bytes.";
+          }
+          leaf matchPktRt {
+            type uint64;
+            config false;
+            description
+              "Rate of matched packets (unit: packet/s).";
+          }
+          leaf matchByteRt {
+            type uint64;
+            config false;
+            description
+              "Rate of matched bytes (unit: bit/s).";
+          }
+          leaf matchPassPackets {
+            type uint64;
+            config false;
+            description
+              "Number of matched and passed packets.";
+          }
+          leaf matchPassBytes {
+            type uint64;
+            config false;
+            description
+              "Number of matched and passed bytes.";
+          }
+          leaf matchDropPackets {
+            type uint64;
+            config false;
+            description
+              "Number of matched but discarded packets.";
+          }
+          leaf matchDropBytes {
+            type uint64;
+            config false;
+            description
+              "Number of matched but discarded bytes.";
+          }
+          leaf matchPassPktsRate {
+            type uint64;
+            config false;
+            description
+              "Rate of the packets matching the traffic classifier and passed (unit: packet/s).";
+          }
+          leaf matchPassBytesRate {
+            type uint64;
+            config false;
+            description
+              "Rate of the bytes matching the traffic classifier and passed (unit: bit/s).";
+          }
+          leaf matchDropPktsRate {
+            type uint64;
+            config false;
+            description
+              "Rate of the packets matching the traffic classifier but  discarded (unit: packet/s).";
+          }
+          leaf matchDropBytesRate {
+            type uint64;
+            config false;
+            description
+              "Rate of the bytes matching the traffic classifier but discarded (unit: bit/s).";
+          }
+          leaf filterPackets {
+            type uint64;
+            config false;
+            description
+              "Number of filtered bytes.";
+          }
+          leaf filterBytes {
+            type uint64;
+            config false;
+            description
+              "Number of filtered packets.";
+          }
+          leaf filterPktsRate {
+            type uint64;
+            config false;
+            description
+              "Rate of filtered packets (unit: packet/s).";
+          }
+          leaf filterBytesRate {
+            type uint64;
+            config false;
+            description
+              "Rate of filtered bytes.";
+          }
+          leaf urpfDropPackets {
+            type uint64;
+            config false;
+            description
+              "Number of the discarded packets by URPF check.";
+          }
+          leaf urpfDropBytes {
+            type uint64;
+            config false;
+            description
+              "Number of the discarded bytes by URPF check.";
+          }
+          leaf urpfDropPktsRate {
+            type uint64;
+            config false;
+            description
+              "Rate of the discarded packets by URPF check (unit: packet/s).";
+          }
+          leaf urpfDropBytesRate {
+            type uint64;
+            config false;
+            description
+              "Rate of the discarded bytes by URPF check (unit: bit/s).";
+          }
+          leaf carPackets {
+            type uint64;
+            config false;
+            description
+              "Number of the processed packets by CAR.";
+          }
+          leaf carBytes {
+            type uint64;
+            config false;
+            description
+              "Number of the processed bytes by CAR.";
+          }
+          leaf carPktsRate {
+            type uint64;
+            config false;
+            description
+              "Number of the passed packets by CAR (unit: packet/s).";
+          }
+          leaf carBytesRate {
+            type uint64;
+            config false;
+            description
+              "Number of the passed bytes by CAR (unit: bit/s).";
+          }
+          leaf carPassPkts {
+            type uint64;
+            config false;
+            description
+              "Number of the passed packets by CAR.";
+          }
+          leaf carPassBytes {
+            type uint64;
+            config false;
+            description
+              "Number of the passed bytes by CAR.";
+          }
+          leaf carDropPkts {
+            type uint64;
+            config false;
+            description
+              "Rate of the discarded packets by CAR.";
+          }
+          leaf carDropBytes {
+            type uint64;
+            config false;
+            description
+              "Rate of the discarded bytes by CAR.";
+          }
+          leaf carPassPktsRate {
+            type uint64;
+            config false;
+            description
+              "Rate of the passed packets CAR (unit: packet/s).";
+          }
+          leaf carPassBytesRate {
+            type uint64;
+            config false;
+            description
+              "Rate of the passed bytes by CAR (unit: bit/s).";
+          }
+          leaf carDropPktsRate {
+            type uint64;
+            config false;
+            description
+              "Rate of the discarded packets by CAR (unit: packet/s).";
+          }
+          leaf carDropBytesRate {
+            type uint64;
+            config false;
+            description
+              "Rate of the discarded bytes by CAR (unit: bit/s).";
+          }
+          leaf carGPkts {
+            type uint64;
+            config false;
+            description
+              "Number of green packets by CAR.";
+          }
+          leaf carGBytes {
+            type uint64;
+            config false;
+            description
+              "Number of the bytes of green packets by CAR.";
+          }
+          leaf carYPkts {
+            type uint64;
+            config false;
+            description
+              "Number of yellow packets by CAR.";
+          }
+          leaf carYBytes {
+            type uint64;
+            config false;
+            description
+              "Number of the bytes of yellow packets by CAR.";
+          }
+          leaf carRPkts {
+            type uint64;
+            config false;
+            description
+              "Number of red packets by CAR.";
+          }
+          leaf carRBytes {
+            type uint64;
+            config false;
+            description
+              "Number of the bytes of red packets by CAR.";
+          }
+          leaf carGPktsRate {
+            type uint64;
+            config false;
+            description
+              "Rate of green packets by CAR (unit: packet/s).";
+          }
+          leaf carGBytesRate {
+            type uint64;
+            config false;
+            description
+              "Rate of the bytes of green packets by CAR (unit: bit/s).";
+          }
+          leaf carYPktsRate {
+            type uint64;
+            config false;
+            description
+              "Rate of yellow packets by CAR (unit: packet/s).";
+          }
+          leaf carYBytesRate {
+            type uint64;
+            config false;
+            description
+              "Rate of the bytes of yellow packets by CAR (unit: bit/s).";
+          }
+          leaf carRPktsRate {
+            type uint64;
+            config false;
+            description
+              "Rate of red packets by CAR(unit: packet/s).";
+          }
+          leaf carRBytesRate {
+            type uint64;
+            config false;
+            description
+              "Rate of the bytes of red packets by CAR(unit: bit/s).";
+          }
+        }
+      }
+    }
+  }
+  grouping qos_cbqosGlobalClassifierStats_type {
+    description
+      "";
+    list qosGlobalClassifierStat {
+      key "classifierName slotId";
+      config false;
+      description
+        "traffic classifier statistics.";
+      leaf classifierName {
+        type qosPolicyName;
+        config false;
+        description
+          "Traffic Classifier Name.";
+      }
+      leaf behaviorName {
+        type qosPolicyName;
+        config false;
+        description
+          "Traffic Behavior Name.";
+      }
+      leaf slotId {
+        type qosSlotPath;
+        config false;
+        description
+          "Slot Id.";
+      }
+      leaf matchPackets {
+        type uint64;
+        config false;
+        description
+          "Number of matched packets.";
+      }
+      leaf matchBytes {
+        type uint64;
+        config false;
+        description
+          "Number of matched bytes.";
+      }
+      leaf matchPassPackets {
+        type uint64;
+        config false;
+        description
+          "Number of matched and passed packets.";
+      }
+      leaf matchPassBytes {
+        type uint64;
+        config false;
+        description
+          "Number of matched and passed bytes.";
+      }
+      leaf matchDropPackets {
+        type uint64;
+        config false;
+        description
+          "Number of matched but discarded packets.";
+      }
+      leaf matchDropBytes {
+        type uint64;
+        config false;
+        description
+          "Number of matched but discarded bytes.";
+      }
+      leaf filterPackets {
+        type uint64;
+        config false;
+        description
+          "Number of filtered packets.";
+      }
+      leaf filterBytes {
+        type uint64;
+        config false;
+        description
+          "Number of filtered bytes.";
+      }
+      leaf carDropPkts {
+        type uint64;
+        config false;
+        description
+          "Number of the discarded packets by CAR.";
+      }
+      leaf carDropBytes {
+        type uint64;
+        config false;
+        description
+          "Number of the discarded bytes by CAR.";
+      }
+      leaf matchPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Matched Packets(pps).";
+      }
+      leaf matchBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Matched packets(bps).";
+      }
+      leaf matchPassPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Matched and Passed Packets(pps).";
+      }
+      leaf matchPassBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Matched and Passed packets(bps).";
+      }
+      leaf matchDropPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Matched but Discarded Packets(pps).";
+      }
+      leaf matchDropBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Matched but Discarded Packets(bps).";
+      }
+      leaf filterPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Filtered Packets(pps).";
+      }
+      leaf filterBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Filtered Packets(bps).";
+      }
+      leaf carDropPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Discarded Packets by CAR(pps).";
+      }
+      leaf carDropBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Discarded Packets by CAR(bps).";
+      }
+    }
+  }
+  grouping qos_cbqosSlotClassifierStats_type {
+    description
+      "";
+    list qosSlotClassifierStat {
+      key "classifierName slotId";
+      config false;
+      description
+        "traffic classifier statistics.";
+      leaf classifierName {
+        type qosPolicyName;
+        config false;
+        description
+          "Traffic Classifier Name.";
+      }
+      leaf behaviorName {
+        type qosPolicyName;
+        config false;
+        description
+          "Traffic Behavior Name.";
+      }
+      leaf slotId {
+        type qosSlotPath;
+        config false;
+        description
+          "Slot Id.";
+      }
+      leaf matchPackets {
+        type uint64;
+        config false;
+        description
+          "Number of matched packets.";
+      }
+      leaf matchBytes {
+        type uint64;
+        config false;
+        description
+          "Number of matched bytes.";
+      }
+      leaf matchPassPackets {
+        type uint64;
+        config false;
+        description
+          "Number of matched and passed packets.";
+      }
+      leaf matchPassBytes {
+        type uint64;
+        config false;
+        description
+          "Number of matched and passed bytes.";
+      }
+      leaf matchDropPackets {
+        type uint64;
+        config false;
+        description
+          "Number of matched but discarded packets.";
+      }
+      leaf matchDropBytes {
+        type uint64;
+        config false;
+        description
+          "Number of matched but discarded bytes.";
+      }
+      leaf filterPackets {
+        type uint64;
+        config false;
+        description
+          "Number of filtered packets.";
+      }
+      leaf filterBytes {
+        type uint64;
+        config false;
+        description
+          "Number of filtered bytes.";
+      }
+      leaf carDropPkts {
+        type uint64;
+        config false;
+        description
+          "Number of the discarded packets by CAR.";
+      }
+      leaf carDropBytes {
+        type uint64;
+        config false;
+        description
+          "Number of the discarded bytes by CAR.";
+      }
+      leaf matchPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Matched Packets(pps).";
+      }
+      leaf matchBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Matched packets(bps).";
+      }
+      leaf matchPassPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Matched and Passed Packets(pps).";
+      }
+      leaf matchPassBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Matched and Passed packets(bps).";
+      }
+      leaf matchDropPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Matched but Discarded Packets(pps).";
+      }
+      leaf matchDropBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Matched but Discarded Packets(bps).";
+      }
+      leaf filterPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Filtered Packets(pps).";
+      }
+      leaf filterBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Filtered Packets(bps).";
+      }
+      leaf carDropPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Discarded Packets by CAR(pps).";
+      }
+      leaf carDropBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Discarded Packets by CAR(bps).";
+      }
+    }
+  }
+  grouping qos_cbqosIfClassifierStats_type {
+    description
+      "";
+    list qosIfClassifierStat {
+      key "classifierName slotId";
+      config false;
+      description
+        "traffic classifier statistics.";
+      leaf classifierName {
+        type qosPolicyName;
+        config false;
+        description
+          "Traffic Classifier Name.";
+      }
+      leaf behaviorName {
+        type qosPolicyName;
+        config false;
+        description
+          "Traffic Behavior Name.";
+      }
+      leaf slotId {
+        type qosSlotPath;
+        config false;
+        description
+          "Slot Id.";
+      }
+      leaf matchPackets {
+        type uint64;
+        config false;
+        description
+          "Number of matched packets.";
+      }
+      leaf matchBytes {
+        type uint64;
+        config false;
+        description
+          "Number of matched bytes.";
+      }
+      leaf matchPassPackets {
+        type uint64;
+        config false;
+        description
+          "Number of matched and passed packets.";
+      }
+      leaf matchPassBytes {
+        type uint64;
+        config false;
+        description
+          "Number of matched and passed bytes.";
+      }
+      leaf matchDropPackets {
+        type uint64;
+        config false;
+        description
+          "Number of matched but discarded packets.";
+      }
+      leaf matchDropBytes {
+        type uint64;
+        config false;
+        description
+          "Number of matched but discarded bytes.";
+      }
+      leaf filterPackets {
+        type uint64;
+        config false;
+        description
+          "Number of filtered packets.";
+      }
+      leaf filterBytes {
+        type uint64;
+        config false;
+        description
+          "Number of filtered bytes.";
+      }
+      leaf carDropPkts {
+        type uint64;
+        config false;
+        description
+          "Number of the discarded packets by CAR.";
+      }
+      leaf carDropBytes {
+        type uint64;
+        config false;
+        description
+          "Number of the discarded bytes by CAR.";
+      }
+      leaf matchPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Matched Packets(pps).";
+      }
+      leaf matchBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Matched packets(bps).";
+      }
+      leaf matchPassPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Matched and Passed Packets(pps).";
+      }
+      leaf matchPassBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Matched and Passed packets(bps).";
+      }
+      leaf matchDropPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Matched but Discarded Packets(pps).";
+      }
+      leaf matchDropBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Matched but Discarded Packets(bps).";
+      }
+      leaf filterPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Filtered Packets(pps).";
+      }
+      leaf filterBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Filtered Packets(bps).";
+      }
+      leaf carDropPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Discarded Packets by CAR(pps).";
+      }
+      leaf carDropBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Discarded Packets by CAR(bps).";
+      }
+    }
+  }
+  grouping qos_cbqosVlanClassifierStats_type {
+    description
+      "";
+    list qosVlanClassifierStat {
+      key "classifierName slotId";
+      config false;
+      description
+        "traffic classifier statistics.";
+      leaf classifierName {
+        type qosPolicyName;
+        config false;
+        description
+          "Traffic Classifier Name.";
+      }
+      leaf behaviorName {
+        type qosPolicyName;
+        config false;
+        description
+          "Traffic Behavior Name.";
+      }
+      leaf slotId {
+        type qosSlotPath;
+        config false;
+        description
+          "Slot Id.";
+      }
+      leaf matchPackets {
+        type uint64;
+        config false;
+        description
+          "Number of matched packets.";
+      }
+      leaf matchBytes {
+        type uint64;
+        config false;
+        description
+          "Number of matched bytes.";
+      }
+      leaf matchPassPackets {
+        type uint64;
+        config false;
+        description
+          "Number of matched and passed packets.";
+      }
+      leaf matchPassBytes {
+        type uint64;
+        config false;
+        description
+          "Number of matched and passed bytes.";
+      }
+      leaf matchDropPackets {
+        type uint64;
+        config false;
+        description
+          "Number of matched but discarded packets.";
+      }
+      leaf matchDropBytes {
+        type uint64;
+        config false;
+        description
+          "Number of matched but discarded bytes.";
+      }
+      leaf filterPackets {
+        type uint64;
+        config false;
+        description
+          "Number of filtered packets.";
+      }
+      leaf filterBytes {
+        type uint64;
+        config false;
+        description
+          "Number of filtered bytes.";
+      }
+      leaf carDropPkts {
+        type uint64;
+        config false;
+        description
+          "Number of the discarded packets by CAR.";
+      }
+      leaf carDropBytes {
+        type uint64;
+        config false;
+        description
+          "Number of the discarded bytes by CAR.";
+      }
+      leaf matchPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Matched Packets(pps).";
+      }
+      leaf matchBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Matched packets(bps).";
+      }
+      leaf matchPassPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Matched and Passed Packets(pps).";
+      }
+      leaf matchPassBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Matched and Passed packets(bps).";
+      }
+      leaf matchDropPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Matched but Discarded Packets(pps).";
+      }
+      leaf matchDropBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Matched but Discarded Packets(bps).";
+      }
+      leaf filterPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Filtered Packets(pps).";
+      }
+      leaf filterBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Filtered Packets(bps).";
+      }
+      leaf carDropPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Discarded Packets by CAR(pps).";
+      }
+      leaf carDropBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Discarded Packets by CAR(bps).";
+      }
+    }
+  }
+  grouping qos_cbqosVpnClassifierStats_type {
+    description
+      "";
+    list qosVpnClassifierStat {
+      key "classifierName slotId";
+      config false;
+      description
+        "traffic classifier statistics.";
+      leaf classifierName {
+        type qosPolicyName;
+        config false;
+        description
+          "Traffic Classifier Name.";
+      }
+      leaf behaviorName {
+        type qosPolicyName;
+        config false;
+        description
+          "Traffic Behavior Name.";
+      }
+      leaf slotId {
+        type qosSlotPath;
+        config false;
+        description
+          "Slot Id.";
+      }
+      leaf matchPackets {
+        type uint64;
+        config false;
+        description
+          "Number of matched packets.";
+      }
+      leaf matchBytes {
+        type uint64;
+        config false;
+        description
+          "Number of matched bytes.";
+      }
+      leaf matchPassPackets {
+        type uint64;
+        config false;
+        description
+          "Number of matched and passed packets.";
+      }
+      leaf matchPassBytes {
+        type uint64;
+        config false;
+        description
+          "Number of matched and passed bytes.";
+      }
+      leaf matchDropPackets {
+        type uint64;
+        config false;
+        description
+          "Number of matched but discarded packets.";
+      }
+      leaf matchDropBytes {
+        type uint64;
+        config false;
+        description
+          "Number of matched but discarded bytes.";
+      }
+      leaf filterPackets {
+        type uint64;
+        config false;
+        description
+          "Number of filtered packets.";
+      }
+      leaf filterBytes {
+        type uint64;
+        config false;
+        description
+          "Number of filtered bytes.";
+      }
+      leaf carDropPkts {
+        type uint64;
+        config false;
+        description
+          "Number of the discarded packets by CAR.";
+      }
+      leaf carDropBytes {
+        type uint64;
+        config false;
+        description
+          "Number of the discarded bytes by CAR.";
+      }
+      leaf matchPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Matched Packets(pps).";
+      }
+      leaf matchBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Matched packets(bps).";
+      }
+      leaf matchPassPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Matched and Passed Packets(pps).";
+      }
+      leaf matchPassBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Matched and Passed packets(bps).";
+      }
+      leaf matchDropPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Matched but Discarded Packets(pps).";
+      }
+      leaf matchDropBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Matched but Discarded Packets(bps).";
+      }
+      leaf filterPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Filtered Packets(pps).";
+      }
+      leaf filterBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Filtered Packets(bps).";
+      }
+      leaf carDropPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Discarded Packets by CAR(pps).";
+      }
+      leaf carDropBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Discarded Packets by CAR(bps).";
+      }
+    }
+  }
+  grouping qos_cbqosBdClassifierStats_type {
+    description
+      "";
+    list qosBdClassifierStat {
+      key "classifierName slotId";
+      config false;
+      description
+        "traffic classifier statistics.";
+      leaf classifierName {
+        type qosPolicyName;
+        config false;
+        description
+          "Traffic Classifier Name.";
+      }
+      leaf behaviorName {
+        type qosPolicyName;
+        config false;
+        description
+          "Traffic Behavior Name.";
+      }
+      leaf slotId {
+        type qosSlotPath;
+        config false;
+        description
+          "Slot Id.";
+      }
+      leaf matchPackets {
+        type uint64;
+        config false;
+        description
+          "Number of matched packets.";
+      }
+      leaf matchBytes {
+        type uint64;
+        config false;
+        description
+          "Number of matched bytes.";
+      }
+      leaf matchPassPackets {
+        type uint64;
+        config false;
+        description
+          "Number of matched and passed packets.";
+      }
+      leaf matchPassBytes {
+        type uint64;
+        config false;
+        description
+          "Number of matched and passed bytes.";
+      }
+      leaf matchDropPackets {
+        type uint64;
+        config false;
+        description
+          "Number of matched but discarded packets.";
+      }
+      leaf matchDropBytes {
+        type uint64;
+        config false;
+        description
+          "Number of matched but discarded bytes.";
+      }
+      leaf filterPackets {
+        type uint64;
+        config false;
+        description
+          "Number of filtered packets.";
+      }
+      leaf filterBytes {
+        type uint64;
+        config false;
+        description
+          "Number of filtered bytes.";
+      }
+      leaf carDropPkts {
+        type uint64;
+        config false;
+        description
+          "Number of the discarded packets by CAR.";
+      }
+      leaf carDropBytes {
+        type uint64;
+        config false;
+        description
+          "Number of the discarded bytes by CAR.";
+      }
+      leaf matchPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Matched Packets(pps).";
+      }
+      leaf matchBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Matched packets(bps).";
+      }
+      leaf matchPassPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Matched and Passed Packets(pps).";
+      }
+      leaf matchPassBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Matched and Passed packets(bps).";
+      }
+      leaf matchDropPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Matched but Discarded Packets(pps).";
+      }
+      leaf matchDropBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Matched but Discarded Packets(bps).";
+      }
+      leaf filterPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Filtered Packets(pps).";
+      }
+      leaf filterBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Filtered Packets(bps).";
+      }
+      leaf carDropPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Discarded Packets by CAR(pps).";
+      }
+      leaf carDropBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Discarded Packets by CAR(bps).";
+      }
+    }
+  }
+  grouping qos_cbqosIfPolicyApplyStates_type {
+    description
+      "";
+    list qosIfPolicyApplyState {
+      key "slotId";
+      config false;
+      description
+        "Traffic Policy Applied-record List.";
+      leaf slotId {
+        type qosSlotPath;
+        config false;
+        description
+          "Slot ID.";
+      }
+      leaf applyState {
+        type qosTypeAppState;
+        config false;
+        description
+          "Apply State.";
+      }
+    }
+  }
+  grouping qos_cbqosVlanPolicyApplyStates_type {
+    description
+      "";
+    list qosVlanPolicyApplyState {
+      key "slotId";
+      config false;
+      description
+        "Traffic Policy Applied-record List.";
+      leaf slotId {
+        type qosSlotPath;
+        config false;
+        description
+          "Slot ID.";
+      }
+      leaf applyState {
+        type qosTypeAppState;
+        config false;
+        description
+          "Apply State.";
+      }
+    }
+  }
+  grouping qos_cbqosGlobalPolicyApplyStates_type {
+    description
+      "";
+    list qosGlobalPolicyApplyState {
+      key "slotId";
+      config false;
+      description
+        "Traffic Policy Applied-record List.";
+      leaf slotId {
+        type qosSlotPath;
+        config false;
+        description
+          "Slot ID.";
+      }
+      leaf applyState {
+        type qosTypeAppState;
+        config false;
+        description
+          "Apply State.";
+      }
+    }
+  }
+  grouping qos_cbqosSlotPolicyApplyStates_type {
+    description
+      "";
+    list qosSlotPolicyApplyState {
+      key "slotId";
+      config false;
+      description
+        "Traffic Policy Applied-record List.";
+      leaf slotId {
+        type qosSlotPath;
+        config false;
+        description
+          "Slot ID.";
+      }
+      leaf applyState {
+        type qosTypeAppState;
+        config false;
+        description
+          "Apply State.";
+      }
+    }
+  }
+  grouping qos_cbqosBdPolicyApplyStates_type {
+    description
+      "";
+    list qosBdPolicyApplyState {
+      key "slotId";
+      config false;
+      description
+        "Traffic Policy Applied-record List.";
+      leaf slotId {
+        type qosSlotPath;
+        config false;
+        description
+          "Slot ID.";
+      }
+      leaf applyState {
+        type qosTypeAppState;
+        config false;
+        description
+          "Apply State.";
+      }
+    }
+  }
+  grouping qos_cbqosVpnPolicyApplyStates_type {
+    description
+      "";
+    list qosVpnPolicyApplyState {
+      key "slotId";
+      config false;
+      description
+        "Traffic Policy Applied-record List.";
+      leaf slotId {
+        type qosSlotPath;
+        config false;
+        description
+          "Slot ID.";
+      }
+      leaf applyState {
+        type qosTypeAppState;
+        config false;
+        description
+          "Apply State.";
+      }
+    }
+  }
+  grouping qos_cbqosGroupPolicyApplyStates_type {
+    description
+      "";
+    list qosGroupPolicyApplyState {
+      key "slotId";
+      config false;
+      description
+        "Traffic Policy Applied-record List.";
+      leaf slotId {
+        type qosSlotPath;
+        config false;
+        description
+          "Slot ID.";
+      }
+      leaf applyState {
+        type qosTypeAppState;
+        config false;
+        description
+          "Apply State.";
+      }
+    }
+  }
+  grouping qos_cbqosGroupClassifierStats_type {
+    description
+      "";
+    list qosGroupClassifierStat {
+      key "classifierName slotId";
+      config false;
+      description
+        "traffic classifier statistics.";
+      leaf classifierName {
+        type qosPolicyName;
+        config false;
+        description
+          "Traffic Classifier Name.";
+      }
+      leaf behaviorName {
+        type qosPolicyName;
+        config false;
+        description
+          "Traffic Behavior Name.";
+      }
+      leaf slotId {
+        type qosSlotPath;
+        config false;
+        description
+          "Slot Id.";
+      }
+      leaf matchPackets {
+        type uint64;
+        config false;
+        description
+          "Number of matched packets.";
+      }
+      leaf matchBytes {
+        type uint64;
+        config false;
+        description
+          "Number of matched bytes.";
+      }
+      leaf matchPassPackets {
+        type uint64;
+        config false;
+        description
+          "Number of matched and passed packets.";
+      }
+      leaf matchPassBytes {
+        type uint64;
+        config false;
+        description
+          "Number of matched and passed bytes.";
+      }
+      leaf matchDropPackets {
+        type uint64;
+        config false;
+        description
+          "Number of matched but discarded packets.";
+      }
+      leaf matchDropBytes {
+        type uint64;
+        config false;
+        description
+          "Number of matched but discarded bytes.";
+      }
+      leaf filterPackets {
+        type uint64;
+        config false;
+        description
+          "Number of filtered packets.";
+      }
+      leaf filterBytes {
+        type uint64;
+        config false;
+        description
+          "Number of filtered bytes.";
+      }
+      leaf carDropPkts {
+        type uint64;
+        config false;
+        description
+          "Number of the discarded packets by CAR.";
+      }
+      leaf carDropBytes {
+        type uint64;
+        config false;
+        description
+          "Number of the discarded bytes by CAR.";
+      }
+      leaf matchPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Matched Packets(pps).";
+      }
+      leaf matchBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Matched packets(bps).";
+      }
+      leaf matchPassPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Matched and Passed Packets(pps).";
+      }
+      leaf matchPassBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Matched and Passed packets(bps).";
+      }
+      leaf matchDropPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Matched but Discarded Packets(pps).";
+      }
+      leaf matchDropBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Matched but Discarded Packets(bps).";
+      }
+      leaf filterPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Filtered Packets(pps).";
+      }
+      leaf filterBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Filtered Packets(bps).";
+      }
+      leaf carDropPktsRate {
+        type uint64;
+        config false;
+        description
+          "Rate of Discarded Packets by CAR(pps).";
+      }
+      leaf carDropBitsRate {
+        type uint64;
+        config false;
+        description
+          "Bits Rate of Discarded Packets by CAR(bps).";
+      }
+    }
+  }
+}

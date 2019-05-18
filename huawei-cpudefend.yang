@@ -1,0 +1,169 @@
+module huawei-cpudefend {
+    namespace "http://www.huawei.com/netconf/vrp/huawei-cpudefend";
+    prefix "cpudefend";
+    import huawei-pub-type {
+        prefix "pub-type";
+    }
+    include huawei-cpudefend-type;
+    
+    organization "Huawei Technologies Co.,Ltd.";
+    contact "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+              People's Republic of China                    
+              Website: http://www.huawei.com Email: support@huawei.com";
+    description "CPUDEFEND Policy";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+    container cpudefend {
+        container secpolicys {
+            description "Create CPUDEFEND Policy";
+            list secpolicy {
+                key "secPolicyName";
+                description "Create CPUDEFEND Policy";
+                leaf secPolicyName {
+                    type string;
+                    description "policy name";
+                }
+                leaf secDescription {
+                    type string;
+                    description "policy description";
+                }
+                container secpolicycars {
+                    description "car configuration";
+                    list secpolicycar {
+                        key "secPolicyType";
+                        description "car configuration";
+                        leaf secPolicyType {
+                            type CARType;
+                            description "packet type";
+                        }
+                        leaf secPolicyPPS {
+                            type uint32 {
+                                range "10..10000";
+                            }
+                            default "1024";
+                            description "pps";
+                        }
+                        leaf denyflag {
+                            type uint32 {
+                                range "0..1";
+                            }
+                            default "0";
+                            description "deny";
+                        }
+                    }
+                }
+                container secpolicyallpkts {
+                    description "total CAR configuration";
+                    list secpolicyallpkt {
+                        key "secRateValue";
+                        description "total CAR configuration";
+                        leaf secRateValue {
+                            type uint32 {
+                                range "1000..100000";
+                            }
+                            description "totalcar";
+                        }
+                    }
+                }
+                container secpolicyacls {
+                    description "create blacklist";
+                    list secpolicyacl {
+                        key "secPolicyTypeID";
+                        description "create blacklist";
+                        leaf secPolicyTypeID {
+                            must "../secPolicyType='UserFlow'";
+                            type uint32 {
+                                range "1..8";
+                            }
+                            description "blacklist num";
+                        }
+                        leaf secAclNum {
+                            type uint32 {
+                                range "2000..4999";
+                            }
+                            default "2000";
+                            description "acl binded by blacklist";
+                        }
+                    }
+                }
+            }
+        }
+        container secpolicycfgs {
+            description "Apply CPUDEFEND Policy";
+            list secpolicycfg {
+                key "secPolicyName";
+                description "Apply CPUDEFEND Policy";
+                leaf secPolicyName {
+                    type leafref {
+                        path "/cpudefend/secpolicys/secpolicy/secPolicyName";
+                    }
+                }
+                leaf secSlotIdStr {
+                    type string;
+                    description "apply policy by slot";
+                }
+                leaf secsysflag {
+                    type uint32 {
+                        range "0..1";
+                    }
+                    default "0";
+                    description "apply policy by glable";
+                }
+            }
+        }
+        container DIMQosCars {
+            description "QOSCAR";
+            list DIMQosCar {
+                key "ifName";
+                description "QOSCAR";
+                leaf ifName {
+                    type pub-type:ifName;
+                    description "QOSCAR";
+                }
+                leaf uiPpsvalue {
+                    type uint32 {
+                        range "1..10240";
+                    }
+                    default "3000";
+                    description "QOSCAR";
+                }
+            }
+        }
+        container secCurrentCar {
+            description "current cpcar";
+            list secCurrentcfg {
+                key "secSlotIdStr secPacketType";
+                config false;
+                description "current cpcar value";
+                leaf secSlotIdStr {
+                    type string;
+                    description "slot id";
+                }
+                leaf secPacketType {
+                    type string;
+                    description "packet type";
+                }
+                leaf secCurrentState {
+                    type string;
+                    description "packet states";
+                }
+                leaf secCurrentPPS {
+                    type uint32 {
+                        range "1..10240";
+                    }
+                    description "car value";
+                }
+            }
+        }
+    }
+}

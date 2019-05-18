@@ -1,0 +1,141 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-sflow-type {
+  belongs-to huawei-sflow {
+    prefix sflow;
+  }
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "sflow:";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  typedef collectorIDType {
+    type enumeration {
+      enum "1" {
+        description
+          "1.0";
+      }
+      enum "2" {
+        description
+          "2.0";
+      }
+      enum "1,2" {
+        description
+          "1 2";
+      }
+    }
+    description
+      "collectorID:";
+  }
+  typedef sflowDirectionType {
+    type enumeration {
+      enum "inbound" {
+        description
+          "inbound";
+      }
+      enum "outbound" {
+        description
+          "outbound";
+      }
+      enum "both" {
+        description
+          "inbound and outbound";
+      }
+      enum "invalid" {
+        description
+          "none direction";
+      }
+    }
+    description
+      "Direction:";
+  }
+  typedef sflowIPFamily {
+    type enumeration {
+      enum "ipv4" {
+        description
+          "IPv4 address family";
+      }
+      enum "ipv6" {
+        description
+          "IPv6 address family";
+      }
+    }
+    description
+      "IP Version:";
+  }
+  typedef sflowMeth {
+    type enumeration {
+      enum "meth" {
+        description
+          "meth";
+      }
+      enum "enhanced" {
+        description
+          "enhanced";
+      }
+    }
+    description
+      "meth:";
+  }
+  typedef sflowExportType {
+    type enumeration {
+      enum "disable" {
+        description
+          "disable";
+      }
+    }
+    description
+      "Export Type:";
+  }
+  typedef sflowPacketType {
+    type enumeration {
+      enum "arp" {
+        description
+          "arp";
+      }
+    }
+    description
+      "Packet Type:";
+  }
+  typedef sflowLDirectionType {
+    type enumeration {
+      enum "inbound" {
+        description
+          "inbound";
+      }
+    }
+    description
+      "Direction:";
+  }
+  typedef sflowLengType {
+    type enumeration {
+      enum "config" {
+        description
+          "config";
+      }
+      enum "head-only" {
+        description
+          "head-only";
+      }
+    }
+    description
+      "Length Type:";
+  }
+}

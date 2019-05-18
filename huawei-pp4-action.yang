@@ -1,0 +1,38 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-pp4-action {
+  belongs-to huawei-pp4 {
+    prefix pp4;
+  }
+  include huawei-pp4-type;
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "pp4 action";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  rpc tResetIpStat {
+    description
+      "Reset Ip and Icmp Statistics.";
+  }
+  rpc udphelperClearServerPktCnt {
+    description
+      "Reset udp helper statistic.";
+  }
+}

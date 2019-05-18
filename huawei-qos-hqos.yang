@@ -1,0 +1,179 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-qos-hqos {
+  belongs-to "huawei-qos" {
+    prefix "qos";
+  }
+  import huawei-extension {
+    prefix "ext";
+  }
+  include huawei-qos-type;
+  include huawei-qos-hqos-type;
+  
+  organization "Huawei Technologies Co.,Ltd.";
+  contact "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+              People's Republic of China                    
+              Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "Quality of service";		  
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  grouping qos_hqos_type {
+    description
+      "";
+    container hqosFlowQueues {
+      description
+        "Flow queue list.";
+      list hqosFlowQueue {
+        key "flowQueueName";
+        max-elements 1024;
+        description
+          "Flow queue, to bind the eight FQ parameters.";
+        leaf flowQueueName {
+          type qosPolicyName;
+          description
+            "Flow queue name.";
+        }
+        container hqosQueues {
+          description
+            "Flow queue list.";
+          list hqosQueue {
+            key "serviceClass";
+            max-elements 8;
+            description
+              "Flow queue.";
+            leaf serviceClass {
+              type qosServiceClass;
+              description
+                "Priority.";
+            }
+            leaf queueScheduleMode {
+              type hqosQueueScheduleMode;
+              default "pq";
+              description
+                "Scheduling strategy of flow queue.";
+              ext:allowDelete true;
+            }
+            leaf weight {
+              type uint8 {
+                range "1..100";
+              }
+              description
+                "Weight of WFQ scheduling strategy.";
+              ext:allowDelete true;
+            }
+            leaf shaping {
+              type uint32 {
+                range "1..100000000";
+              }
+              mandatory true;
+              description
+                "Rate of shaping.";
+            }
+            leaf shapingPercentage {
+              type uint32 {
+                range "0..100";
+              }
+              description
+                "Percentage of shaping.";
+              ext:allowDelete true;
+            }
+            leaf wred {
+              type qosPolicyName;
+              description
+                "WRED name.";
+              ext:allowDelete true;
+            }
+          }
+        }
+      }
+    }
+    container hqosProfiles {
+      description
+        "User queue list.";
+      list hqosProfile {
+        key "profileName";
+        max-elements 4096;
+        description
+          "User queue.";
+        leaf profileName {
+          type qosPolicyName;
+          description
+            "Name of user queue.";
+        }
+        container hqosUserQueues {
+          description
+            "User queue list.";
+          container hqosUserQueue {
+            description
+              "User queue.";
+            leaf cir {
+              type uint32 {
+                range "1..100000000";
+              }
+              description
+                "Committed information rate (unit: Kbit/s).";
+            }
+            leaf cirPriority {
+              type uint8 {
+                range "0..3";
+              }
+              description
+                "CIR priority.";
+              ext:allowDelete true;
+            }
+            leaf cirWeight {
+              type uint8 {
+                range "1..100";
+              }
+              mandatory true;
+              description
+                "CIR Weight.";
+            }
+            leaf pir {
+              type uint32 {
+                range "100..100000000";
+              }
+              description
+                "Peak information rate (unit: Kbit/s).";
+              ext:allowDelete true;
+            }
+            leaf pirPriority {
+              type uint32 {
+                range "0..33554432";
+              }
+              description
+                "PIR priority.";
+              ext:allowDelete true;
+            }
+            leaf pirWeight {
+              type uint8 {
+                range "1..100";
+              }
+              mandatory true;
+              description
+                "PIR Weight.";
+            }
+            leaf flowQueue {
+              type qosPolicyName;
+              description
+                "Flow queue.";
+              ext:allowDelete true;
+            }
+          }
+        }
+      }
+    }
+  }
+}

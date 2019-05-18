@@ -1,0 +1,1814 @@
+module huawei-devm {
+    namespace "http://www.huawei.com/netconf/vrp/huawei-devm";
+    prefix "devm";
+    import huawei-pub-type {
+        prefix "pub-type";
+    }
+    import ietf-yang-types {
+        prefix "yang";
+    }
+    import huawei-extension {
+        prefix "ext";
+    }
+    include huawei-devm-action;
+    include huawei-devm-type;
+    
+    organization "Huawei Technologies Co.,Ltd.";
+    contact "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+              People's Republic of China                    
+              Website: http://www.huawei.com Email: support@huawei.com";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+    description "Global Configuration.";
+    revision "2013-01-01";
+    container devm {
+        container globalPara {
+            description "Global configuration.";
+            leaf maxChassisNum {
+                type uint32 {
+                    range "1..255";
+                }
+                config false;
+                description "Maximum number of chassis.";
+            }
+            leaf chassisNum {
+                type uint32;
+                config false;
+                description "Current number of chassis.";
+            }
+            leaf chassisLastChange {
+                type pub-type:timeTick;
+                config false;
+                description "Time when a chassis or an entity is last added or removed, or time when chassis status (administration status, running status, or active/standby status) is last changed. The time is in UTC time.";
+            }
+            leaf crcEnable {
+                type boolean;
+                default "true";
+                description "Enalbe or disable the crc error monitor.";
+            }
+            leaf symbolEnable {
+                type boolean;
+                default "true";
+                description "Enalbe or disable the symbol error monitor.";
+            }
+            leaf inputEnable {
+                type boolean;
+                default "true";
+                description "Enalbe or disable the input error monitor.";
+            }
+            leaf outputEnable {
+                type boolean;
+                default "true";
+                description "Enalbe or disable the Output error monitor.";
+            }
+            leaf sdhEnable {
+                type boolean;
+                default "true";
+                description "Enalbe or disable the sdh error monitor.";
+            }
+            leaf bip8SdEnable {
+                type boolean;
+                default "true";
+                description "Enalbe or disable the BIP8-SD error monitor.";
+            }
+            leaf sysTrapType {
+                type devmTrapType;
+                default "entity-trap";
+                description "Switch trapType between base-trap and dc-trap.";
+            }
+            leaf sysWorkMode {
+                type devmSysWorkType;
+                default "unknown";
+                description "System work mode, 1+1 or 1:1";
+            }
+            leaf confMacAddress {
+                type string;
+                config true;
+                description "User-configured MAC Address.";
+            }
+            leaf confMacNum {
+                type uint32;
+                default "0";
+                config true;
+                description "User-configured MAC Number.";
+            }
+        }
+        container phyEntitys {
+            description "Summary of the information about physical entities.";
+            list phyEntity {
+                key "entClass position entSerialNo";
+                description "Summary of the information about physical entities.";
+                leaf entClass {
+                    type devmEntityClassType;
+                    description "Entity class.";
+                }
+                leaf position {
+                    type pub-type:position;
+                    description "Entity position.";
+                }
+                leaf entSerialNo {
+                    type string {
+                      length "1..32";
+                    }
+                    description "Entity number.";
+                }
+                leaf entIndex {
+                    type uint32;
+                    config false;
+                    description "Entity index.";
+                }
+                leaf chassisIndex {
+                    type uint32;
+                    config false;
+                    description "Chassis index.";
+                }
+                leaf boardIndex {
+                    type uint32;
+                    config false;
+                    description "Board index.";
+                }
+                leaf entName {
+                    type string {
+                      length "1..128";
+                    }
+                    config false;
+                    description "Entity name.";
+                }
+                leaf entDescr {
+                    type string {
+                      length "1..256";
+                    }
+                    config false;
+                    description "Entity description.";
+                }
+                leaf entAlias {
+                    type string {
+                      length "1..128";
+                    }
+                    config false;
+                    description "Entity alias.";
+                }
+                leaf entVendorType {
+                    type devmHardType;
+                    config false;
+                    description "Type of a hardware entity.";
+                }
+                leaf entContainedIn {
+                    type uint32;
+                    config false;
+                    description "Information about the parent index of an entity.";
+                }
+                leaf entParentRelPos {
+                    type uint32;
+                    config false;
+                    description "Position of an entity relative to its parent entity.  ";
+                }
+                leaf entHardwareRev {
+                    type string {
+                      length "1..128";
+                    }
+                    config false;
+                    description "Hardware version.";
+                }
+                leaf entFirmwareRev {
+                    type string {
+                      length "1..128";
+                    }
+                    config false;
+                    description "Firmware version.";
+                }
+                leaf entSoftwareRev {
+                    type string {
+                      length "1..128";
+                    }
+                    config false;
+                    description "Software version.";
+                }
+                leaf entModelName {
+                    type string {
+                      length "1..128";
+                    }
+                    config false;
+                    description "Module name.";
+                }
+                leaf entIsFRU {
+                    type boolean;
+                    config false;
+                    description "Whether the entity a replaceable unit.";
+                }
+                leaf entAdminState {
+                    type devmEntityAdminState;
+                    config false;
+                    description "Administration state (read-write).";
+                }
+                leaf entOperState {
+                    type devmEntityOperState;
+                    config false;
+                    description "Operation state of an entity (read-only).";
+                }
+                leaf entStandbyState {
+                    type devmEntityStandbyState;
+                    config false;
+                    description "Active/standby state.";
+                }
+                leaf entSystemOid {
+                    type string {
+                      length "1..128";
+                    }
+                    config false;
+                    description "Entity OID.";
+                }
+                leaf entLsName {
+                    type string {
+                      length "1..32";
+                    }
+                    config false;
+                    description "The LS name of the entity.";
+                }
+                container phyEntityExt {
+                    description "phyEntityExt.";
+                    leaf entIdLightState {
+                        type devmIdLightState;
+                        must "not(../../entClass!='mpuModule' and ../../entClass!='lpuModule')";
+                        default "notSupported";
+                        config true;
+                        description "entIdLightState.";
+                    }
+                }
+            }
+        }
+        container chassiss {
+            description "Chassis.";
+            list chassis {
+                key "position";
+                description "Chassis.";
+                leaf position {
+                    type pub-type:position;
+                    description "Chassis position.";
+                }
+                leaf entIndex {
+                    type uint32;
+                    config false;
+                    description "Chassis index.";
+                }
+                leaf chassisType {
+                    type devmChassisType;
+                    config false;
+                    description "Chassis type.";
+                }
+                leaf serviceType {
+                    type devmChassisSvcType;
+                    config false;
+                    description "Chassis service type.";
+                }
+                leaf slotNum {
+                    type uint32;
+                    config false;
+                    description "Number of slots on a chassis.";
+                }
+                leaf boardNum {
+                    type uint32;
+                    config false;
+                    description "Number of boards on a chassis.";
+                }
+                leaf fanNum {
+                    type uint32;
+                    config false;
+                    description "Number of fans on a chassis.";
+                }
+                leaf powerNum {
+                    type uint32;
+                    config false;
+                    description "Number of power supplies for a chassis.";
+                }
+                leaf upTime {
+                    type pub-type:timeTick;
+                    config false;
+                    description "Up time of a chassis.";
+                }
+                leaf statusLastChange {
+                    type pub-type:timeTick;
+                    config false;
+                    description "Timetick that indicates entity status changes.";
+                }
+                leaf entityLastChange {
+                    type pub-type:timeTick;
+                    config false;
+                    description "Timetick that indicates entity on chassis changes.";
+                }
+                container monitorBoardChanges {
+                    description "Timetick that indicates board status changes.";
+                    list monitorBoardChange {
+                        key "boardIndex";
+                        config false;
+                        description "Timetick that indicates board status changes.";
+                        leaf boardIndex {
+                            type uint32;
+                            config false;
+                            description "Board index.";
+                        }
+                        leaf statusLastChange {
+                            type pub-type:timeTick;
+                            config false;
+                            description "Timetick that indicates board status changes.";
+                        }
+                        leaf entityLastChange {
+                            type pub-type:timeTick;
+                            config false;
+                            description "Timetick that indicates entity on board changes.";
+                        }
+                    }
+                }
+            }
+        }
+        container containers {
+            config false;
+            description "Slots.";
+            list container {
+                key "position";
+                config false;
+                description "Slot.";
+                leaf position {
+                    type pub-type:position;
+                    description "Slot position.";
+                }
+                leaf entIndex {
+                    type uint32;
+                    config false;
+                    description "Slot index.";
+                }
+                leaf containerType {
+                    type devmContainerType;
+                    config false;
+                    description "Slot type.";
+                }
+                leaf equipedEntityType {
+                    type devmHardType;
+                    config false;
+                    description "Type of an equipped entity. ";
+                }
+            }
+        }
+        container mpuBoards {
+            config false;
+            description "MPUs.";
+            list mpuBoard {
+                key "position";
+                config false;
+                description "MPU.";
+                leaf position {
+                    type pub-type:position;
+                    description "MPU position.";
+                }
+                leaf entIndex {
+                    type uint32;
+                    config false;
+                    description "MPU index.";
+                }
+                leaf boardType {
+                    type devmBoardType;
+                    config false;
+                    description "MPU type.";
+                }
+                leaf upTime {
+                    type pub-type:timeTick;
+                    config false;
+                    description "Up time of an MPU, the unit is timetick.";
+                }
+                leaf sdramSize {
+                    type uint32;
+                    config false;
+                    description "SDRAM size.";
+                }
+                leaf nvramSize {
+                    type uint32;
+                    config false;
+                    description "NVRAM size, the unit is KB.";
+                }
+                leaf flashSize {
+                    type uint32;
+                    units MByte;
+                    config false;
+                    description "Flash size.";
+                }
+                leaf lsRole {
+                    type devmLsRole;
+                    config false;
+                    description "MPU role.";
+                }
+                leaf lastResetTime {
+                    type yang:date-and-time;
+                    config false;
+                    description "Time of last reset.";
+                }
+                leaf lastResetReason {
+                    type string {
+                      length "1..256";
+                    }
+                    config false;
+                    description "Reason of last reset.";
+                }
+            }
+        }
+        container lpuBoards {
+            description "LPUs.";
+            list lpuBoard {
+                key "position";
+                description "LPU.";
+                leaf position {
+                    type pub-type:position;
+                    description "LPU position.";
+                }
+                leaf entIndex {
+                    type uint32;
+                    config false;
+                    description "LPU index.";
+                }
+                leaf boardType {
+                    type devmBoardType;
+                    config false;
+                    description "LPU type.";
+                }
+                leaf sdramSize {
+                    type uint32;
+                    units MByte;
+                    config false;
+                    description "SDRAM size.";
+                }
+                leaf flashSize {
+                    type uint32;
+                    units MByte;
+                    config false;
+                    description "Flash size.";
+                }
+                leaf upTime {
+                    type pub-type:timeTick;
+                    config false;
+                    description "Up time of an LPU, the unit is timetick.";
+                }
+                leaf npRDRAMSize {
+                    type uint32;
+                    units MByte;
+                    config false;
+                    description "NP RDRAM size.";
+                }
+                leaf npSRAMSize {
+                    type uint32;
+                    units MByte;
+                    config false;
+                    description "NP SRAM size.";
+                }
+                leaf serviceType {
+                    type devmLpuServiceType;
+                    config false;
+                    description "Service type.";
+                }
+                leaf nextServiceType {
+                    type devmLpuServiceType;
+                    config false;
+                    description "Type of next started service board.";
+                }
+                leaf picNum {
+                    type uint32;
+                    config false;
+                    description "Number of PICs on an LPU.";
+                }
+                leaf subSlotNum {
+                    type uint32;
+                    config false;
+                    description "Number of slots on a subcard.";
+                }
+                leaf clock8kPort {
+                    type string {
+                     length "0..32";
+                    }
+                    description "8K clock port.";
+                }
+                leaf curL3Clk {
+                    type uint32;
+                    config false;
+                    description "Current L3 clock source.";
+                }
+                container l3Clocks {
+                    description "L3 clocks.";
+                    list l3Clock {
+                        key "clockID";
+                        config false;
+                        description "L3 clock.";
+                        leaf clockID {
+                            type string;
+                            description "L3 clock ID.";
+                        }
+                        leaf l3ClkState {
+                            type devmClockSrcStatusType;
+                            description "L3 clock state.";
+                        }
+                    }
+                }
+            }
+        }
+        container sfuBoards {
+            config false;
+            description "SFUs.";
+            list sfuBoard {
+                key "position";
+                config false;
+                description "SFU.";
+                leaf position {
+                    type pub-type:position;
+                    config false;
+                    description "SFU position.";
+                }
+                leaf entIndex {
+                    type uint32;
+                    config false;
+                    description "SFU index.";
+                }
+                leaf boardType {
+                    type devmBoardType;
+                    config false;
+                    description "SFU type.";
+                }
+                leaf sdramSize {
+                    type uint32;
+                    units MByte;
+                    config false;
+                    description "SDRAM size.";
+                }
+                leaf flashSize {
+                    type uint32;
+                    units MByte;
+                    config false;
+                    description "Flash size.";
+                }
+                leaf upTime {
+                    type pub-type:timeTick;
+                    config false;
+                    description "Up time of an SFU, the unit is timetick.";
+                }
+            }
+        }
+        container cmus {
+            description "CMUs.";
+            list cmu {
+                key "position";
+                config false;
+                description "CMU.";
+                leaf position {
+                    type pub-type:position;
+                    description "CMU position. ";
+                }
+                leaf entIndex {
+                    type uint32;
+                    description "CMU supply index.";
+                }
+                leaf boardType {
+                    type devmHardType;
+                    description "Type of a CMU board.";
+                }
+                container cmuSwitchs {
+                    description "CMU Switch.";
+                    list cmuSwitch {
+                        key "cmuSwitchID";
+                        config false;
+                        description "CMU Switch.";
+                        leaf cmuSwitchID {
+                            type uint32 {
+                                range "0..6";
+                            }
+                            description "Switch ID.";
+                        }
+                        leaf cmuSwitchName {
+                            type string {
+                                length "1..24";
+                            }
+                            default "\0";
+                            description "Switch Name.";
+                        }
+                        leaf cmuAlmMode {
+                            type devmCmuAlmMode;
+                            default "undo";
+                            description "Alarm Mode.";
+                        }
+                        leaf cmuSwitchFog {
+                            type devmCmuSwitchFog;
+                            default "unknown";
+                            description "Object.";
+                        }
+                    }
+                }
+                container cmuRelays {
+                    description "CMU Relays.";
+                    list cmuRelay {
+                        key "cmuRelayID";
+                        config false;
+                        description "CMU Relay.";
+                        leaf cmuRelayID {
+                            type uint32 {
+                                range "0..1";
+                            }
+                            description "Ralay ID.";
+                        }
+                        leaf cmuRelayName {
+                            type string {
+                                length "1..24";
+                            }
+                            default "\0";
+                            description "Relay Name.";
+                        }
+                        leaf cmuRelayAlmMode {
+                            type devmCmuAlmMode;
+                            default "undo";
+                            description "Alarm Mode.";
+                        }
+                    }
+                }
+                container cmuAnalogs {
+                    description "CMU Analogs.";
+                    list cmuAnalog {
+                        key "cmuAnalogID";
+                        config false;
+                        description "CMU Analog.";
+                        leaf cmuAnalogID {
+                            type uint32 {
+                                range "0..1";
+                            }
+                            description "CMU Analog ID.";
+                        }
+                        leaf cmuAnalogName {
+                            type string {
+                                length "1..23";
+                            }
+                            default "\0";
+                            description "CMU Analog Name.";
+                        }
+                        leaf cmuAnalogType {
+                            type devmAnalogType;
+                            default "unknown";
+                            description "Specify cmu analog sensor type.";
+                        }
+                        leaf cmuAnalogObject {
+                            type devmAnalogObjectType;
+                            default "unknown";
+                            description "Specify object monitored by this cmu analog sensor.";
+                        }
+                        leaf cmuWorkLow {
+                            type int32 {
+                                range "-99999999..999999999";
+                            }
+                            default "0";
+                            description "";
+                        }
+                        leaf cmuWorkHigh {
+                            type int32 {
+                                range "-99999999..999999999";
+                            }
+                            default "0";
+                            description "";
+                        }
+                        leaf cmuWanted {
+                            type int32 {
+                                range "-99999999..999999999";
+                            }
+                            default "0";
+                            description "";
+                        }
+                        leaf cmuAlarmLow {
+                            type int32 {
+                                range "-99999999..999999999";
+                            }
+                            default "0";
+                            description "";
+                        }
+                        leaf cmuAlarmHigh {
+                            type int32 {
+                                range "-99999999..999999999";
+                            }
+                            default "0";
+                            description "";
+                        }
+                    }
+                }
+                container cmuAlarms {
+                    description "CMU alarms.";
+                    list cmuAlarm {
+                        key "cmuAlarmID";
+                        config false;
+                        description "CMU alarm.";
+                        leaf cmuAlarmID {
+                            type uint32 {
+                                range "0..1";
+                            }
+                            description "CMU alarm ID";
+                        }
+                        leaf cmuAlarmLevel {
+                            type devmCmuAlmMode;
+                            default "undo";
+                            description "Alarm Level.";
+                        }
+                    }
+                }
+            }
+        }
+        container fans {
+            description "Fans.";
+            list fan {
+                key "position";
+                config false;
+                description "Fan.";
+                leaf position {
+                    type pub-type:position;
+                    description "Fan position.";
+                }
+                leaf entIndex {
+                    type uint32;
+                    description "Fan index.";
+                }
+                leaf boardType {
+                    type devmBoardType;
+                    description "Type of a fan board.";
+                }
+                leaf workMode {
+                    type devmWorkMode;
+                    default "auto";
+                    description "Fan working mode.";
+                }
+                leaf speed {
+                    type uint32 {
+                        range "0..100";
+                    }
+                    default "0";
+                    description "Fan speed that is a percentage of the highest speed.";
+                }
+                leaf fanRate {
+                    type uint32;
+                    description "Fan rate is the rotation per minute.";
+                }
+                leaf monitorCableState {
+                    type devmCableState;
+                    description "State of a fan monitor cable. ";
+                }
+            }
+        }
+        container powerSupplys {
+            description "Power supplies for a fan.";
+            list powerSupply {
+                key "position";
+                config false;
+                description "Power supply for a fan.";
+                leaf position {
+                    type pub-type:position;
+                    description "Power supply position. ";
+                }
+                leaf entIndex {
+                    type uint32;
+                    description "Power supply index.";
+                }
+                leaf boardType {
+                    type devmBoardType;
+                    description "Type of a power supply board.";
+                }
+                leaf workMode {
+                    type devmPowerWorkMode;
+                    description "Working mode of a power supply board. ";
+                }
+                leaf monitorCableState {
+                    type devmCableState;
+                    description "State of a power supply monitor cable. ";
+                }
+                container powerEnvironments {
+                    description "Power Environment information.";
+                    list powerEnvironment {
+                        key "pemIndex";
+                        config false;
+                        description "Power Environment information.";
+                        leaf pemIndex {
+                            type uint32;
+                            description "Pem Index.";
+                        }
+                        leaf state {
+                            type devmPowerStateType;
+                            description "Pem State.";
+                        }
+                        leaf voltageValue {
+                            type string;
+                            description "Current voltage value.";
+                        }
+                        leaf electricalValue {
+                            type string;
+                            description "Current electrical value.";
+                        }
+                        leaf temperValue {
+                            type string;
+                            description "Current Temperature value.";
+                        }
+                        leaf actualPower {
+                            type string;
+                            description "Actual Power value.";
+                        }
+                        leaf ratedPower {
+                            type string;
+                            description "Rated power value.";
+                        }
+                    }
+                }
+            }
+        }
+        container flexibleCards {
+            config false;
+            description "Flexible cards.";
+            list flexibleCard {
+                key "position entIndex";
+                config false;
+                description "Flexible card.";
+                leaf position {
+                    type pub-type:position;
+                    config false;
+                    description "Flexible card position.";
+                }
+                leaf entIndex {
+                    type uint32;
+                    config false;
+                    description "Flexible card index.";
+                }
+                leaf cardType {
+                    type devmSubCardType;
+                    config false;
+                    mandatory true;
+                    description "Type of a flexible card.";
+                }
+                leaf cardHardType {
+                    type devmCardHardType;
+                    config false;
+                    mandatory true;
+                    description "Hardware type of a flexible card.";
+                }
+                leaf portNum {
+                    type uint32;
+                    config false;
+                    description "Number of ports on a flexible card.";
+                }
+                leaf initStatus {
+                    type devmCardInitStatusType;
+                    config false;
+                    description "Initialized status of a flexible card.";
+                }
+                container picCard {
+                    config false;
+                    description "PIC card.";
+                    leaf logicStatus {
+                        type devmCardLogicStatusType;
+                        config false;
+                        description "Logic loading status.";
+                    }
+                    leaf upTime {
+                        type yang:date-and-time;
+                        config false;
+                        description "Up time of a flexible card.";
+                    }
+                }
+            }
+        }
+        container cfCards {
+            config false;
+            description "FLASH.";
+            list cfCard {
+                key "position entSerialNo";
+                config false;
+                description "FLASH.";
+                leaf position {
+                    type pub-type:position;
+                    config false;
+                    description "CF card position.";
+                }
+                leaf entSerialNo {
+                    type string {
+                      length "1..32";
+                    }
+                    config false;
+                    description "Number of a CF card.";
+                }
+                leaf entIndex {
+                    type uint32;
+                    config false;
+                    description "CF card index.";
+                }
+                leaf cardType {
+                    type devmSubCardType;
+                    config false;
+                    description "Hard type of a CF card.";
+                }
+                leaf memorySize {
+                    type uint32;
+                    config false;
+                    description "Memory size of a CF card.";
+                }
+                leaf memoryUsed {
+                    type uint32;
+                    config false;
+                    description "Memory Used of a CF card.";
+                }
+                leaf memoryUsage {
+                    type uint32;
+                    config false;
+                    description "Memory available of a CF card.";
+                }
+            }
+        }
+        container ports {
+            description "Ports.";
+            list port {
+                key "position";
+                description "Port.";
+                leaf position {
+                    type pub-type:position;
+                    description "Port position.";
+                }
+                leaf entIndex {
+                    type uint32 {
+                        range "1..4294967295";
+                    }
+                    default "1";
+                    config false;
+                    description "Port index.";
+                }
+                leaf adminState {
+                    type devmEntityAdminState;
+                    must "((../adminState='active' or ../adminState='inactive') )";
+                    default "active";
+                    config true;
+                    description "Administration state of a port.";
+                }
+                leaf portType {
+                    type devmPortType;
+                    config false;
+                    description "Port type (for example, ETH, POS, and OTN).";
+                }
+                leaf portHardType {
+                    type devmPortHardType;
+                    config false;
+                    description "Hardware type of a port.";
+                }
+                leaf loopbackMode {
+                    type devmLoopBackState;
+                    default "noLoopback";
+                    config true;
+                    description "Port loopback mode.";
+                }
+                leaf lastUpTime {
+                    type yang:date-and-time;
+                    config false;
+                    description "Last up time of a port.";
+                }
+                leaf lastDownTime {
+                    type yang:date-and-time;
+                    config false;
+                    description "Last down time of a port.";
+                }
+                leaf mediumType {
+                    type devmEthPortMediumType;
+                    config false;
+                    description "Port medium type. ";
+                }
+                leaf opticalIsEquipped {
+                    type boolean;
+                    config false;
+                    description "The optical transceiver has been equipped or not.";
+                }
+                container opticalInfo {
+                    description "Information about optical transceivers.";
+                    leaf vendorName {
+                        type string {
+                            length "0..20";
+                        }
+                        config false;
+                        description "Name of an optical transceiver.";
+                    }
+                    leaf vendorPN {
+                        type string {
+                            length "0..20";
+                        }
+                        config false;
+                        description "Verder PN.";
+                    }
+                    leaf transBW {
+                        type string {
+                            length "0..16";
+                        }
+                        config false;
+                        description "Optical transceiver bandwidth.";
+                    }
+                    leaf optTransMode {
+                        type devmTransMode;
+                        config false;
+                        description "Optical transceiver transmission mode.";
+                    }
+                    leaf opticalPlug {
+                        type boolean;
+                        config false;
+                        default "false";
+                        description "Hot plug.";
+                    }
+                    leaf opticalType {
+                        type devmOpticalType;
+                        config false;
+                        description "Optical type.";
+                    }
+                    leaf opticalFiberType {
+                        type string {
+                            length "0..24";
+                        }
+                        config false;
+                        description "Optical fiber type.";
+                    }
+                    leaf waveLength {
+                        type string {
+                            length "0..16";
+                        }
+                        config false;
+                        description "Wave length.";
+                    }
+                    leaf transDistance {
+                        type string {
+                            length "0..128";
+                        }
+                        config false;
+                        description "Transmit distance.";
+                    }
+                    leaf txPower {
+                        type string {
+                            length "0..128";
+                        }
+                        config false;
+                        description "Transmit power.";
+                    }
+                    leaf rxPower {
+                        type string {
+                            length "0..128";
+                        }
+                        config false;
+                        description "Receive power.";
+                    }
+                    leaf optRxHighWarn {
+                        type string {
+                            length "0..64";
+                        }
+                        config false;
+                        description "Receive high warning power.";
+                    }
+                    leaf optRxLowWarn {
+                        type string {
+                            length "0..64";
+                        }
+						config false;
+                        description "Receive low warning power.";
+                    }
+                    leaf optTxHighWarn {
+                        type string {
+                            length "0..64";
+                        }
+						config false;
+                        description "Transmit high warning power.";
+                    }
+                    leaf optTxLowWarn {
+                        type string {
+                            length "0..64";
+                        }
+						config false;
+                        description "Receive low warning power.";
+                    }
+                    leaf optRxHighAlarm {
+                        type string {
+                            length "0..64";
+                        }
+						config false;
+                        description "Receive high alarm power.";
+                    }
+                    leaf optRxLowAlarm {
+                        type string {
+                            length "0..64";
+                        }
+						config false;
+                        description "Receive high alarm power.";
+                    }
+                    leaf optTxHighAlarm {
+                        type string {
+                            length "0..64";
+                        }
+						config false;
+                        description "Transmit high alarm power.";
+                    }
+                    leaf optTxLowAlarm {
+                        type string {
+                            length "0..64";
+                        }
+						config false;
+                        description "Receive low alarm power.";
+                    }
+                }
+                container ethernetPort {
+                    description "Ethernet port.";
+                    leaf flowctl {
+                        type devmFlowCtlType;
+                        config true;
+                        description "Flow control method of an Ethernet port.";
+                    }
+                    leaf negotiation {
+                        type devmNegotiationType;
+                        config true;
+                        description "Auto negotiation on an Ethernet port.";
+                    }
+                    leaf speed {
+                        type devmEthSpeedType;
+                        config true;
+                        description "Speed of an Ethernet port.";
+                    }
+                    leaf duplex {
+                        type devmDuplex;
+                        config true;
+                        description "Duplex type of an Ethernet port.";
+                    }
+                    leaf downHoldTime {
+                        type uint32 {
+                            range "0..3600000";
+                        }
+                        config true;
+                        default "0";
+                        description "down hold time.";
+                    }
+                    leaf upHoldTime {
+                        type uint32 {
+                            range "0..3600000";
+                        }
+                        config true;
+                        default "0";
+                        description "up hold time.";
+                    }
+                    leaf transMode {
+                        type devmPortLanWanModeType;
+                        config true;
+                        description "transmit mode of an Ethernet port.";
+                    }
+              
+                 
+                    leaf idLedStatus {
+                        type devmLedStatusType;
+                        config true;
+                        description "Error port led light up(Minute). ";
+                    }
+                }
+                
+                 
+            }
+        }
+        container boardResStates {
+            description "Board monitoring information.";
+            list boardResState {
+                key "boardPosition";
+                config false;
+                description "Board monitoring information.";
+                leaf boardPosition {
+                    type pub-type:position;
+                    description "Board position.";
+                }
+                leaf entIndex {
+                    type uint32;
+                    description "Board index.";
+                }
+                leaf boardName {
+                    type string;
+                    description "Board name.";
+                }
+                leaf cpuUsage {
+                    type uint32;
+                    description "CPU usage.";
+                }
+                leaf memTotalSize {
+                    type uint32;
+                    description "Total memory size.";
+                }
+                leaf memUsedSize {
+                    type uint32;
+                    description "Used memory size.";
+                }
+                leaf memoryUsage {
+                    type uint32;
+                    description "Memory usage.";
+                }
+            }
+        }
+        container cpuInfos {
+            description "State information about a board CPU.";
+            list cpuInfo {
+                key "position";
+                config false;
+                description "State information about a board CPU.";
+                leaf position {
+                    type pub-type:position;
+                    description "Board position.";
+                }
+                leaf entIndex {
+                    type uint32;
+                    description "Board index.";
+                }
+                leaf systemCpuUsage {
+                    type uint32 {
+                        range "0..100";
+                    }
+                    default "0";
+                    description "CPU usage.";
+                    ext:support-filter false;
+                }
+                leaf ovloadThreshold {
+                    type uint32 {
+                        range "4..100";
+                    }
+                    default "4";
+                    description "Overload threshold.";
+                    ext:support-filter false;
+                }
+                leaf unovloadThreshold {
+                    type uint32 {
+                        range "1..97";
+                    }
+                    default "1";
+                    description "Unoverload threshold.";
+                    ext:support-filter false;
+                }
+            }
+        }
+        container memoryInfos {
+            description "Memory information about a board.";
+            list memoryInfo {
+                key "position";
+                config false;
+                description "Memory information about a board.";
+                leaf position {
+                    type pub-type:position;
+                    description "Board position.";
+                }
+                leaf entIndex {
+                    type uint32;
+                    description "Board index.";
+                }
+                leaf osMemoryTotal {
+                    type uint32;
+                    description "Total OS memory.";
+                    ext:support-filter false;
+                }
+                leaf osMemoryUse {
+                    type uint32;
+                    description "Used OS memory.";
+                    ext:support-filter false;
+                }
+                leaf osMemoryFree {
+                    type uint32;
+                    description "Free OS memory.";
+                    ext:support-filter false;
+                }
+                leaf osMemoryUsage {
+                    type uint32 {
+                        range "0..100";
+                    }
+                    default "0";
+                    description "OS memory usage.";
+                    ext:support-filter false;
+                }
+                leaf doMemoryTotal {
+                    type uint32;
+                    description "Total VRP memory.";
+                    ext:support-filter false;
+                }
+                leaf doMemoryUse {
+                    type uint32;
+                    description "Used VRP memory.";
+                    ext:support-filter false;
+                }
+                leaf doMemoryFree {
+                    type uint32;
+                    description "Free VRP memory. ";
+                    ext:support-filter false;
+                }
+                leaf doMemoryUsage {
+                    type uint32 {
+                        range "0..100";
+                    }
+                    default "0";
+                    description "VRP memory usage.";
+                    ext:support-filter false;
+                }
+                leaf simpleMemoryTotal {
+                    type uint32;
+                    description "Total simple memory. ";
+                    ext:support-filter false;
+                }
+                leaf simpleMemoryUse {
+                    type uint32;
+                    description "Used simple memory. ";
+                    ext:support-filter false;
+                }
+                leaf simpleMemoryFree {
+                    type uint32;
+                    description "Free simple memory. ";
+                    ext:support-filter false;
+                }
+                leaf simpleMemoryUsage {
+                    type uint32 {
+                        range "0..100";
+                    }
+                    default "0";
+                    description "Simple memory usage.";
+                    ext:support-filter false;
+                }
+                leaf ovloadThreshold {
+                    type uint32 {
+                        range "4..100";
+                    }
+                    default "4";
+                    description "Overload threshold.";
+                    ext:support-filter false;
+                }
+                leaf unovloadThreshold {
+                    type uint32 {
+                        range "1..97";
+                    }
+                    default "1";
+                    description "Unoverload threshold.";
+                    ext:support-filter false;
+                }
+            }
+        }
+        container temperatureInfos {
+            description "Temperature information about a board.";
+            list temperatureInfo {
+                key "position i2c address channel";
+                config false;
+                description "Temperature information about a board.";
+                leaf position {
+                    type pub-type:position;
+                    description "Board position.";
+                }
+                leaf pcbName {
+                    type string;
+                    description "Board type.";
+                }
+                leaf i2c {
+                    type uint32;
+                    description "I2C bus number.";
+                }
+                leaf address {
+                    type string {
+                        length "0..255";
+                    }
+                    description "Sensor address.";
+                }
+                leaf channel {
+                    type uint32;
+                    description "Number of a sensor channel.";
+                }
+                leaf entIndex {
+                    type uint32;
+                    description "Board index.";
+                }
+                leaf state {
+                    type devmTempVoltStateType;
+                    description "Sensor state information.";
+                }
+                leaf currentTemperature {
+                    type uint32;
+                    description "Current temperature.";
+                }
+                leaf minorAlmThreshold {
+                    type uint32;
+                    description "Minor temperature alarm threshold.";
+                }
+                leaf majorAlmThreshold {
+                    type uint32;
+                    description "Major temperature alarm threshold.";
+                }
+                leaf fatalAlmThreshold {
+                    type uint32;
+                    description "Fatal temperature alarm threshold.";
+                }
+            }
+        }
+        container voltageInfos {
+            description "Voltage information about a board.";
+            list voltageInfo {
+                key "position i2c address channel";
+                config false;
+                description "Voltage information about a board.";
+                leaf position {
+                    type pub-type:position;
+                    description "Board position.";
+                }
+                leaf pcbName {
+                    type string;
+                    description "Board type.";
+                }
+                leaf i2c {
+                    type uint32;
+                    description "I2C bus number.";
+                }
+                leaf address {
+                    type string;
+                    description "Sensor address.";
+                }
+                leaf channel {
+                    type uint32;
+                    description "Sensor channel.";
+                }
+                leaf entIndex {
+                    type uint32;
+                    description "Board index.";
+                }
+                leaf state {
+                    type devmTempVoltStateType;
+                    description "Voltage sensor state.";
+                }
+                leaf currentVoltage {
+                    type string;
+                    description "Current voltage value.";
+                }
+                leaf requiredVoltage {
+                    type string;
+                    description "Required voltage value.";
+                }
+                leaf lowThreshold {
+                    type string;
+                    description "Lower voltage threshold.";
+                }
+                leaf highThreshold {
+                    type string;
+                    description "Upper voltage threshold.";
+                }
+            }
+        }
+        container areaEnergyInfos {
+            description "Area Energy.";
+            list areaEnergyInfo {
+                key "chassisPos areaID";
+                config false;
+                description "Area Energy.";
+                leaf chassisPos {
+                    type string;
+                    description "Chassis Position.";
+                }
+                leaf areaID {
+                    type uint32;
+                    description "Area ID.";
+                }
+                leaf areaRatedPower {
+                    type string;
+                    description "Area Rated Power.";
+                }
+                leaf areaUsedPower {
+                    type string;
+                    description "Area Used Power";
+                }
+                leaf areaLeftPower {
+                    type string;
+                    description "Area Left Power";
+                }
+                container brdEnergyInfos {
+                    description "Energy information about a board.";
+                    list brdEnergyInfo {
+                        key "position";
+                        config false;
+                        description "Energy information about a board.";
+                        leaf position {
+                            type pub-type:position;
+                            description "Board position.";
+                        }
+                        leaf entIndex {
+                            type uint32;
+                            description "Board index.";
+                        }
+                        leaf pcbName {
+                            type string;
+                            description "Board type.";
+                        }
+                        leaf voltageValue {
+                            type string;
+                            description "Current voltage value.";
+                        }
+                        leaf electricalValue {
+                            type string;
+                            description "Current electrical value.";
+                        }
+                        leaf currentPower {
+                            type string;
+                            description "Current power value.";
+                        }
+                        leaf ratedPower {
+                            type string;
+                            description "Rated power value.";
+                        }
+                        leaf powerThreshold {
+                            type string;
+                            description "Power threshold value.";
+                        }
+                        leaf efficiency {
+                            type string;
+                            description "Efficiency value.";
+                        }
+                    }
+                }
+            }
+        }
+        container entityClasss {
+            config false;
+            description "Entity capabilities.";
+            list entityClass {
+                key "className";
+                config false;
+                description "Entity capability.";
+                leaf className {
+                    type devmEntityClassType;
+                    config false;
+                    description "Entity type.";
+                }
+                leaf isResetable {
+                    type boolean;
+                    config false;
+                    description "Whether the entity can be reset.";
+                }
+                leaf isSwitchoverable {
+                    type boolean;
+                    config false;
+                    description "Whether a switchover can be performed on the entity.";
+                }
+            }
+        }
+        container rUModuleInfos {
+            description "Electronic labels.";
+            list rUModuleInfo {
+                key "entClass position entSerialNo";
+                config false;
+                description "Electronic label.";
+                leaf entClass {
+                    type devmEntityClassType;
+                    description "Class.";
+                }
+                leaf position {
+                    type pub-type:position;
+                    description "Position.";
+                }
+                leaf entSerialNo {
+                    type string;
+                    description "Physical number.";
+                }
+                leaf entIndex {
+                    type uint32;
+                    description "Index.";
+                }
+                leaf entBomId {
+                    type string;
+                    description "BOM ID.";
+                }
+                leaf entSerialNum {
+                    type string;
+                    description "Serial number.";
+                }
+                leaf entBomEnDesc {
+                    type string;
+                    description "English description of a BOM. ";
+                }
+                leaf entBomLocalDesc {
+                    type string;
+                    description "Local description of a BOM.";
+                }
+                leaf entMfgName {
+                    type string;
+                    description "Manufacturer name.";
+                }
+                leaf entManufacturedDate {
+                    type string;
+                    description "Manufacture date.";
+                }
+                leaf entManufactureCode {
+                    type string;
+                    description "Manufacture code.";
+                }
+                leaf entBoardType {
+                    type string;
+                    description "Board type.";
+                }
+                leaf entAssetID {
+                    type string;
+                    description "Asset ID.";
+                }
+                leaf entCLEICode {
+                    type string;
+                    description "CLEI code.";
+                }
+                leaf entUpdateLog {
+                    type string;
+                    description "Update log.";
+                }
+                leaf entArchivesInfoVersion {
+                    type string;
+                    description "Archives information version.";
+                }
+                leaf entOpenBomId {
+                    type string;
+                    description "The BomId for distribution.";
+                }
+                leaf entIssueNum {
+                    type string;
+                    description "Issue number.";
+                }
+                leaf entModelType {
+                    type string;
+                    description "External Type.";
+                }
+                leaf entElabelVersion {
+                    type string;
+                    description "Elabel Version.";
+                }
+            }
+        }
+        container hardwareInfos {
+            description "Hardware compatibility information.";
+            list hardwareInfo {
+                key "hardwareName";
+                config false;
+                description "Hardware compatibility information.";
+                leaf hardwareName {
+                    type devmHardType;
+                    description "Hardware name.";
+                }
+                leaf hardwareType {
+                    type devmEntityClassType;
+                    description "Hardware type.";
+                }
+            }
+        }
+        container boardForwardStatistics {
+            description "Forward Statistics.";
+            list boardForwardStatistic {
+                key "position";
+                config false;
+                description "Forward Statistics.";
+                leaf position {
+                    type pub-type:position;
+                    description "Position.";
+                }
+                leaf boardName {
+                    type string;
+                    description "BoardName.";
+                }
+                container serdesStatGroups {
+                    description "Serdes Statistics.";
+                    list serdesStatGroup {
+                        key "innerPortName";
+                        config false;
+                        description "Serdes Statistics.";
+                        leaf innerPortName {
+                            type string;
+                            description "innerPortName.";
+                        }
+                        leaf receivePacket {
+                            type uint64;
+                            description "ReceivePacket.";
+                        }
+                        leaf sendPacket {
+                            type uint64;
+                            description "SendPacket.";
+                        }
+                        leaf receiveDiscardPacket {
+                            type uint64;
+                            description "ReceiveDiscardPacket.";
+                        }
+                    }
+                }
+            }
+        }
+        container portSplitAttributes {
+            description "Split Attributes.";
+            list portSplitAttribute {
+                key "position";
+                config false;
+                description "Split Attributes.";
+                leaf position {
+                    type pub-type:position;
+                    description "SplitPort Position.";
+                }
+                leaf entIndex {
+                    type uint32;
+                    description "SplitPort Index.";
+                }
+                leaf entName {
+                    type string;
+                    description "SplitPort Name.";
+                }
+                leaf splitSrcPos {
+                    type pub-type:position;
+                    description "OriginalPort Position.";
+                }
+                leaf entSplitSrcName {
+                    type string;
+                    description "OriginalPort Name.";
+                }
+                leaf splitSrcParentPosition {
+                    type pub-type:position;
+                    description "ParentPosition.";
+                }
+                leaf splitSrcParentRelPos {
+                    type uint32;
+                    description "ParentRelationPosition.";
+                }
+            }
+        }
+        container sysEnergyInfo {
+            description "System Energy.";
+            leaf sysAveragePower {
+                type string;
+                config false;
+                description "System Average Power.";
+            }
+            leaf sysCurrentPower {
+                type string;
+                config false;
+                description "System Current Power.";
+            }
+            leaf sysPowerCycle {
+                type devmPowerCycleType;
+                config false;
+                default "oneHour";
+                description "System Power Manage Cycle.";
+            }
+            leaf sysPowerMode {
+                type devmPowerModeType;
+                config false;
+                default "standard";
+                description "System Power Manage Mode.";
+            }
+        }
+        container boardEnergyInfos {
+            description "Board Energy.";
+            list boardEnergyInfo {
+                key "position";
+                config false;
+                description "Board Energy Info.";
+                leaf position {
+                    type pub-type:position;
+                    description "Position.";
+                }
+                leaf entIndex {
+                    type uint32;
+                    description "EntIndex.";
+                }
+                leaf boardType {
+                    type string;
+                    description "Board Type.";
+                }
+                leaf boardState {
+                    type devmBoardStateType;
+                    description "Board State.";
+                }
+                leaf brdActualPower {
+                    type string;
+                    description "Board Actual Power.";
+                }
+                leaf brdRatedPower {
+                    type string;
+                    description "Board Rated Power.";
+                }
+            }
+        }
+        container protectGroups {
+            config false;
+            description "Protect groups.";
+            list protectGroup {
+                key "groupNo primaryBoard";
+                config false;
+                description "Protect group.";
+                leaf groupNo {
+                    type uint32;
+                    description "Protect group number.";
+                }
+                leaf protectGType {
+                    type devmProtectType;
+                    description "Protect group type.";
+                }
+                leaf switchStatus {
+                    type string;
+                    description "Switchover status.";
+                }
+                leaf primaryBoard {
+                    type pub-type:position;
+                    description "Master board position.";
+                }
+                leaf slaveBoard {
+                    type pub-type:position;
+                    description "Slave board position.";
+                }
+            }
+        }
+    }
+}

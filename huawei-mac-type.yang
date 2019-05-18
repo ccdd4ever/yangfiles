@@ -1,0 +1,387 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-mac-type {
+  belongs-to huawei-mac {
+    prefix mac;
+  }
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "Description FOR submodule";
+
+   revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  typedef macVlanId {
+    type uint16 {
+      range "1..4094";
+    }
+    description
+      "MAC Vlan Id";
+  }
+  typedef macType {
+    type enumeration {
+      enum "static" {
+        description
+          "Static MAC address entry.";
+      }
+      enum "dynamic" {
+        description
+          "Dynamic MAC address entry.";
+      }
+      enum "blackHole" {
+        description
+          "Blackhole MAC address entry";
+      }
+      enum "sticky" {
+        description
+          "sticky MAC address entry";
+      }
+      enum "security" {
+        description
+          "security MAC address entry";
+      }
+      enum "mux" {
+        description
+          "MUX MAC address entry.";
+      }
+      enum "snooping" {
+        description
+          "SNOOPING MAC address entry.";
+      }
+      enum "tunnel" {
+        description
+          "TUNNEL MAC address entry.";
+      }
+      enum "authen" {
+        description
+          "AUTHEN MAC address entry.";
+      }
+    }
+    description
+      "MAC Type";
+  }
+  typedef suppressType {
+    type enumeration {
+      enum "broadcast" {
+        description
+          "Broadcast.";
+      }
+      enum "multicast" {
+        description
+          "Multicast.";
+      }
+      enum "unknownUnicast" {
+        description
+          "Unknown unicast.";
+      }
+      enum "unicast" {
+        description
+          "Unicast.";
+      }
+    }
+    description
+      "Suppress Type";
+  }
+  typedef limitType {
+    type enumeration {
+      enum "macLimit" {
+        description
+          "Interface MAC rule limit.";
+      }
+      enum "macApply" {
+        description
+          "Interface MAC rule application.";
+      }
+    }
+    description
+      "Limit Type";
+  }
+  typedef macAgeTimeType {
+    type enumeration {
+      enum "enable" {
+        description
+          "Enable MAC address global aging.";
+      }
+      enum "disable" {
+        description
+          "Disable MAC address global aging.";
+      }
+    }
+    description
+      "MAC Age Time Type";
+  }
+  typedef macLimitForward {
+    type enumeration {
+      enum "forward" {
+        description
+          "Forward.";
+      }
+      enum "discard" {
+        description
+          "Discard.";
+      }
+    }
+    description
+      "MAC Limit Forward";
+  }
+  typedef macEnableStatus {
+    type enumeration {
+      enum "enable" {
+        description
+          "Enable.";
+      }
+      enum "disable" {
+        description
+          "Disable.";
+      }
+    }
+    description
+      "MAC Enable Status";
+  }
+  typedef EnableStatus {
+    type enumeration {
+      enum "enable" {
+        description
+          "Enable.";
+      }
+    }
+    description
+      "MAC Enable Status";
+  }
+  typedef suppressStyle {
+    type enumeration {
+      enum "percent" {
+        description
+          "Percent.";
+      }
+      enum "absoluteValue" {
+        description
+          "Absolute value.";
+      }
+    }
+    description
+      "Suppress Style";
+  }
+  typedef macOutIfType {
+    type enumeration {
+      enum "ac" {
+        description
+          "AC.";
+      }
+      enum "pw" {
+        description
+          "PW.";
+      }
+    }
+    description
+      "MAC Out Interface Type";
+  }
+  typedef macPwEncapType {
+    type enumeration {
+      enum "ethernet" {
+        description
+          "Ethernet.";
+      }
+      enum "vlan" {
+        description
+          "VLAN.";
+      }
+    }
+    description
+      "MAC PW Encapsulation Type";
+  }
+  typedef directionType {
+    type enumeration {
+      enum "inbound" {
+        description
+          "Inbound.";
+      }
+      enum "outbound" {
+        description
+          "Outbound.";
+      }
+    }
+    description
+      "Direction Type";
+  }
+  typedef discardType {
+    type enumeration {
+      enum "broadcastDiscard" {
+        description
+          "Discard broadcast.";
+      }
+      enum "unknownMulticastDiscard" {
+        description
+          "Discard unknown multicast.";
+      }
+      enum "unknownUnicastDiscard" {
+        description
+          "Discard Unknown unicast.";
+      }
+    }
+    description
+      "Discard Type";
+  }
+  typedef triggerType {
+    type enumeration {
+      enum "ErrorDown" {
+        description
+          "Shut down interface.";
+      }
+    }
+    description
+      "Trigger Type";
+  }
+  typedef securityLevel {
+    type enumeration {
+      enum "middle" {
+        description
+          "Middle level.";
+      }
+      enum "low" {
+        description
+          "Low level.";
+      }
+      enum "high" {
+        description
+          "High level.";
+      }
+    }
+    description
+      "Security Level";
+  }
+  typedef broadcastDomainType {
+    type enumeration {
+      enum "VLAN" {
+        description
+          "VLAN Type.";
+      }
+    }
+    description
+      "Broadcast Domain Type";
+  }
+  typedef mflpPortType {
+    type enumeration {
+      enum "PeerIP" {
+        description
+          "Peer IP Type.";
+      }
+      enum "Nickname" {
+        description
+          "Nickname Type.";
+      }
+      enum "PhysicalPort" {
+        description
+          "Physical Port Type.";
+      }
+    }
+    description
+      "MFLP Port Type";
+  }
+  typedef stormCtrlType {
+    type enumeration {
+      enum "broadcast" {
+        description
+          "Broadcast.";
+      }
+      enum "multicast" {
+        description
+          "Multicast.";
+      }
+      enum "unicast" {
+        description
+          "Unicast.";
+      }
+      enum "unknown-unicast" {
+        description
+          "Unknown unicast.";
+      }
+    }
+    description
+      "Storm Ctrl Type";
+  }
+  typedef stormCtrlActionType {
+    type enumeration {
+      enum "normal" {
+        description
+          "Normal.";
+      }
+      enum "errorDown" {
+        description
+          "Error down.";
+      }
+      enum "block" {
+        description
+          "Block.";
+      }
+      enum "suppress" {
+        description
+          "Suppress";
+      }
+    }
+    description
+      "Storm Ctrl Action Type";
+  }
+  typedef stormCtrlRateType {
+    type enumeration {
+      enum "pps" {
+        description
+          "Packets per second.";
+      }
+      enum "percent" {
+        description
+          "Percent.";
+      }
+      enum "kbps" {
+        description
+          "Kilo bits per second.";
+      }
+    }
+    description
+      "Storm Ctrl Rate Type";
+  }
+  typedef enableType {
+    type enumeration {
+      enum "disable" {
+        description
+          "Disable.";
+      }
+      enum "enable" {
+        description
+          "Enable.";
+      }
+    }
+    description
+      "Enable Type";
+  }
+  typedef tunnelType {
+    type enumeration {
+      enum "IPv4" {
+        description
+          "IPv4 Tunnel";
+      }
+      enum "IPv6" {
+        description
+          "IPv6 Tunnel";
+      }
+    }
+    description
+      "description of tunnelType";
+  }
+}

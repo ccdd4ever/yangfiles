@@ -1,0 +1,549 @@
+/*
+Copyright (C) 2013-2017 Huawei Technologies Co., Ltd. All rights reserved.
+*/
+submodule huawei-lldp-type {
+  belongs-to huawei-lldp {
+    prefix lldp;
+  }
+  
+  organization
+    "Huawei Technologies Co.,Ltd.";
+  contact
+    "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+        People's Republic of China                    
+        Website: http://www.huawei.com Email: support@huawei.com";
+  description
+    "lldp_type";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+  revision 2013-01-01 {
+    description
+      "Init revision";
+    reference
+      "Huawei private.";
+  }
+  typedef manAddrIfSubtype {
+    type enumeration {
+      enum "other" {
+        description
+          "other.";
+      }
+      enum "unknown" {
+        description
+          "unknown.";
+      }
+      enum "ifIndex" {
+        description
+          "ifIndex.";
+      }
+      enum "systemPortNumber" {
+        description
+          "systemPortNumber.";
+      }
+    }
+    description
+      "";
+  }
+  typedef operMauType {
+    type enumeration {
+      enum "dot3MauType1000BaseSXHD" {
+        description
+          "dot3MauType1000BaseSXHD.";
+      }
+      enum "dot3MauType1000BaseSXFD" {
+        description
+          "dot3MauType1000BaseSXFD.";
+      }
+      enum "dot3MauType1000BaseCXHD" {
+        description
+          "dot3MauType1000BaseCXHD.";
+      }
+      enum "dot3MauType1000BaseCXFD" {
+        description
+          "dot3MauType1000BaseCXFD.";
+      }
+      enum "dot3MauType1000BaseTHD" {
+        description
+          "dot3MauType1000BaseTHD.";
+      }
+      enum "dot3MauType1000BaseTFD" {
+        description
+          "dot3MauType1000BaseTFD.";
+      }
+      enum "dot3MauType10GigBaseX" {
+        description
+          "dot3MauType10GigBaseX.";
+      }
+      enum "dot3MauType10GigBaseLX4" {
+        description
+          "dot3MauType10GigBaseLX4.";
+      }
+      enum "dot3MauType10GigBaseR" {
+        description
+          "dot3MauType10GigBaseR.";
+      }
+      enum "dot3MauType10GigBaseER" {
+        description
+          "dot3MauType10GigBaseER.";
+      }
+      enum "dot3MauType10GigBaseLR" {
+        description
+          "dot3MauType10GigBaseLR.";
+      }
+      enum "dot3MauType10GigBaseSR" {
+        description
+          "dot3MauType10GigBaseSR.";
+      }
+      enum "dot3MauType10GigBaseW" {
+        description
+          "dot3MauType10GigBaseW.";
+      }
+      enum "dot3MauType10GigBaseEW" {
+        description
+          "dot3MauType10GigBaseEW.";
+      }
+      enum "dot3MauType10GigBaseLW" {
+        description
+          "dot3MauType10GigBaseLW.";
+      }
+      enum "dot3MauType10GigBaseSW" {
+        description
+          "dot3MauType10GigBaseSW.";
+      }
+      enum "unknown" {
+        description
+          "other.";
+      }
+      enum "dot3MauTypeAUI" {
+        description
+          "dot3MauTypeAUI.";
+      }
+      enum "dot3MauType10Base5" {
+        description
+          "dot3MauType10Base5.";
+      }
+      enum "dot3MauTypeFoirl" {
+        description
+          "dot3MauTypeFoirl.";
+      }
+      enum "dot3MauType10Base2" {
+        description
+          "dot3MauType10Base2.";
+      }
+      enum "dot3MauType10BaseT" {
+        description
+          "dot3MauType10BaseT.";
+      }
+      enum "dot3MauType10BaseFP" {
+        description
+          "dot3MauType10BaseFP.";
+      }
+      enum "dot3MauType10BaseFB" {
+        description
+          "dot3MauType10BaseFB.";
+      }
+      enum "dot3MauType10BaseFL" {
+        description
+          "dot3MauType10BaseFL.";
+      }
+      enum "dot3MauType10Broad36" {
+        description
+          "dot3MauType10Broad36.";
+      }
+      enum "dot3MauType10BaseTHD" {
+        description
+          "dot3MauType10BaseTHD.";
+      }
+      enum "dot3MauType10BaseTFD" {
+        description
+          "dot3MauType10BaseTFD.";
+      }
+      enum "dot3MauType10BaseFLHD" {
+        description
+          "dot3MauType10BaseFLHD.";
+      }
+      enum "dot3MauType10BaseFLFD" {
+        description
+          "dot3MauType10BaseFLFD.";
+      }
+      enum "dot3MauType100BaseT4" {
+        description
+          "dot3MauType100BaseT4.";
+      }
+      enum "dot3MauType100BaseTXHD" {
+        description
+          "dot3MauType100BaseTXHD.";
+      }
+      enum "dot3MauType100BaseTXFD" {
+        description
+          "dot3MauType100BaseTXFD.";
+      }
+      enum "dot3MauType100BaseFXHD" {
+        description
+          "dot3MauType100BaseFXHD.";
+      }
+      enum "dot3MauType100BaseFXFD" {
+        description
+          "dot3MauType100BaseFXFD.";
+      }
+      enum "dot3MauType100BaseT2HD" {
+        description
+          "dot3MauType100BaseT2HD.";
+      }
+      enum "dot3MauType100BaseT2FD" {
+        description
+          "dot3MauType100BaseT2FD.";
+      }
+      enum "dot3MauType1000BaseXHD" {
+        description
+          "dot3MauType1000BaseXHD.";
+      }
+      enum "dot3MauType1000BaseXFD" {
+        description
+          "dot3MauType1000BaseXFD.";
+      }
+      enum "dot3MauType1000BaseLXHD" {
+        description
+          "dot3MauType1000BaseLXHD.";
+      }
+      enum "dot3MauType1000BaseLXFD" {
+        description
+          "dot3MauType1000BaseLXFD.";
+      }
+      enum "dot3MauType40GigBaseKR4" {
+        description
+          "dot3MauType40GigBaseKR4.";
+      }
+      enum "dot3MauType40GigBaseCR4" {
+        description
+          "dot3MauType40GigBaseCR4.";
+      }
+      enum "dot3MauType40GigBaseSR4" {
+        description
+          "dot3MauType40GigBaseSR4.";
+      }
+      enum "dot3MauType40GigBaseFR" {
+        description
+          "dot3MauType40GigBaseFR.";
+      }
+      enum "dot3MauType40GigBaseLR4" {
+        description
+          "dot3MauType40GigBaseLR4.";
+      }
+      enum "dot3MauType100GigBaseCR10" {
+        description
+          "dot3MauType100GigBaseCR10.";
+      }
+      enum "dot3MauType100GigBaseSR10" {
+        description
+          "dot3MauType100GigBaseSR10.";
+      }
+      enum "dot3MauType100GigBaseLR4" {
+        description
+          "dot3MauType100GigBaseLR4.";
+      }
+      enum "dot3MauType100GigBaseER4" {
+        description
+          "dot3MauType100GigBaseER4.";
+      }
+    }
+    description
+      "";
+  }
+  typedef portAdminStatus {
+    type enumeration {
+      enum "txOnly" {
+        description
+          "txOnly.";
+      }
+      enum "rxOnly" {
+        description
+          "rxOnly.";
+      }
+      enum "txAndRx" {
+        description
+          "txAndRx.";
+      }
+      enum "disabled" {
+        description
+          "disabled.";
+      }
+    }
+    description
+      "";
+  }
+  typedef mdnPortAdminStatus {
+    type enumeration {
+      enum "rxOnly" {
+        description
+          "enabled.";
+      }
+      enum "disabled" {
+        description
+          "disabled.";
+      }
+      enum "default" {
+        description
+          "default.";
+      }
+    }
+    description
+      "";
+  }
+  typedef chassisIdSubtype {
+    type enumeration {
+      enum "other" {
+        description
+          "other.";
+      }
+      enum "chassisComponent" {
+        description
+          "Chassis component.";
+      }
+      enum "interfaceAlias" {
+        description
+          "Interface alias.";
+      }
+      enum "portComponent" {
+        description
+          "Interface component.";
+      }
+      enum "macAddress" {
+        description
+          "MAC address.";
+      }
+      enum "networkAddress" {
+        description
+          "Network address.";
+      }
+      enum "interfaceName" {
+        description
+          "Interface name.";
+      }
+      enum "local" {
+        description
+          "Local name.";
+      }
+    }
+    description
+      "";
+  }
+  typedef manAddrSubtype {
+    type enumeration {
+      enum "other" {
+        description
+          "other.";
+      }
+      enum "ipv4" {
+        description
+          "IPv4.";
+      }
+      enum "ipv6" {
+        description
+          "IPv6.";
+      }
+      enum "nsap" {
+        description
+          "NSAP.";
+      }
+      enum "hdlc" {
+        description
+          "HDLC.";
+      }
+      enum "bbn1822" {
+        description
+          "bbn1822.";
+      }
+      enum "mac" {
+        description
+          "MAC.";
+      }
+      enum "e163" {
+        description
+          "e163.";
+      }
+      enum "e164" {
+        description
+          "e164.";
+      }
+      enum "f69" {
+        description
+          "f69.";
+      }
+      enum "x121" {
+        description
+          "x121.";
+      }
+      enum "ipx" {
+        description
+          "ipx.";
+      }
+      enum "appleTalk" {
+        description
+          "appleTalk.";
+      }
+      enum "decnetIV" {
+        description
+          "decnetIV.";
+      }
+      enum "banyanVines" {
+        description
+          "banyanVines.";
+      }
+      enum "e164withNsap" {
+        description
+          "e164withNsap.";
+      }
+      enum "dns" {
+        description
+          "dns.";
+      }
+      enum "distinguishedName" {
+        description
+          "distinguishedName.";
+      }
+      enum "asNumber" {
+        description
+          "asNumber.";
+      }
+      enum "xtpOverIpv4" {
+        description
+          "xtpOverIpv4.";
+      }
+      enum "xtpOverIpv6" {
+        description
+          "xtpOverIpv6.";
+      }
+      enum "xtpNativeModeXTP" {
+        description
+          "xtpNativeModeXTP.";
+      }
+      enum "fibreChannelWWPN" {
+        description
+          "fibreChannelWWPN.";
+      }
+      enum "fibreChannelWWN" {
+        description
+          "fibreChannelWWN.";
+      }
+      enum "gwid" {
+        description
+          "gwid.";
+      }
+    }
+    description
+      "";
+  }
+  typedef portIdSubtype {
+    type enumeration {
+      enum "other" {
+        description
+          "other.";
+      }
+      enum "interfaceAlias" {
+        description
+          "interfaceAlias.";
+      }
+      enum "portComponent" {
+        description
+          "portComponent.";
+      }
+      enum "macAddress" {
+        description
+          "macAddress.";
+      }
+      enum "networkAddress" {
+        description
+          "networkAddress.";
+      }
+      enum "interfaceName" {
+        description
+          "interfaceName.";
+      }
+      enum "agentCircuitId" {
+        description
+          "agentCircuitId.";
+      }
+      enum "local" {
+        description
+          "local.";
+      }
+    }
+    description
+      "";
+  }
+  typedef lldpGlobalStatus {
+    type enumeration {
+      enum "enabled" {
+        description
+          "enabled.";
+      }
+      enum "disabled" {
+        description
+          "disabled.";
+      }
+    }
+    description
+      "";
+  }
+  typedef mdnGlobalStatus {
+    type enumeration {
+      enum "rxOnly" {
+        description
+          "enabled.";
+      }
+      enum "disabled" {
+        description
+          "disabled.";
+      }
+    }
+    description
+      "";
+  }
+  typedef lldpSupportStatus {
+    type enumeration {
+      enum "Yes" {
+        description
+          "Yes.";
+      }
+      enum "No" {
+        description
+          "No.";
+      }
+    }
+    description
+      "";
+  }
+  typedef lldpEnableStatus {
+    type enumeration {
+      enum "Yes" {
+        description
+          "Yes.";
+      }
+      enum "No" {
+        description
+          "No.";
+      }
+    }
+    description
+      "";
+  }
+  typedef neighborStatus {
+    type enumeration {
+      enum "ONLINE" {
+        description
+          "ONLINE.";
+      }
+      enum "OFFLINE" {
+        description
+          "OFFLINE.";
+      }
+    }
+    description
+      "";
+  }
+}
