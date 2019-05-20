@@ -18,10 +18,8 @@ module huawei-devm {
               People's Republic of China                    
               Website: http://www.huawei.com Email: support@huawei.com";
   revision 2017-03-23 {
-    description
-      "Functions supported by the schema are added to the YANG file.";
-    reference
-      "Huawei private.";
+    description "Functions supported by the schema are added to the YANG file.";
+    reference "Huawei private.";
   }
     description "Global Configuration.";
     revision "2013-01-01";
