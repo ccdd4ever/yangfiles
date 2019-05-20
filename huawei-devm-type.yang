@@ -1,0 +1,3814 @@
+submodule huawei-devm-type {
+    belongs-to "huawei-devm" {
+        prefix "devm";
+    }
+    
+    organization "Huawei Technologies Co.,Ltd.";
+    contact "Huawei Industrial Base Bantian, Longgang Shenzhen 518129                    
+              People's Republic of China                    
+              Website: http://www.huawei.com Email: support@huawei.com";
+  revision 2017-03-23 {
+    description
+      "Functions supported by the schema are added to the YANG file.";
+    reference
+      "Huawei private.";
+  }
+    revision "2013-01-01";
+    typedef devmEntityClassType {
+        description "";
+        type enumeration {
+            enum "other" {
+                value 0;
+                description "Other.";
+            }
+            enum "unknown" {
+                value 1;
+                description "Unknown.";
+            }
+            enum "chassis" {
+                value 2;
+                description "Chassis.";
+            }
+            enum "backplane" {
+                value 3;
+                description "Backplane.";
+            }
+            enum "container" {
+                value 4;
+                description "Slot.";
+            }
+            enum "mpuModule" {
+                value 5;
+                description "MPU.";
+            }
+            enum "lpuModule" {
+                value 6;
+                description "LPU.";
+            }
+            enum "sfuModule" {
+                value 7;
+                description "SFU.";
+            }
+            enum "ecuModule" {
+                value 8;
+                description "ECU.";
+            }
+            enum "icuModule" {
+                value 9;
+                description "ICU.";
+            }
+            enum "cmuModule" {
+                value 10;
+                description "CMU.";
+            }
+            enum "clockModule" {
+                value 11;
+                description "CLK.";
+            }
+            enum "fan" {
+                value 12;
+                description "Fan.";
+            }
+            enum "powerSupply" {
+                value 13;
+                description "Power supply.";
+            }
+            enum "lcd" {
+                value 14;
+                description "LCD.";
+            }
+            enum "cfModule" {
+                value 15;
+                description "FLASH.";
+            }
+            enum "flexibleCardModule" {
+                value 16;
+                description "Flexible card.";
+            }
+            enum "port" {
+                value 17;
+                description "Port.";
+            }
+            enum "sensor" {
+                value 18;
+                description "Sensor.";
+            }
+        }
+    }
+    typedef devmContainerType {
+        description "";
+        type enumeration {
+            enum "unknown" {
+                value 0;
+                description "Unknown.";
+            }
+            enum "boardSlot" {
+                value 1;
+                description "Board slot.";
+            }
+            enum "mpuSlot" {
+                value 2;
+                description "MPU slot.";
+            }
+            enum "lpuSlot" {
+                value 3;
+                description "LPU slot.";
+            }
+            enum "sfuSlot" {
+                value 4;
+                description "SFU slot.";
+            }
+            enum "icuSlot" {
+                value 5;
+                description "ICU slot.";
+            }
+            enum "ecuSlot" {
+                value 6;
+                description "ECU slot.";
+            }
+            enum "clkSlot" {
+                value 7;
+                description "CLK slot.";
+            }
+            enum "cmuSlot" {
+                value 8;
+                description "CMU slot.";
+            }
+            enum "fanSlot" {
+                value 9;
+                description "Fan slot.";
+            }
+            enum "phyFanSlot" {
+                value 10;
+                description "Fan slot.";
+            }
+            enum "powerSlot" {
+                value 11;
+                description "Power slot.";
+            }
+            enum "phyPowerSlot" {
+                value 12;
+                description "Power slot.";
+            }
+            enum "lcdSlot" {
+                value 13;
+                description "LCD slot.";
+            }
+            enum "picSlot" {
+                value 14;
+                description "Pic slot.";
+            }
+            enum "ofcSlot" {
+                value 15;
+                description "Ofc slot.";
+            }
+            enum "cfcardSlot" {
+                value 16;
+                description "CFCARD slot.";
+            }
+            enum "virtualSlot" {
+                value 17;
+                description "Virtual slot.";
+            }
+            enum "virtualSubSlot" {
+                value 18;
+                description "Virtual sub slot.";
+            }
+        }
+    }
+    typedef devmChassisType {
+        description "";
+        type enumeration {
+            enum "unknown" {
+                value 0;
+                description "Unknown.";
+            }
+            enum "fname8090Unknown" {
+                value 1;
+                description "Unknown.";
+            }
+            enum "fname8090Whole" {
+                value 2;
+                description "NE5000E chassis.";
+            }
+            enum "fname8090NE5000EX" {
+                value 3;
+                description "NE5000EX chassis.";
+            }
+            enum "fname8090ClusterCentral" {
+                value 4;
+                description "NE5000E cluster central chassis.";
+            }
+            enum "fname8090NE5000EX-VB" {
+                value 5;
+                description "NE5000EX-VB chassis.";
+            }
+            enum "CE685048S4QEI" {
+                value 6;
+                description "CE685048S4QEI chassis.";
+            }
+            enum "CE585048T4S2QEI" {
+                value 7;
+                description "CE585048T4S2QEI chassis.";
+            }
+            enum "CE685048T4QEI" {
+                value 8;
+                description "CE685048T4QEI chassis.";
+            }
+            enum "CE5810_24T4S_EI" {
+                value 9;
+                description "CE581024T4SEI Chassis.";
+            }
+            enum "CE5810_48T4S_EI" {
+                value 10;
+                description "CE581048T4SEI Chassis.";
+            }
+            enum "CE585048T4S2QHI" {
+                value 11;
+                description "CE585048T4S2QHI Chassis.";
+            }
+            enum "CE785032QEI" {
+                value 12;
+                description "CE785032QEI Chassis.";
+            }
+            enum "CE681048S4QEI" {
+                value 13;
+                description "CE681048S4QEI Chassis.";
+            }
+            enum "CE681048S4QEICDR" {
+                value 14;
+                description "CE681048S4QEICDR Chassis.";
+            }
+            enum "CE681048S4QLI" {
+                value 15;
+                description "CE681048S4QLI Chassis.";
+            }
+            enum "CE681048SLI" {
+                value 16;
+                description "CE681048SLI Chassis.";
+            }
+            enum "CE685048S6QHI" {
+                value 17;
+                description "CE685048S6QHI Chassis.";
+            }
+            enum "CE6850U48S6QHI" {
+                value 18;
+                description "CE6850U48S6QHI Chassis.";
+            }
+            enum "CE685048T6QHI" {
+                value 19;
+                description "CE685048T6QHI Chassis.";
+            }
+            enum "CE681032T16S4QLI" {
+                value 20;
+                description "CE681032T16S4QLI Chassis.";
+            }
+            enum "CE581048T4SHI" {
+                value 21;
+                description "CE581048T4SHI Chassis.";
+            }
+            enum "CE585548T4S2QEI" {
+                value 22;
+                description "CE585548T4S2QEI Chassis.";
+            }
+            enum "CE585524T4S2QEI" {
+                value 23;
+                description "CE585524T4S2QEI Chassis.";
+            }
+            enum "CE6850U24S2QHI" {
+                value 24;
+                description "CE6850U24S2QHI Chassis.";
+            }
+            enum "CE681024S2QLI" {
+                value 25;
+                description "CE681024S2QLI Chassis.";
+            }
+            enum "CE685148S6QHI" {
+                value 26;
+                description "CE685148S6QHI Chassis.";
+            }
+            enum "CE88604CEI" {
+                value 27;
+                description "CE88604CEI Chassis.";
+            }
+            enum "CE685548T6QHI" {
+                value 28;
+                description "CE685548T6QHI Chassis.";
+            }
+            enum "CE685548S6QHI" {
+                value 29;
+                description "CE685548S6QHI Chassis.";
+            }
+            enum "CE687048S6CQEI" {
+                value 30;
+                description "CE687048S6CQEI Chassis.";
+            }
+            enum "CE687024S6CQEI" {
+                value 31;
+                description "CE687024S6CQEI Chassis.";
+            }
+            enum "CE686048S18CQEI" {
+                value 32;
+                description "CE686048S18CQEI Chassis.";
+            }
+            enum "CE686048S8CQEI" {
+                value 33;
+                description "CE686048S8CQEI Chassis.";
+            }
+            enum "CE785532QEI" {
+                value 34;
+                description "CE785532QEI Chassis.";
+            }
+            enum "CE688048S4Q2CQEI" {
+                value 35;
+                description "CE688048S4Q2CQEI Chassis.";
+            }
+            enum "CE688024S4Q2CQEI" {
+                value 36;
+                description "CE688024S4Q2CQEI Chassis.";
+            }
+            enum "CE688048T4Q2CQEI" {
+                value 37;
+                description "CE688048T4Q2CQEI Chassis.";
+            }
+            enum "CE885032CQEI" {
+                value 38;
+                description "CE885032CQEI Chassis.";
+            }
+            enum "fnameCX600" {
+                value 39;
+                description "CX600 chassis.";
+            }
+            enum "CE12804" {
+                value 40;
+                description "CE12804.";
+            }
+            enum "CE12808" {
+                value 41;
+                description "CE12808.";
+            }
+            enum "CE12812" {
+                value 42;
+                description "CE12812.";
+            }
+            enum "CE12816" {
+                value 43;
+                description "CE12816.";
+            }
+            enum "CE12804S" {
+                value 44;
+                description "CE12804S.";
+            }
+            enum "CE12808S" {
+                value 45;
+                description "CE12808S.";
+            }
+            enum "CE12816M" {
+                value 46;
+                description "CE12816M.";
+            }
+            enum "CE12804E" {
+                value 47;
+                description "CE12804E.";
+            }
+            enum "CE12808E" {
+                value 48;
+                description "CE12808E.";
+            }
+            enum "CE12812E" {
+                value 49;
+                description "CE12812E.";
+            }
+            enum "CE12816E" {
+                value 50;
+                description "CE12816E.";
+            }
+        }
+    }
+    typedef devmChassisSvcType {
+        description "";
+        type enumeration {
+            enum "unknown" {
+                value 0;
+                description "Unknown.";
+            }
+            enum "other" {
+                value 1;
+                description "Other.";
+            }
+            enum "centralChassis" {
+                value 2;
+                description "Cluster central chassis.";
+            }
+            enum "lineChassis" {
+                value 3;
+                description "Cluster line chassis.";
+            }
+        }
+    }
+    typedef devmBoardType {
+        description "";
+        type enumeration {
+            enum "unknown" {
+                value 0;
+                description "Unknown device.";
+            }
+            enum "CLOCK" {
+                value 1;
+                description "CLOCK.";
+            }
+            enum "POWER" {
+                value 2;
+                description "POWER.";
+            }
+            enum "FAN" {
+                value 3;
+                description "FAN.";
+            }
+            enum "LCD" {
+                value 4;
+                description "LCD.";
+            }
+            enum "CMU" {
+                value 5;
+                description "CMU.";
+            }
+            enum "DE51SRU1A" {
+                value 6;
+                description "DE51SRU1A.";
+            }
+            enum "DE51SRU1B" {
+                value 7;
+                description "DE51SRU1B.";
+            }
+            enum "DE51SRU1C" {
+                value 8;
+                description "DE51SRU1C.";
+            }
+            enum "CEM48S4QP01" {
+                value 9;
+                description "CEM48S4QP01.";
+            }
+            enum "CEM48T4S2QP01" {
+                value 10;
+                description "CEM48T4S2QP01.";
+            }
+            enum "CEM48T4QP01" {
+                value 11;
+                description "CEM48T4QP01.";
+            }
+            enum "CEM24T4SP01" {
+                value 12;
+                description "CEM24T4SP01.";
+            }
+            enum "CEM48T4SP01" {
+                value 13;
+                description "CEM48T4SP01.";
+            }
+            enum "CEM48T4S2QP02" {
+                value 14;
+                description "CEM48T4S2QP02.";
+            }
+            enum "CEM32QP01" {
+                value 15;
+                description "CEM32QP01.";
+            }
+            enum "CEM48S4QP02" {
+                value 16;
+                description "CEM48S4QP02.";
+            }
+            enum "CEM48S4QP03" {
+                value 17;
+                description "CEM48S4QP03.";
+            }
+            enum "CEM48S4QP04" {
+                value 18;
+                description "CEM48S4QP04.";
+            }
+            enum "CEM48SP01" {
+                value 19;
+                description "CEM48SP01.";
+            }
+            enum "CEM48S6QP01" {
+                value 20;
+                description "CEM48S6QP01.";
+            }
+            enum "CEM48S6QP02" {
+                value 21;
+                description "CEM48S6QP02.";
+            }
+            enum "CEM48T6QP01" {
+                value 22;
+                description "CEM48T6QP01.";
+            }
+            enum "CEM32T16S4QP01" {
+                value 23;
+                description "CEM32T16S4QP01.";
+            }
+            enum "CEM48T4SP02" {
+                value 24;
+                description "CEM48T4SP02.";
+            }
+            enum "CEM24S2QP02" {
+                value 25;
+                description "CEM24S2QP02.";
+            }
+            enum "CEM24S2QP01" {
+                value 26;
+                description "CEM24S2QP01.";
+            }
+            enum "CEM48T4S2QP03" {
+                value 27;
+                description "CEM48T4S2QP03.";
+            }
+            enum "CEM24T4S2QP03" {
+                value 28;
+                description "CEM24T4S2QP03.";
+            }
+            enum "CEM48S6QP04" {
+                value 29;
+                description "CEM48S6QP04.";
+            }
+            enum "CEM884CP01" {
+                value 30;
+                description "CEM884CP01.";
+            }
+            enum "CEM48T6QP02" {
+                value 31;
+                description "CEM48T6QP02.";
+            }
+            enum "CEM48S6QP05" {
+                value 32;
+                description "CEM48S6QP05.";
+            }
+            enum "CEM48S6CQP01" {
+                value 33;
+                description "CEM48S6CQP01.";
+            }
+            enum "CEM24S6CQP01" {
+                value 34;
+                description "CEM24S6CQP01.";
+            }
+            enum "CEM48S18CQP01" {
+                value 35;
+                description "CEM48S18CQP01.";
+            }
+            enum "CEM48S8CQP01" {
+                value 36;
+                description "CEM48S8CQP01.";
+            }
+            enum "CEM32QP02" {
+                value 37;
+                description "CEM32QP02.";
+            }
+            enum "CEM48S4Q2CQP01" {
+                value 38;
+                description "CEM48S4Q2CQP01.";
+            }
+            enum "CEM24S4Q2CQP01" {
+                value 39;
+                description "CEM24S4Q2CQP01.";
+            }
+            enum "CEM48T4Q2CQP01" {
+                value 40;
+                description "CEM48T4Q2CQP01.";
+            }
+            enum "CEM32CQP01" {
+                value 41;
+                description "CEM32CQP01.";
+            }
+            enum "CX68MPUK" {
+                value 42;
+                description "CX68MPUK.";
+            }
+            enum "CX68NPU50" {
+                value 43;
+                description "CX68NPU50.";
+            }
+            enum "DE01SFU04C" {
+                value 44;
+                description "DE01SFU04C.";
+            }
+            enum "DE01SFU08C" {
+                value 45;
+                description "DE01SFU08C.";
+            }
+            enum "DE01SFU12C" {
+                value 46;
+                description "DE01SFU12C.";
+            }
+            enum "CESFU16C" {
+                value 47;
+                description "CESFU16C.";
+            }
+            enum "DE01SFU04B" {
+                value 48;
+                description "DE01SFU04B.";
+            }
+            enum "DE01SFU08B" {
+                value 49;
+                description "DE01SFU08B.";
+            }
+            enum "DE01SFU12B" {
+                value 50;
+                description "DE01SFU12B.";
+            }
+            enum "CESFU16B" {
+                value 51;
+                description "CESFU16B.";
+            }
+            enum "DE01SFU04A" {
+                value 52;
+                description "DE01SFU04A.";
+            }
+            enum "DE01SFU08A" {
+                value 53;
+                description "DE01SFU08A.";
+            }
+            enum "DE01SFU12A" {
+                value 54;
+                description "DE01SFU12A.";
+            }
+            enum "CESFU16A" {
+                value 55;
+                description "CESFU16A.";
+            }
+            enum "CESFU12B" {
+                value 56;
+                description "CESFU12B.";
+            }
+            enum "CESFU08B" {
+                value 57;
+                description "CESFU08B.";
+            }
+            enum "CESFUBS" {
+                value 58;
+                description "CESFUBS.";
+            }
+            enum "CESFUCS" {
+                value 59;
+                description "CESFUCS.";
+            }
+            enum "DE01CMUA" {
+                value 60;
+                description "DE01CMUA.";
+            }
+            enum "DE01CMUB" {
+                value 61;
+                description "DE01CMUB.";
+            }
+            enum "DE01MPUA" {
+                value 62;
+                description "DE01MPUA.";
+            }
+            enum "DE01MPUAS" {
+                value 63;
+                description "DE01MPUAS.";
+            }
+            enum "DE01FCMA" {
+                value 64;
+                description "DE01FCMA.";
+            }
+            enum "DE01POWACA" {
+                value 65;
+                description "DE01POWACA.";
+            }
+            enum "DE01L24QAA" {
+                value 66;
+                description "DE01L24QAA.";
+            }
+            enum "DE01X24SAA" {
+                value 67;
+                description "DE01X24SAA.";
+            }
+            enum "DE01X48SAASA" {
+                value 68;
+                description "DE01X48SAASA.";
+            }
+            enum "DE01X48SAAEA" {
+                value 69;
+                description "DE01X48SAAEA.";
+            }
+            enum "DE01X48SAA" {
+                value 70;
+                description "DE01X48SAA.";
+            }
+            enum "DE01X48SAAGSEA" {
+                value 71;
+                description "DE01X48SAAGSEA.";
+            }
+            enum "DE0CEL48GSEA" {
+                value 72;
+                description "DE0CEL48GSEA.";
+            }
+            enum "DE0CEL48GTEA" {
+                value 73;
+                description "DE0CEL48GTEA.";
+            }
+            enum "DE0CEL48GSED" {
+                value 74;
+                description "DE0CEL48GSED.";
+            }
+            enum "DE0CEL48GTED" {
+                value 75;
+                description "DE0CEL48GTED.";
+            }
+            enum "CEL48GSEB" {
+                value 76;
+                description "CEL48GSEB.";
+            }
+            enum "CEL48GTEB" {
+                value 77;
+                description "CEL48GTEB.";
+            }
+            enum "CEL04CFEA" {
+                value 78;
+                description "CEL04CFEA.";
+            }
+            enum "CEL04CFEF" {
+                value 79;
+                description "CEL04CFEF.";
+            }
+            enum "DE0CEL48XSED" {
+                value 80;
+                description "DE0CEL48XSED.";
+            }
+            enum "DE0CEL48XSEF" {
+                value 81;
+                description "DE0CEL48XSEF.";
+            }
+            enum "CEL24XSED" {
+                value 82;
+                description "CEL24XSED.";
+            }
+            enum "CEL24XSEF" {
+                value 83;
+                description "CEL24XSEF.";
+            }
+            enum "CEL12LQEA" {
+                value 84;
+                description "CEL12LQEA.";
+            }
+            enum "CEL12LQEF" {
+                value 85;
+                description "CEL12LQEF.";
+            }
+            enum "CEL06LQEA" {
+                value 86;
+                description "CEL06LQEA.";
+            }
+            enum "CEL06LQEF" {
+                value 87;
+                description "CEL06LQEF.";
+            }
+            enum "CEL12XSED" {
+                value 88;
+                description "CEL12XSED.";
+            }
+            enum "CEL24LQEC" {
+                value 89;
+                description "CEL24LQEC.";
+            }
+            enum "CEL48XSEC" {
+                value 90;
+                description "CEL48XSEC.";
+            }
+            enum "CEL48XSEB" {
+                value 91;
+                description "CEL48XSEB.";
+            }
+            enum "CEL24XSEC" {
+                value 92;
+                description "CEL24XSEC.";
+            }
+            enum "CEL48XTEC" {
+                value 93;
+                description "CEL48XTEC.";
+            }
+            enum "CEL48XTED" {
+                value 94;
+                description "CEL48XTED.";
+            }
+            enum "CEL12CFEG" {
+                value 95;
+                description "CEL12CFEG.";
+            }
+            enum "DEFWA" {
+                value 96;
+                description "DEFWA.";
+            }
+            enum "CEL08CCEC" {
+                value 97;
+                description "CEL08CCEC.";
+            }
+            enum "CEL24LQEC1" {
+                value 98;
+                description "CEL24LQEC1.";
+            }
+            enum "CEL36LQEGA" {
+                value 99;
+                description "CEL36LQEGA.";
+            }
+            enum "CEL02LQEC" {
+                value 100;
+                description "CEL02LQEC.";
+            }
+            enum "CEL36CQFD" {
+                value 101;
+                description "CEL36CQFD.";
+            }
+            enum "CEL36LQFD" {
+                value 102;
+                description "CEL36LQFD.";
+            }
+            enum "CEL48XSFDA" {
+                value 103;
+                description "CEL48XSFDA.";
+            }
+            enum "CESFUFS" {
+                value 104;
+                description "CESFUFS.";
+            }
+            enum "CESFU16F" {
+                value 105;
+                description "CESFU16F.";
+            }
+            enum "CESFU16G" {
+                value 106;
+                description "CESFU16G.";
+            }
+            enum "CESFU12G" {
+                value 107;
+                description "CESFU12G.";
+            }
+            enum "CESFU08F" {
+                value 108;
+                description "CESFU08F.";
+            }
+            enum "CEL48XSFD" {
+                value 109;
+                description "CEL48XSFD.";
+            }
+            enum "CEL12CQFD" {
+                value 110;
+                description "CEL12CQFD.";
+            }
+            enum "CEL24LQFD" {
+                value 111;
+                description "CEL24LQFD.";
+            }
+            enum "CESFU08G" {
+                value 112;
+                description "CESFU08G.";
+            }
+            enum "CESFU04G" {
+                value 113;
+                description "CESFU04G.";
+            }
+            enum "CESFU16CE" {
+                value 114;
+                description "CESFU16CE.";
+            }
+            enum "CESFU12CE" {
+                value 115;
+                description "CESFU12CE.";
+            }
+            enum "CESFU08CE" {
+                value 116;
+                description "CESFU08CE.";
+            }
+            enum "CESFU04CE" {
+                value 117;
+                description "CESFU04CE.";
+            }
+            enum "CEL16CQEGE" {
+                value 118;
+                description "CEL16CQEGE.";
+            }
+            enum "CEL36LQEDE" {
+                value 119;
+                description "CEL36LQEDE.";
+            }
+            enum "CEL36LQEGE" {
+                value 120;
+                description "CEL36LQEGE.";
+            }
+            enum "CEL48XSEGAE" {
+                value 121;
+                description "CEL48XSEGAE.";
+            }
+            enum "CEL24XSEGAE" {
+                value 122;
+                description "CEL24XSEGAE.";
+            }
+            enum "CEL48XSEDE" {
+                value 123;
+                description "CEL48XSEDE.";
+            }
+            enum "CEL24XSEDE" {
+                value 124;
+                description "CEL24XSEDE.";
+            }
+            enum "CE01MPUAE" {
+                value 125;
+                description "CE01MPUAE.";
+            }
+        }
+    }
+    typedef devmSubCardType {
+        description "";
+        type enumeration {
+            enum "unknown" {
+                value 0;
+                description "Unknown card.";
+            }
+            enum "CFCARD" {
+                value 1;
+                description "CFCARD.";
+            }
+            enum "CED24S2CQ" {
+                value 2;
+                description "CED24S2CQ.";
+            }
+            enum "CED24T2CQ" {
+                value 3;
+                description "CED24T2CQ.";
+            }
+            enum "CED16Q" {
+                value 4;
+                description "CED16Q.";
+            }
+            enum "CED8CQ" {
+                value 5;
+                description "CED8CQ.";
+            }
+        }
+    }
+    typedef devmLpuServiceType {
+        type enumeration {
+            enum "lpu" {
+                value 0;
+                description "LPU.";
+            }
+            enum "rnr" {
+                value 1;
+                description "RNR.";
+            }
+            enum "tsu" {
+                value 2;
+                description "TSU.";
+            }
+            enum "ns" {
+                value 3;
+                description "NS.";
+            }
+            enum "gre" {
+                value 4;
+                description "GRE.";
+            }
+        }
+    }
+    typedef devmInnerlinkType {
+        type enumeration {
+            enum "other" {
+                value 0;
+                description "";
+            }
+            enum "controlChannel" {
+                value 1;
+                description "";
+            }
+            enum "monitorChannel" {
+                value 2;
+                description "";
+            }
+            enum "forwardChannel" {
+                value 3;
+                description "";
+            }
+        }
+    }
+    typedef devmLsRole {
+        type enumeration {
+            enum "unknown" {
+                value 0;
+                description "Unknown.";
+            }
+            enum "mmb" {
+                value 1;
+                description "MMB.";
+            }
+            enum "plmb" {
+                value 2;
+                description "PLMB.";
+            }
+            enum "acmb" {
+                value 3;
+                description "ACMB.";
+            }
+            enum "mb" {
+                value 4;
+                description "MB.";
+            }
+            enum "lc" {
+                value 5;
+                description "LC.";
+            }
+        }
+    }
+    typedef devmEthPortTransMode {
+        type enumeration {
+            enum "lan" {
+                value 0;
+                description "lan";
+            }
+            enum "wan" {
+                value 1;
+                description "wan";
+            }
+        }
+    }
+    typedef devmEntityAdminState {
+        type enumeration {
+            enum "active" {
+                value 0;
+                description "Active state that enabled service supply. ";
+            }
+            enum "inactive" {
+                value 1;
+                description "Inactive state that disables service supply.";
+            }
+            enum "notSupported" {
+                value 2;
+                description "Administration state unsupported.";
+            }
+        }
+    }
+    typedef devmEntityOperState {
+        type enumeration {
+            enum "normal" {
+                value 0;
+                description "Normal.";
+            }
+            enum "fault" {
+                value 1;
+                description "Fault.";
+            }
+            enum "unknown" {
+                value 2;
+                description "Unknown.";
+            }
+            enum "offline" {
+                value 3;
+                description "Offline.";
+            }
+            enum "opticalNotEquipped" {
+                value 4;
+                description "Optical equipped or not.";
+            }
+            enum "notSupported" {
+                value 5;
+                description "Unsupported.";
+            }
+        }
+    }
+    typedef devmEntityPresentState {
+        type enumeration {
+            enum "online" {
+                value 0;
+                description "";
+            }
+            enum "offline" {
+                value 1;
+                description "";
+            }
+            enum "unknown" {
+                value 2;
+                description "";
+            }
+        }
+    }
+    typedef devmEntityStandbyState {
+        type enumeration {
+            enum "notSupported" {
+                value 0;
+                description "Unsupported.";
+            }
+            enum "master" {
+                value 1;
+                description "Master.";
+            }
+            enum "slave" {
+                value 2;
+                description "Slave.";
+            }
+            enum "systemMaster" {
+                value 3;
+                description "System master.";
+            }
+            enum "systemSlave" {
+                value 4;
+                description "System slave.";
+            }
+        }
+    }
+    typedef devmPwrState {
+        type enumeration {
+            enum "dc" {
+                value 0;
+                description "dc:";
+            }
+            enum "ac" {
+                value 1;
+                description "ac:";
+            }
+            enum "unknown" {
+                value 2;
+                description "unknown:";
+            }
+        }
+    }
+    typedef devmRunState {
+        type enumeration {
+            enum "normal" {
+                value 0;
+                description "Normal.";
+            }
+            enum "abnormal" {
+                value 1;
+                description "Abnormal.";
+            }
+            enum "unknown" {
+                value 2;
+                description "Unknown.";
+            }
+        }
+    }
+    typedef devmLockState {
+        type enumeration {
+            enum "locked" {
+                value 0;
+                description "locked:";
+            }
+            enum "unlocked" {
+                value 1;
+                description "unlocked:";
+            }
+        }
+    }
+    typedef devmWorkMode {
+        type enumeration {
+            enum "auto" {
+                value 0;
+                description "Automatic.";
+            }
+            enum "manual" {
+                value 1;
+                description "Manual.";
+            }
+            enum "unknown" {
+                value 2;
+                description "Unknown.";
+            }
+        }
+    }
+    typedef devmPowerWorkMode {
+        type enumeration {
+            enum "DC" {
+                value 0;
+                description "DC.";
+            }
+            enum "AC" {
+                value 1;
+                description "AC.";
+            }
+            enum "unknown" {
+                value 2;
+                description "unknown.";
+            }
+        }
+    }
+    typedef devmSsmlevel {
+        type enumeration {
+            enum "unknown" {
+                value 0;
+                description "Unknown.";
+            }
+            enum "prc" {
+                value 1;
+                description "PRC level.";
+            }
+            enum "tnc" {
+                value 2;
+                description "TNC level.";
+            }
+            enum "lnc" {
+                value 3;
+                description "LNC level.";
+            }
+            enum "sets" {
+                value 4;
+                description "SETS level.";
+            }
+            enum "dnu" {
+                value 5;
+                description "DNU level.";
+            }
+        }
+    }
+    typedef devmControlFlag {
+        type enumeration {
+            enum "on" {
+                value 0;
+                description "On.";
+            }
+            enum "off" {
+                value 1;
+                description "Off.";
+            }
+        }
+    }
+    typedef devmCableState {
+        type enumeration {
+            enum "plug" {
+                value 0;
+                description "Plug.";
+            }
+            enum "unplug" {
+                value 1;
+                description "Unplug.";
+            }
+        }
+    }
+    typedef devmChoice {
+        type enumeration {
+            enum "force" {
+                value 0;
+                description "force:";
+            }
+            enum "auto" {
+                value 1;
+                description "auto:";
+            }
+        }
+    }
+    typedef devmAlarmState {
+        description "";
+        type enumeration {
+            enum "notSupported" {
+                value 0;
+                description "";
+            }
+            enum "underRepair" {
+                value 1;
+                description "When the value of under repair is set,the resource is currentlybeing repaired.";
+            }
+            enum "critical" {
+                value 2;
+                description "When the value of critical is set, one or more criticalalarms are active against the resource.";
+            }
+            enum "major" {
+                value 3;
+                description "When the value of major is set, one or more major alarms are active againstthe resource.";
+            }
+            enum "minor" {
+                value 4;
+                description "When the value of minor is set, one or moreminor alarms are active against the resource.";
+            }
+            enum "warning" {
+                value 5;
+                description "When thevalue of warning is set, one or more warning alarms areactive against the resource.";
+            }
+            enum "alarmOutstanding" {
+                value 6;
+                description "When the value of alarm outstanding is set, one or morealarms is active against the resource. The fault may or maynot be disabling.";
+            }
+            enum "indeterminate" {
+                value 7;
+                description "When the value ofindeterminate is set, one or more  alarms of indeterminateseverity are active against the resource.";
+            }
+        }
+    }
+    typedef devmPortType {
+        type enumeration {
+            enum "unknown" {
+                value 0;
+                description "Unknown.";
+            }
+            enum "Eth" {
+                value 1;
+                description "Ethernet.";
+            }
+            enum "Pos" {
+                value 2;
+                description "Pos.";
+            }
+            enum "Cpos" {
+                value 3;
+                description "CPOS port.";
+            }
+            enum "E1" {
+                value 4;
+                description "E1 port.";
+            }
+            enum "GE" {
+                value 5;
+                description "GE.";
+            }
+            enum "10GE" {
+                value 6;
+                description "10GE.";
+            }
+            enum "GF" {
+                value 7;
+                description "GE.";
+            }
+            enum "10GF" {
+                value 8;
+                description "10GE.";
+            }
+            enum "40GF" {
+                value 9;
+                description "40GE.";
+            }
+            enum "10GFCOM" {
+                value 10;
+                description "10GE.";
+            }
+            enum "25GF" {
+                value 11;
+                description "25GE.";
+            }
+            enum "40GFSPLIT" {
+                value 12;
+                description "40GE.";
+            }
+            enum "100GFSPLIT" {
+                value 13;
+                description "100GE.";
+            }
+            enum "100GF" {
+                value 14;
+                description "100GE.";
+            }
+            enum "40GFCOM" {
+                value 15;
+                description "40GE.";
+            }
+            enum "SIP" {
+                value 16;
+                description "SIP.";
+            }
+            enum "Otn" {
+                value 17;
+                description "Otn.";
+            }
+        }
+    }
+    typedef devmPortHardType {
+        type enumeration {
+            enum "unknown" {
+                value 0;
+                description "Unknown.";
+            }
+            enum "EthLANPort" {
+                value 1;
+                description "Ethernet LAN Port.";
+            }
+            enum "EthWANPort" {
+                value 2;
+                description "Ethernet WAN Port.";
+            }
+            enum "EthGEPort" {
+                value 3;
+                description "Ethernet GE Port.";
+            }
+            enum "Eth10GEPort" {
+                value 4;
+                description "Ethernet 10GE port.";
+            }
+            enum "EthGFPort" {
+                value 5;
+                description "Ethernet GE Port.";
+            }
+            enum "Eth10GFPort" {
+                value 6;
+                description "Ethernet 10GE port.";
+            }
+            enum "Eth25GFPort" {
+                value 7;
+                description "Ethernet 25GE port.";
+            }
+            enum "Eth40GFPort" {
+                value 8;
+                description "Ethernet 40GE port.";
+            }
+            enum "Eth10GFCOMPort" {
+                value 9;
+                description "Ethernet 10GE port.";
+            }
+            enum "Eth40GFSPLITPort" {
+                value 10;
+                description "Ethernet 40GE port.";
+            }
+            enum "Eth40GFCOMPort" {
+                value 11;
+                description "Ethernet 40GE port.";
+            }
+            enum "Eth100GFSPLITPort" {
+                value 12;
+                description "Ethernet 100GE port.";
+            }
+            enum "Eth100GFPort" {
+                value 13;
+                description "Ethernet 100GE port.";
+            }
+            enum "SipPort" {
+                value 14;
+                description "SIP.";
+            }
+            enum "EthFEPort" {
+                value 15;
+                description "Ethernet FE Port.";
+            }
+            enum "EthMGEPort" {
+                value 16;
+                description "Ethernet MGE Port.";
+            }
+            enum "PosPort" {
+                value 17;
+                description "Pos port.";
+            }
+            enum "OtnPort" {
+                value 18;
+                description "Otn port.";
+            }
+            enum "CposPort" {
+                value 19;
+                description "Cpos port.";
+            }
+            enum "E1Port" {
+                value 20;
+                description "E1 port.";
+            }
+            enum "EthClusterPort" {
+                value 21;
+                description "Ethernet Cluster port for chassis link.";
+            }
+        }
+    }
+    typedef devmCardHardType {
+        type enumeration {
+            enum "unknown" {
+                value 0;
+                description "Unknown card.";
+            }
+            enum "ETH_10G_WAN" {
+                value 1;
+                description "ETH_10G_WAN.";
+            }
+            enum "ETH_10G_LAN" {
+                value 2;
+                description "ETH_10G_LAN.";
+            }
+            enum "ETH_10XGE_CARD" {
+                value 3;
+                description "ETH_10XGE_CARD.";
+            }
+            enum "POS_4X2.5G_CARD" {
+                value 4;
+                description "POS_4X2.5G_CARD.";
+            }
+            enum "POS_1X10G_CARD" {
+                value 5;
+                description "POS_1X10G_CARD.";
+            }
+            enum "POS_2x10GX_CARD" {
+                value 6;
+                description "POS_2x10GX_CARD.";
+            }
+            enum "POS_4X622M_CARD" {
+                value 7;
+                description "POS_4X622M_CARD.";
+            }
+            enum "ETH_2X10G_LAN_CARD" {
+                value 8;
+                description "ETH_2X10G_LAN_CARD.";
+            }
+            enum "ETH_2X10G_WAN_CARD" {
+                value 9;
+                description "ETH_2X10G_WAN_CARD.";
+            }
+            enum "ETH_48XGE_CARD" {
+                value 10;
+                description "ETH_48XGE_CARD.";
+            }
+            enum "POS_8X155M_CARD" {
+                value 11;
+                description "POS_8X155M_CARD.";
+            }
+            enum "ETH_24XGE_CARD" {
+                value 12;
+                description "ETH_24XGE_CARD.";
+            }
+            enum "POS_1X2.5G_CARD" {
+                value 13;
+                description "POS_1X2.5G_CARD.";
+            }
+            enum "POS_2X2.5G_CARD" {
+                value 14;
+                description "POS_2X2.5G_CARD.";
+            }
+            enum "POS_2X10G_CARD" {
+                value 15;
+                description "POS_2X10G_CARD.";
+            }
+            enum "POS_4X155M_CARD" {
+                value 16;
+                description "POS_4X155M_CARD.";
+            }
+            enum "ETH_5XGE_CARD" {
+                value 17;
+                description "ETH_5XGE_CARD.";
+            }
+            enum "P1MZ_CARD" {
+                value 18;
+                description "P1MZ_CARD.";
+            }
+            enum "D1MV_CARD" {
+                value 19;
+                description "D1MV_CARD.";
+            }
+            enum "ETH_LAN_WAN_4X10G_CARD" {
+                value 20;
+                description "ETH_LAN_WAN_4X10G_CARD.";
+            }
+            enum "LAN_WAN_2x10GX_CARD" {
+                value 21;
+                description "LAN_WAN_2x10GX_CARD.";
+            }
+            enum "ETH_2x10GX_CARD" {
+                value 22;
+                description "ETH_2x10GX_CARD.";
+            }
+            enum "OTN_2x10GX_CARD" {
+                value 23;
+                description "OTN_2x10GX_CARD.";
+            }
+            enum "LAN_WAN_5x10GX_CARD" {
+                value 24;
+                description "LAN_WAN_5x10GX_CARD.";
+            }
+            enum "ETH_5x10GX_CARD" {
+                value 25;
+                description "ETH_5x10GX_CARD.";
+            }
+            enum "POS_40GZ_CARD" {
+                value 26;
+                description "POS_40GZ_CARD.";
+            }
+            enum "ETH_100GC_CARD" {
+                value 27;
+                description "ETH_100GC_CARD.";
+            }
+            enum "ETH_24xGF_CARD" {
+                value 28;
+                description "ETH_24xGF_CARD.";
+            }
+            enum "OFCA_CARD" {
+                value 29;
+                description "OFCA_CARD.";
+            }
+            enum "OFC40_CARD" {
+                value 30;
+                description "OFC40_CARD.";
+            }
+            enum "OFC100B_CARD" {
+                value 31;
+                description "OFC100B_CARD.";
+            }
+            enum "OFC100A_CARD" {
+                value 32;
+                description "OFC100A_CARD.";
+            }
+            enum "OFCB_CARD" {
+                value 33;
+                description "OFCB_CARD.";
+            }
+            enum "POS_10G_CARD" {
+                value 34;
+                description "POS_10G_CARD.";
+            }
+            enum "POS_40G_CARD" {
+                value 35;
+                description "POS_40G_CARD.";
+            }
+            enum "WDM_40G_CARD" {
+                value 36;
+                description "WDM_40G_CARD.";
+            }
+            enum "ETH_40XGE_SFP_CARD" {
+                value 37;
+                description "ETH_40XGE_SFP_CARD.";
+            }
+            enum "ETH_40GC_CARD" {
+                value 38;
+                description "ETH_40GC_CARD.";
+            }
+            enum "SPU" {
+                value 39;
+                description "SPU.";
+            }
+            enum "TSUA" {
+                value 40;
+                description "TSUA.";
+            }
+            enum "LAN_WAN_10x10GX_CARD" {
+                value 41;
+                description "LAN_WAN_10x10GX_CARD.";
+            }
+            enum "CED24S2CQ" {
+                value 42;
+                description "CED24S2CQ.";
+            }
+            enum "CED24T2CQ" {
+                value 43;
+                description "CED24T2CQ.";
+            }
+            enum "CED16Q" {
+                value 44;
+                description "CED16Q.";
+            }
+            enum "CED8CQ" {
+                value 45;
+                description "CED8CQ.";
+            }
+        }
+    }
+    typedef devmEthPortMediumType {
+        description "";
+        type enumeration {
+            enum "notSupported" {
+                value 0;
+                description "Unsupported Type.";
+            }
+            enum "copper" {
+                value 1;
+                description "Copper.";
+            }
+            enum "fiber" {
+                value 2;
+                description "Fiber.";
+            }
+        }
+    }
+    typedef devmGFEthPortMediumType {
+        description "";
+        type enumeration {
+            enum "fiber100" {
+                value 0;
+                description "";
+            }
+            enum "fiber1000" {
+                value 1;
+                description "";
+            }
+        }
+    }
+    typedef devmDuplex {
+        type enumeration {
+            enum "full" {
+                value 0;
+                description "Full-duplex.";
+            }
+            enum "half" {
+                value 1;
+                description "Half-duplex.";
+            }
+        }
+    }
+    typedef devmTransMode {
+        type enumeration {
+            enum "unknown" {
+                value 0;
+                description "Unknown.";
+            }
+            enum "multiMode" {
+                value 1;
+                description "multiMode.";
+            }
+            enum "singleMode" {
+                value 2;
+                description "singleMode.";
+            }
+            enum "copperMode" {
+                value 3;
+                description "copperMode.";
+            }
+            enum "notSupported" {
+                value 4;
+                description "notSupported.";
+            }
+        }
+    }
+    typedef devmHardType {
+        type enumeration {
+            enum "unknown" {
+                value 0;
+                description "Unknown.";
+            }
+            enum "chassis" {
+                value 1;
+                description "Chassis.";
+            }
+            enum "boardSlot" {
+                value 2;
+                description "Board slot.";
+            }
+            enum "mpuSlot" {
+                value 3;
+                description "MPU slot.";
+            }
+            enum "lpuSlot" {
+                value 4;
+                description "LPU slot.";
+            }
+            enum "sfuSlot" {
+                value 5;
+                description "SFU slot.";
+            }
+            enum "icuSlot" {
+                value 6;
+                description "ICU slot.";
+            }
+            enum "ecuSlot" {
+                value 7;
+                description "ECU slot.";
+            }
+            enum "clkSlot" {
+                value 8;
+                description "CLK slot.";
+            }
+            enum "fanSlot" {
+                value 9;
+                description "Fan slot.";
+            }
+            enum "phyFanSlot" {
+                value 10;
+                description "Fan slot.";
+            }
+            enum "powerSlot" {
+                value 11;
+                description "Power slot.";
+            }
+            enum "phyPowerSlot" {
+                value 12;
+                description "Power slot.";
+            }
+            enum "picSlot" {
+                value 13;
+                description "Pic slot.";
+            }
+            enum "ofcSlot" {
+                value 14;
+                description "Ofc slot.";
+            }
+            enum "lcdSlot" {
+                value 15;
+                description "LCD slot.";
+            }
+            enum "cfcardSlot" {
+                value 16;
+                description "CF card slot.";
+            }
+            enum "cmuSlot" {
+                value 17;
+                description "CMU slot.";
+            }
+            enum "fname8090Unknown" {
+                value 18;
+                description "Unknown.";
+            }
+            enum "fname8090Whole" {
+                value 19;
+                description "NE5000E chassis.";
+            }
+            enum "fname8090NE5000EX" {
+                value 20;
+                description "NE5000EX chassis.";
+            }
+            enum "fname8090ClusterCentral" {
+                value 21;
+                description "NE5000E cluster central chassis.";
+            }
+            enum "fname8090NE5000EX-VB" {
+                value 22;
+                description "NE5000EX-VB chassis.";
+            }
+            enum "CE585048T4S2QEI" {
+                value 23;
+                description "CE585048T4S2QEI chassis.";
+            }
+            enum "CE685048S4QEI" {
+                value 24;
+                description "CE685048S4QEI chassis.";
+            }
+            enum "CE685048T4QEI" {
+                value 25;
+                description "CE685048T4QEI chassis.";
+            }
+            enum "CE5810_24T4S_EI" {
+                value 26;
+                description "CE581024T4SEI Chassis.";
+            }
+            enum "CE5810_48T4S_EI" {
+                value 27;
+                description "CE581048T4SEI Chassis.";
+            }
+            enum "CE585048T4S2QHI" {
+                value 28;
+                description "CE585048T4S2QHI Chassis.";
+            }
+            enum "CE785032QEI" {
+                value 29;
+                description "CE785032QEI Chassis.";
+            }
+            enum "CE681048S4QEI" {
+                value 30;
+                description "CE681048S4QEI Chassis.";
+            }
+            enum "CE681048S4QEICDR" {
+                value 31;
+                description "CE681048S4QEICDR Chassis.";
+            }
+            enum "CE681048S4QLI" {
+                value 32;
+                description "CE681048S4QLI Chassis.";
+            }
+            enum "CE681048SLI" {
+                value 33;
+                description "CE681048SLI Chassis.";
+            }
+            enum "CE685048S6QHI" {
+                value 34;
+                description "CE685048S6QHI Chassis.";
+            }
+            enum "CE6850U48S6QHI" {
+                value 35;
+                description "CE6850U48S6QHI Chassis.";
+            }
+            enum "CE685048T6QHI" {
+                value 36;
+                description "CE685048T6QHI Chassis.";
+            }
+            enum "CE681032T16S4QLI" {
+                value 37;
+                description "CE681032T16S4QLI Chassis.";
+            }
+            enum "CE581048T4SHI" {
+                value 38;
+                description "CE581048T4SHI Chassis.";
+            }
+            enum "CE585548T4S2QEI" {
+                value 39;
+                description "CE585548T4S2QEI Chassis.";
+            }
+            enum "CE585524T4S2QEI" {
+                value 40;
+                description "CE585524T4S2QEI Chassis.";
+            }
+            enum "CE6850U24S2QHI" {
+                value 41;
+                description "CE6850U24S2QHI Chassis.";
+            }
+            enum "CE681024S2QLI" {
+                value 42;
+                description "CE681024S2QLI Chassis.";
+            }
+            enum "CE685148S6QHI" {
+                value 43;
+                description "CE685148S6QHI Chassis.";
+            }
+            enum "CE88604CEI" {
+                value 44;
+                description "CE88604CEI Chassis.";
+            }
+            enum "CE685548T6QHI" {
+                value 45;
+                description "CE685548T6QHI Chassis.";
+            }
+            enum "CE685548S6QHI" {
+                value 46;
+                description "CE685548S6QHI Chassis.";
+            }
+            enum "CE687048S6CQEI" {
+                value 47;
+                description "CE687048S6CQEI Chassis.";
+            }
+            enum "CE687024S6CQEI" {
+                value 48;
+                description "CE687024S6CQEI Chassis.";
+            }
+            enum "CE686048S18CQEI" {
+                value 49;
+                description "CE686048S18CQEI Chassis.";
+            }
+            enum "CE686048S8CQEI" {
+                value 50;
+                description "CE686048S8CQEI Chassis.";
+            }
+            enum "CE785532QEI" {
+                value 51;
+                description "CE785532QEI Chassis.";
+            }
+            enum "CE688048S4Q2CQEI" {
+                value 52;
+                description "CE688048S4Q2CQEI Chassis.";
+            }
+            enum "CE688024S4Q2CQEI" {
+                value 53;
+                description "CE688024S4Q2CQEI Chassis.";
+            }
+            enum "CE688048T4Q2CQEI" {
+                value 54;
+                description "CE688048T4Q2CQEI Chassis.";
+            }
+            enum "CE885032CQEI" {
+                value 55;
+                description "CE885032CQEI Chassis.";
+            }
+            enum "DE51SRU1A" {
+                value 56;
+                description "DE51SRU1A.";
+            }
+            enum "DE51SRU1B" {
+                value 57;
+                description "DE51SRU1B.";
+            }
+            enum "DE51SRU1C" {
+                value 58;
+                description "DE51SRU1C.";
+            }
+            enum "CEM48S4QP01" {
+                value 59;
+                description "CEM48S4QP01.";
+            }
+            enum "CEM48T4S2QP01" {
+                value 60;
+                description "CEM48T4S2QP01.";
+            }
+            enum "CEM48T4QP01" {
+                value 61;
+                description "CEM48T4QP01.";
+            }
+            enum "CEM24T4SP01" {
+                value 62;
+                description "CEM24T4SP01.";
+            }
+            enum "CEM48T4SP01" {
+                value 63;
+                description "CEM48T4SP01.";
+            }
+            enum "CEM48T4S2QP02" {
+                value 64;
+                description "CEM48T4S2QP02.";
+            }
+            enum "CEM32QP01" {
+                value 65;
+                description "CEM32QP01.";
+            }
+            enum "CEM48S4QP02" {
+                value 66;
+                description "CEM48S4QP02.";
+            }
+            enum "CEM48S4QP03" {
+                value 67;
+                description "CEM48S4QP03.";
+            }
+            enum "CEM48S4QP04" {
+                value 68;
+                description "CEM48S4QP04.";
+            }
+            enum "CEM48SP01" {
+                value 69;
+                description "CEM48SP01.";
+            }
+            enum "CEM48S6QP01" {
+                value 70;
+                description "CEM48S6QP01.";
+            }
+            enum "CEM48S6QP02" {
+                value 71;
+                description "CEM48S6QP02.";
+            }
+            enum "CEM48T6QP01" {
+                value 72;
+                description "CEM48T6QP01.";
+            }
+            enum "CEM32T16S4QP01" {
+                value 73;
+                description "CEM32T16S4QP01.";
+            }
+            enum "CEM48T4SP02" {
+                value 74;
+                description "CEM48T4SP02.";
+            }
+            enum "CEM24S2QP02" {
+                value 75;
+                description "CEM24S2QP02.";
+            }
+            enum "CEM24S2QP01" {
+                value 76;
+                description "CEM24S2QP01.";
+            }
+            enum "CEM48T4S2QP03" {
+                value 77;
+                description "CEM48T4S2QP03.";
+            }
+            enum "CEM24T4S2QP03" {
+                value 78;
+                description "CEM24T4S2QP03.";
+            }
+            enum "CEM48S6QP04" {
+                value 79;
+                description "CEM48S6QP04.";
+            }
+            enum "CEM884CP01" {
+                value 80;
+                description "CEM884CP01.";
+            }
+            enum "CEM48T6QP02" {
+                value 81;
+                description "CEM48T6QP02.";
+            }
+            enum "CEM48S6QP05" {
+                value 82;
+                description "CEM48S6QP05.";
+            }
+            enum "CEM48S6CQP01" {
+                value 83;
+                description "CEM48S6CQP01.";
+            }
+            enum "CEM24S6CQP01" {
+                value 84;
+                description "CEM24S6CQP01.";
+            }
+            enum "CEM48S18CQP01" {
+                value 85;
+                description "CEM48S18CQP01.";
+            }
+            enum "CEM48S8CQP01" {
+                value 86;
+                description "CEM48S8CQP01.";
+            }
+            enum "CEM32QP02" {
+                value 87;
+                description "CEM32QP02.";
+            }
+            enum "CEM48S4Q2CQP01" {
+                value 88;
+                description "CEM48S4Q2CQP01.";
+            }
+            enum "CEM24S4Q2CQP01" {
+                value 89;
+                description "CEM24S4Q2CQP01.";
+            }
+            enum "CEM48T4Q2CQP01" {
+                value 90;
+                description "CEM48T4Q2CQP01.";
+            }
+            enum "CEM32CQP01" {
+                value 91;
+                description "CEM32CQP01.";
+            }
+            enum "BOOTROM" {
+                value 92;
+                description "BOOTROM.";
+            }
+            enum "FLASH" {
+                value 93;
+                description "FLASH.";
+            }
+            enum "EPLD1" {
+                value 94;
+                description "EPLD1.";
+            }
+            enum "EPLD2" {
+                value 95;
+                description "EPLD2.";
+            }
+            enum "SPU" {
+                value 96;
+                description "SPU.";
+            }
+            enum "TSUA" {
+                value 97;
+                description "TSUA.";
+            }
+            enum "Eth" {
+                value 98;
+                description "Ethernet port.";
+            }
+            enum "Pos" {
+                value 99;
+                description "Pos port.";
+            }
+            enum "GE" {
+                value 100;
+                description "Gigabit Ethernet port.";
+            }
+            enum "10GE" {
+                value 101;
+                description "10GE.";
+            }
+            enum "GF" {
+                value 102;
+                description "Gigabit Ethernet port.";
+            }
+            enum "10GF" {
+                value 103;
+                description "10GE.";
+            }
+            enum "25GF" {
+                value 104;
+                description "25GE.";
+            }
+            enum "40GF" {
+                value 105;
+                description "40GE.";
+            }
+            enum "10GFCOM" {
+                value 106;
+                description "10GE.";
+            }
+            enum "40GFSPLIT" {
+                value 107;
+                description "40GE.";
+            }
+            enum "100GFSPLIT" {
+                value 108;
+                description "100GE.";
+            }
+            enum "100GF" {
+                value 109;
+                description "100GE.";
+            }
+            enum "40GFCOM" {
+                value 110;
+                description "40GE.";
+            }
+            enum "SIP" {
+                value 111;
+                description "SIP.";
+            }
+            enum "VSR" {
+                value 112;
+                description "VSR port.";
+            }
+            enum "LFE" {
+                value 113;
+                description "LFE.";
+            }
+            enum "POWER" {
+                value 114;
+                description "Power supply.";
+            }
+            enum "CLOCK" {
+                value 115;
+                description "Clock board.";
+            }
+            enum "FAN" {
+                value 116;
+                description "Fan.";
+            }
+            enum "LCD" {
+                value 117;
+                description "LCD.";
+            }
+            enum "CFCARD" {
+                value 118;
+                description "FLASH.";
+            }
+            enum "CMU" {
+                value 119;
+                description "CMU.";
+            }
+            enum "other" {
+                value 120;
+                description "Other.";
+            }
+            enum "CE12804" {
+                value 121;
+                description "CE12804.";
+            }
+            enum "CE12808" {
+                value 122;
+                description "CE12808.";
+            }
+            enum "CE12812" {
+                value 123;
+                description "CE12812.";
+            }
+            enum "CE12816" {
+                value 124;
+                description "CE12816.";
+            }
+            enum "CE12804S" {
+                value 125;
+                description "CE12804S.";
+            }
+            enum "CE12808S" {
+                value 126;
+                description "CE12808S.";
+            }
+            enum "CE12816M" {
+                value 127;
+                description "CE12816M.";
+            }
+            enum "CE12804E" {
+                value 128;
+                description "CE12804E.";
+            }
+            enum "CE12808E" {
+                value 129;
+                description "CE12808E.";
+            }
+            enum "CE12812E" {
+                value 130;
+                description "CE12812E.";
+            }
+            enum "CE12816E" {
+                value 131;
+                description "CE12816E.";
+            }
+            enum "DE01SFU04C" {
+                value 132;
+                description "DE01SFU04C.";
+            }
+            enum "DE01SFU08C" {
+                value 133;
+                description "DE01SFU08C.";
+            }
+            enum "DE01SFU12C" {
+                value 134;
+                description "DE01SFU12C.";
+            }
+            enum "CESFU16C" {
+                value 135;
+                description "CESFU16C.";
+            }
+            enum "DE01SFU04B" {
+                value 136;
+                description "DE01SFU04B.";
+            }
+            enum "DE01SFU08B" {
+                value 137;
+                description "DE01SFU08B.";
+            }
+            enum "DE01SFU12B" {
+                value 138;
+                description "DE01SFU12B.";
+            }
+            enum "CESFU16B" {
+                value 139;
+                description "CESFU16B.";
+            }
+            enum "DE01SFU04A" {
+                value 140;
+                description "DE01SFU04A.";
+            }
+            enum "DE01SFU08A" {
+                value 141;
+                description "DE01SFU08A.";
+            }
+            enum "DE01SFU12A" {
+                value 142;
+                description "DE01SFU12A.";
+            }
+            enum "CESFU16A" {
+                value 143;
+                description "CESFU16A.";
+            }
+            enum "CESFU12B" {
+                value 144;
+                description "CESFU12B.";
+            }
+            enum "CESFU08B" {
+                value 145;
+                description "CESFU08B.";
+            }
+            enum "CESFUBS" {
+                value 146;
+                description "CESFUBS.";
+            }
+            enum "CESFUCS" {
+                value 147;
+                description "CESFUCS.";
+            }
+            enum "DE01CMUA" {
+                value 148;
+                description "DE01CMUA.";
+            }
+            enum "DE01CMUB" {
+                value 149;
+                description "DE01CMUB.";
+            }
+            enum "DE01MPUA" {
+                value 150;
+                description "DE01MPUA.";
+            }
+            enum "DE01MPUAS" {
+                value 151;
+                description "DE01MPUAS.";
+            }
+            enum "DE01FCMA" {
+                value 152;
+                description "DE01FCMA.";
+            }
+            enum "DE01POWACA" {
+                value 153;
+                description "DE01POWACA.";
+            }
+            enum "DE01L24QAA" {
+                value 154;
+                description "DE01L24QAA.";
+            }
+            enum "DE01X24SAA" {
+                value 155;
+                description "DE01X24SAA.";
+            }
+            enum "DE01X48SAASA" {
+                value 156;
+                description "DE01X48SAASA.";
+            }
+            enum "DE01X48SAAEA" {
+                value 157;
+                description "DE01X48SAAEA.";
+            }
+            enum "DE01X48SAA" {
+                value 158;
+                description "DE01X48SAA.";
+            }
+            enum "DE01X48SAAGSEA" {
+                value 159;
+                description "DE01X48SAAGSEA.";
+            }
+            enum "DE0CEL48GSEA" {
+                value 160;
+                description "DE0CEL48GSEA.";
+            }
+            enum "DE0CEL48GTEA" {
+                value 161;
+                description "DE0CEL48GTEA.";
+            }
+            enum "DE0CEL48GSED" {
+                value 162;
+                description "DE0CEL48GSED.";
+            }
+            enum "DE0CEL48GTED" {
+                value 163;
+                description "DE0CEL48GTED.";
+            }
+            enum "CEL48GSEB" {
+                value 164;
+                description "CEL48GSEB.";
+            }
+            enum "CEL48GTEB" {
+                value 165;
+                description "CEL48GTEB.";
+            }
+            enum "CEL04CFEA" {
+                value 166;
+                description "CEL04CFEA.";
+            }
+            enum "CEL04CFEF" {
+                value 167;
+                description "CEL04CFEF.";
+            }
+            enum "DE0CEL48XSED" {
+                value 168;
+                description "DE0CEL48XSED.";
+            }
+            enum "DE0CEL48XSEF" {
+                value 169;
+                description "DE0CEL48XSEF.";
+            }
+            enum "CEL24XSED" {
+                value 170;
+                description "CEL24XSED.";
+            }
+            enum "CEL24XSEF" {
+                value 171;
+                description "CEL24XSEF.";
+            }
+            enum "CEL12LQEA" {
+                value 172;
+                description "CEL12LQEA.";
+            }
+            enum "CEL12LQEF" {
+                value 173;
+                description "CEL12LQEF.";
+            }
+            enum "CEL06LQEA" {
+                value 174;
+                description "CEL06LQEA.";
+            }
+            enum "CEL06LQEF" {
+                value 175;
+                description "CEL06LQEF.";
+            }
+            enum "CEL12XSED" {
+                value 176;
+                description "CEL12XSED.";
+            }
+            enum "CEL24LQEC" {
+                value 177;
+                description "CEL24LQEC.";
+            }
+            enum "CEL48XSEC" {
+                value 178;
+                description "CEL48XSEC.";
+            }
+            enum "CEL48XSEB" {
+                value 179;
+                description "CEL48XSEB.";
+            }
+            enum "CEL24XSEC" {
+                value 180;
+                description "CEL24XSEC.";
+            }
+            enum "CEL48XTEC" {
+                value 181;
+                description "CEL48XTEC.";
+            }
+            enum "CEL48XTED" {
+                value 182;
+                description "CEL48XTED.";
+            }
+            enum "CEL12CFEG" {
+                value 183;
+                description "CEL12CFEG.";
+            }
+            enum "DEFWA" {
+                value 184;
+                description "DEFWA.";
+            }
+            enum "CEL08CCEC" {
+                value 185;
+                description "CEL08CCEC.";
+            }
+            enum "CEL24LQEC1" {
+                value 186;
+                description "CEL24LQEC1.";
+            }
+            enum "CEL36LQEGA" {
+                value 187;
+                description "CEL36LQEGA.";
+            }
+            enum "CED24S2CQ" {
+                value 188;
+                description "CED24S2CQ.";
+            }
+            enum "CED24T2CQ" {
+                value 189;
+                description "CED24T2CQ.";
+            }
+            enum "CED16Q" {
+                value 190;
+                description "CED16Q.";
+            }
+            enum "CED8CQ" {
+                value 191;
+                description "CED8CQ.";
+            }
+            enum "CEL02LQEC" {
+                value 192;
+                description "CEL02LQEC.";
+            }
+            enum "CEL36CQFD" {
+                value 193;
+                description "CEL36CQFD.";
+            }
+            enum "CEL36LQFD" {
+                value 194;
+                description "CEL36LQFD.";
+            }
+            enum "CEL48XSFDA" {
+                value 195;
+                description "CEL48XSFDA.";
+            }
+            enum "CESFUFS" {
+                value 196;
+                description "CESFUFS.";
+            }
+            enum "CESFU16F" {
+                value 197;
+                description "CESFU16F.";
+            }
+            enum "CESFU16G" {
+                value 198;
+                description "CESFU16G.";
+            }
+            enum "CESFU12G" {
+                value 199;
+                description "CESFU12G.";
+            }
+            enum "CESFU08F" {
+                value 200;
+                description "CESFU08F.";
+            }
+            enum "CEL48XSFD" {
+                value 201;
+                description "CEL48XSFD.";
+            }
+            enum "CEL12CQFD" {
+                value 202;
+                description "CEL12CQFD.";
+            }
+            enum "CEL24LQFD" {
+                value 203;
+                description "CEL24LQFD.";
+            }
+            enum "CESFU08G" {
+                value 204;
+                description "CESFU08G.";
+            }
+            enum "CESFU04G" {
+                value 205;
+                description "CESFU04G.";
+            }
+            enum "CESFU16CE" {
+                value 206;
+                description "CESFU16CE.";
+            }
+            enum "CESFU12CE" {
+                value 207;
+                description "CESFU12CE.";
+            }
+            enum "CESFU08CE" {
+                value 208;
+                description "CESFU08CE.";
+            }
+            enum "CESFU04CE" {
+                value 209;
+                description "CESFU04CE.";
+            }
+            enum "CEL16CQEGE" {
+                value 210;
+                description "CEL16CQEGE.";
+            }
+            enum "CEL36LQEDE" {
+                value 211;
+                description "CEL36LQEDE.";
+            }
+            enum "CEL36LQEGE" {
+                value 212;
+                description "CEL36LQEGE.";
+            }
+            enum "CEL48XSEGAE" {
+                value 213;
+                description "CEL48XSEGAE.";
+            }
+            enum "CEL24XSEGAE" {
+                value 214;
+                description "CEL24XSEGAE.";
+            }
+            enum "CEL48XSEDE" {
+                value 215;
+                description "CEL48XSEDE.";
+            }
+            enum "CEL24XSEDE" {
+                value 216;
+                description "CEL24XSEDE.";
+            }
+            enum "CE01MPUAE" {
+                value 217;
+                description "CE01MPUAE.";
+            }
+        }
+    }
+    typedef devmLoopBackState {
+        type enumeration {
+            enum "noLoopback" {
+                value 0;
+                description "Loopback none.";
+            }
+            enum "localLoopback" {
+                value 1;
+                description "Loopback PHY.";
+            }
+        }
+    }
+    typedef devmFlowCtlType {
+        type enumeration {
+            enum "allEnabled" {
+                value 0;
+                description "All Enabled.";
+            }
+            enum "receiveEnabled" {
+                value 1;
+                description "Receive Enabled.";
+            }
+            enum "sendEnabled" {
+                value 2;
+                description "Send Enabled.";
+            }
+            enum "allDisabled" {
+                value 3;
+                description "All Disabled.";
+            }
+            enum "flowControlNegotiation" {
+                value 4;
+                description "flowControl Negotiation.";
+            }
+        }
+    }
+    typedef devmcposclockmodeType {
+        type enumeration {
+            enum "master" {
+                value 0;
+                description "";
+            }
+            enum "slave" {
+                value 1;
+                description "";
+            }
+        }
+    }
+    typedef devmcposMapModeType {
+        type enumeration {
+            enum "a-mode" {
+                value 0;
+                description "";
+            }
+            enum "h-mode" {
+                value 1;
+                description "";
+            }
+            enum "l-mode" {
+                value 2;
+                description "";
+            }
+        }
+    }
+    typedef devmcposLoopbackType {
+        type enumeration {
+            enum "local" {
+                value 0;
+                description "";
+            }
+            enum "remote" {
+                value 1;
+                description "";
+            }
+        }
+    }
+    typedef devmcposFrameFormatType {
+        type enumeration {
+            enum "sdh" {
+                value 0;
+                description "";
+            }
+            enum "sonet" {
+                value 1;
+                description "";
+            }
+        }
+    }
+    typedef devmcposMultiplexType {
+        type enumeration {
+            enum "au-3" {
+                value 0;
+                description "au-3";
+            }
+            enum "au-4" {
+                value 1;
+                description "au-4";
+            }
+        }
+    }
+    typedef devmCposE1ClockModeType {
+        type enumeration {
+            enum "master" {
+                value 0;
+                description "";
+            }
+            enum "slave" {
+                value 1;
+                description "";
+            }
+        }
+    }
+    typedef devmCposE1LoopbackType {
+        type enumeration {
+            enum "local" {
+                value 0;
+                description "";
+            }
+            enum "remote" {
+                value 1;
+                description "";
+            }
+        }
+    }
+    typedef devmCposE1FrameFormatType {
+        type enumeration {
+            enum "crc4" {
+                value 0;
+                description "";
+            }
+            enum "no-crc4" {
+                value 1;
+                description "";
+            }
+        }
+    }
+    typedef devmE1T1WorkModeType {
+        type enumeration {
+            enum "framed" {
+                value 0;
+                description "";
+            }
+            enum "unframed" {
+                value 1;
+                description "";
+            }
+        }
+    }
+    typedef devmNegotiationType {
+        type enumeration {
+            enum "enabled" {
+                value 0;
+                description "Enabled.";
+            }
+            enum "disabled" {
+                value 1;
+                description "Disabled.";
+            }
+        }
+    }
+    typedef devmFrameFormatType {
+        type enumeration {
+            enum "SDH" {
+                value 0;
+                description "SDH.";
+            }
+            enum "SONET" {
+                value 1;
+                description "SONET.";
+            }
+        }
+    }
+    typedef devmScrambleType {
+        type enumeration {
+            enum "enabled" {
+                value 0;
+                description "Enabled.";
+            }
+            enum "disabled" {
+                value 1;
+                description "Disabled.";
+            }
+        }
+    }
+    typedef devmSdhClockType {
+        type enumeration {
+            enum "master" {
+                value 0;
+                description "Master.";
+            }
+            enum "slave" {
+                value 1;
+                description "Slave.";
+            }
+        }
+    }
+    typedef devmSdhFlagModeType {
+        type enumeration {
+            enum "1byte" {
+                value 0;
+                description "1byte.";
+            }
+            enum "16byte" {
+                value 1;
+                description "16byte.";
+            }
+            enum "64byte" {
+                value 2;
+                description "64byte.";
+            }
+            enum "peer" {
+                value 3;
+                description "Peer.";
+            }
+        }
+    }
+    typedef devmWANSdhFlagModeType {
+        type enumeration {
+            enum "1byte" {
+                value 0;
+                description "1 byte.";
+            }
+            enum "16byte" {
+                value 1;
+                description "16 bytes.";
+            }
+            enum "64byte" {
+                value 2;
+                description "64 bytes.";
+            }
+        }
+    }
+    typedef devmSdhCRCType {
+        type enumeration {
+            enum "16" {
+                value 0;
+                description "";
+            }
+            enum "32" {
+                value 1;
+                description "";
+            }
+        }
+    }
+    typedef devmE1CRCType {
+        type enumeration {
+            enum "CRC4" {
+                value 0;
+                description "CRC4";
+            }
+            enum "no CRC4" {
+                value 1;
+                description "no CRC4";
+            }
+        }
+    }
+    typedef devmE1ClockType {
+        type enumeration {
+            enum "master" {
+                value 0;
+                description "";
+            }
+            enum "slave" {
+                value 1;
+                description "";
+            }
+        }
+    }
+    typedef devmE1CodeType {
+        type enumeration {
+            enum "hdb3" {
+                value 0;
+                description "";
+            }
+            enum "ami" {
+                value 1;
+                description "";
+            }
+        }
+    }
+    typedef devmE1LoopbackType {
+        type enumeration {
+            enum "local" {
+                value 0;
+                description "";
+            }
+            enum "remote" {
+                value 1;
+                description "";
+            }
+        }
+    }
+    typedef devmOtnFecModeType {
+        type enumeration {
+            enum "standard" {
+                value 0;
+                description "";
+            }
+            enum "enhanced" {
+                value 1;
+                description "";
+            }
+            enum "undo" {
+                value 2;
+                description "";
+            }
+        }
+    }
+    typedef devmPortLanWanModeType {
+        type enumeration {
+            enum "lanMode" {
+                value 0;
+                description "LAN Mode.";
+            }
+            enum "wanMode" {
+                value 1;
+                description "WAN Mode.";
+            }
+        }
+    }
+    typedef devmClockLockStateType {
+        type enumeration {
+            enum "locked" {
+                value 0;
+                description "";
+            }
+            enum "unlocked" {
+                value 1;
+                description "";
+            }
+        }
+    }
+    typedef devmClockSwitchModeType {
+        type enumeration {
+            enum "auto-choice" {
+                value 0;
+                description "auto-choice";
+            }
+        }
+    }
+    typedef devmClockSabitType {
+        type enumeration {
+            enum "unknown" {
+                value 0;
+                description "Unknown.";
+            }
+            enum "sa4" {
+                value 1;
+                description "sa4.";
+            }
+            enum "sa5" {
+                value 2;
+                description "sa5.";
+            }
+            enum "sa6" {
+                value 3;
+                description "sa6.";
+            }
+            enum "sa7" {
+                value 4;
+                description "sa7.";
+            }
+            enum "sa8" {
+                value 5;
+                description "sa8.";
+            }
+        }
+    }
+    typedef devmClockForceSsmType {
+        type enumeration {
+            enum "on" {
+                value 0;
+                description "On.";
+            }
+            enum "off" {
+                value 1;
+                description "Off.";
+            }
+        }
+    }
+    typedef devmClkBitsType {
+        type enumeration {
+            enum "2mbps" {
+                value 0;
+                description "2mbps.";
+            }
+            enum "2mhz" {
+                value 1;
+                description "2mhz.";
+            }
+        }
+    }
+    typedef devmClkBitsMap {
+        type enumeration {
+            enum "bits0" {
+                value 0;
+                description "bits0.";
+            }
+            enum "bits1" {
+                value 1;
+                description "bits1.";
+            }
+            enum "bits2" {
+                value 2;
+                description "bits2.";
+            }
+            enum "unknown" {
+                value 3;
+                description "Unknown.";
+            }
+        }
+    }
+    typedef devmEthSpeedType {
+        type enumeration {
+            enum "10M" {
+                value 0;
+                description "10M.";
+            }
+            enum "100M" {
+                value 1;
+                description "100M.";
+            }
+            enum "GE" {
+                value 2;
+                description "GE.";
+            }
+            enum "10GE" {
+                value 3;
+                description "10GE.";
+            }
+            enum "25GE" {
+                value 4;
+                description "25GE.";
+            }
+            enum "40GE" {
+                value 5;
+                description "40GE.";
+            }
+            enum "100GE" {
+                value 6;
+                description "100GE.";
+            }
+            enum "auto" {
+                value 7;
+                description "Auto.";
+            }
+        }
+    }
+    typedef devmPicEthSpeedType {
+        type enumeration {
+            enum "10M" {
+                value 0;
+                description "10M";
+            }
+            enum "100M" {
+                value 1;
+                description "100M";
+            }
+            enum "auto" {
+                value 2;
+                description "";
+            }
+        }
+    }
+    typedef devmGfMediaType {
+        type enumeration {
+            enum "copper" {
+                value 0;
+                description "Copper.";
+            }
+            enum "fiber100" {
+                value 1;
+                description "Fiber 100M.";
+            }
+            enum "fiber1000" {
+                value 2;
+                description "Fiber 1000M.";
+            }
+            enum "auto" {
+                value 3;
+                description "Auto.";
+            }
+        }
+    }
+    typedef devmCardInitStatusType {
+        type enumeration {
+            enum "unknown" {
+                value 0;
+                description "Unknown.";
+            }
+            enum "success" {
+                value 1;
+                description "Success.";
+            }
+            enum "fail" {
+                value 2;
+                description "Fail.";
+            }
+        }
+    }
+    typedef devmCardLogicStatusType {
+        type enumeration {
+            enum "unknown" {
+                value 0;
+                description "Unknown.";
+            }
+            enum "success" {
+                value 1;
+                description "Success.";
+            }
+            enum "fail" {
+                value 2;
+                description "Fail.";
+            }
+        }
+    }
+    typedef devmClockSrcStatusType {
+        type enumeration {
+            enum "unknown" {
+                value 0;
+                description "Unknown.";
+            }
+            enum "normal" {
+                value 1;
+                description "Normal.";
+            }
+            enum "abnormal" {
+                value 2;
+                description "Abnormal.";
+            }
+        }
+    }
+    typedef devmPortPromodeType {
+        type enumeration {
+            enum "on" {
+                value 0;
+                description "On.";
+            }
+            enum "off" {
+                value 1;
+                description "Off.";
+            }
+        }
+    }
+    typedef devmTempVoltStateType {
+        type enumeration {
+            enum "unknown" {
+                value 0;
+                description "Unknown.";
+            }
+            enum "normal" {
+                value 1;
+                description "Normal state that maps 'normal' in the command line.";
+            }
+            enum "minor" {
+                value 2;
+                description "Minor alarm that maps 'minor' in the command line.";
+            }
+            enum "major" {
+                value 3;
+                description "Major alarm that maps 'major' in the command line.";
+            }
+            enum "fatal" {
+                value 4;
+                description "Fatal alarm that maps 'fatal' in the command line.";
+            }
+            enum "abnormal" {
+                value 5;
+                description "Abnormal state that maps 'abnormal' in the command line.";
+            }
+            enum "upper" {
+                value 6;
+                description "Upper state that maps 'upper' in the command line.";
+            }
+            enum "lower" {
+                value 7;
+                description "Lower state that maps 'lower' in the command line.";
+            }
+            enum "notSupported" {
+                value 8;
+                description "Notsupported.";
+            }
+        }
+    }
+    typedef devmInnerLinkOperStateType {
+        type enumeration {
+            enum "normal" {
+                value 0;
+                description "";
+            }
+            enum "partialFault" {
+                value 1;
+                description "";
+            }
+            enum "fault" {
+                value 2;
+                description "";
+            }
+        }
+    }
+    typedef devmInnerLinkAlarmType {
+        type enumeration {
+            enum "normal" {
+                value 0;
+                description "";
+            }
+            enum "partialFault" {
+                value 1;
+                description "";
+            }
+            enum "fault" {
+                value 2;
+                description "";
+            }
+        }
+    }
+    typedef devmServerType {
+        type enumeration {
+            enum "ftp" {
+                value 0;
+                description "FTP.";
+            }
+            enum "tftp" {
+                value 1;
+                description "TFTP.";
+            }
+            enum "sftp" {
+                value 2;
+                description "SFTP.";
+            }
+        }
+    }
+    typedef devmTransType {
+        type enumeration {
+            enum "put" {
+                value 0;
+                description "PUT.";
+            }
+            enum "get" {
+                value 1;
+                description "GET.";
+            }
+        }
+    }
+    typedef devmPreferKexType {
+        type enumeration {
+            enum "dhExchangeGroup" {
+                value 0;
+                description "KEX_DH_EXCHANGE_GROUP.";
+            }
+            enum "dhGroup1" {
+                value 1;
+                description "KEX_DH_GROUP1.";
+            }
+        }
+    }
+    typedef devmCipherType {
+        type enumeration {
+            enum "aes128" {
+                value 0;
+                description "AES128.";
+            }
+        }
+    }
+    typedef devmStocHmacType {
+        type enumeration {
+            enum "md5" {
+                value 0;
+                description "MD5.";
+            }
+            enum "md5_96" {
+                value 1;
+                description "MD5_96.";
+            }
+            enum "sha1" {
+                value 2;
+                description "SHA1.";
+            }
+            enum "sha1_96" {
+                value 3;
+                description "SHA1_96.";
+            }
+        }
+    }
+    typedef devm_transAlarmType_type {
+        type enumeration {
+            enum "LOS" {
+                value 0;
+                description "LOS.";
+            }
+            enum "LAIS" {
+                value 1;
+                description "LAIS.";
+            }
+            enum "LOF" {
+                value 2;
+                description "LOF.";
+            }
+            enum "OOF" {
+                value 3;
+                description "OOF.";
+            }
+            enum "AUAIS" {
+                value 4;
+                description "AUAIS.";
+            }
+            enum "B3TCA" {
+                value 5;
+                description "B3TCA.";
+            }
+            enum "B1TCA" {
+                value 6;
+                description "B1TCA.";
+            }
+            enum "B2TCA" {
+                value 7;
+                description "B2TCA.";
+            }
+            enum "LOM" {
+                value 8;
+                description "LOM.";
+            }
+            enum "LOP" {
+                value 9;
+                description "LOP.";
+            }
+            enum "LRDI" {
+                value 10;
+                description "LRDI.";
+            }
+            enum "LREI" {
+                value 11;
+                description "LREI.";
+            }
+            enum "PAIS" {
+                value 12;
+                description "PAIS.";
+            }
+            enum "PRDI" {
+                value 13;
+                description "PRDI.";
+            }
+            enum "PREI" {
+                value 14;
+                description "PREI.";
+            }
+            enum "PPLM" {
+                value 15;
+                description "PPLM.";
+            }
+            enum "RDOOL" {
+                value 16;
+                description "RDOOL.";
+            }
+            enum "RROOL" {
+                value 17;
+                description "RROOL.";
+            }
+            enum "SDBERE" {
+                value 18;
+                description "SDBERE.";
+            }
+            enum "SFBERE" {
+                value 19;
+                description "SFBERE.";
+            }
+            enum "TROOL" {
+                value 20;
+                description "TROOL.";
+            }
+            enum "PUNEQ" {
+                value 21;
+                description "PUNEQ.";
+            }
+            enum "LCD" {
+                value 22;
+                description "LCD.";
+            }
+            enum "WLNK" {
+                value 23;
+                description "WLNK.";
+            }
+            enum "ODU_AIS" {
+                value 24;
+                description "ODU_AIS.";
+            }
+            enum "ODU_LCK" {
+                value 25;
+                description "ODU_LCK.";
+            }
+            enum "ODU_OCI" {
+                value 26;
+                description "ODU_OCI.";
+            }
+            enum "OTU_AIS" {
+                value 27;
+                description "OTU_AIS.";
+            }
+            enum "OTU_LOM" {
+                value 28;
+                description "OTU_LOM.";
+            }
+            enum "OTU_SD_BER" {
+                value 29;
+                description "OTU_SD_BER.";
+            }
+            enum "OTU_SF_BER" {
+                value 30;
+                description "OTU_SF_BER.";
+            }
+            enum "PM_BDI" {
+                value 31;
+                description "PM_BDI.";
+            }
+            enum "PM_TIM" {
+                value 32;
+                description "PM_TIM.";
+            }
+            enum "R_LOF" {
+                value 33;
+                description "R_LOF.";
+            }
+            enum "R_LOS" {
+                value 34;
+                description "R_LOS.";
+            }
+            enum "R_OOF" {
+                value 35;
+                description "R_OOF.";
+            }
+            enum "SM_BDI" {
+                value 36;
+                description "SM_BDI.";
+            }
+            enum "SM_IAE" {
+                value 37;
+                description "SM_IAE.";
+            }
+            enum "SM_TIM" {
+                value 38;
+                description "SM_TIM.";
+            }
+        }
+    }
+    typedef devmTrapType {
+        type enumeration {
+            enum "base-trap" {
+                value 0;
+                description "base-trap.";
+            }
+            enum "dc-trap" {
+                value 1;
+                description "dc-trap.";
+            }
+            enum "entity-trap" {
+                value 2;
+                description "entity-trap.";
+            }
+        }
+    }
+    typedef devmOpticalType {
+        type enumeration {
+            enum "unknown" {
+                value 0;
+                description "Unknown.";
+            }
+            enum "sc" {
+                value 1;
+                description "sc.";
+            }
+            enum "gbic" {
+                value 2;
+                description "gbic.";
+            }
+            enum "esfp" {
+                value 3;
+                description "esfp.";
+            }
+            enum "copper" {
+                value 4;
+                description "copper.";
+            }
+            enum "xfp" {
+                value 5;
+                description "xfp.";
+            }
+            enum "xenpak" {
+                value 6;
+                description "xenpak.";
+            }
+            enum "transponder" {
+                value 7;
+                description "transponder.";
+            }
+            enum "cfp" {
+                value 8;
+                description "cfp.";
+            }
+        }
+    }
+    typedef devmOpticalFiberType {
+        type enumeration {
+            enum "unknown" {
+                value 0;
+                description "unknown";
+            }
+            enum "sc" {
+                value 1;
+                description "sc";
+            }
+            enum "style_1_copper_connector" {
+                value 2;
+                description "style_1_copper_connector";
+            }
+            enum "style_2_copper_connector" {
+                value 3;
+                description "style_2_copper_connector";
+            }
+            enum "bnc_tnc" {
+                value 4;
+                description "bnc_tnc";
+            }
+            enum "coaxial_headers" {
+                value 5;
+                description "coaxial_headers";
+            }
+            enum "fiberJack" {
+                value 6;
+                description "fiberJack";
+            }
+            enum "lc" {
+                value 7;
+                description "lc";
+            }
+            enum "mt-rj" {
+                value 8;
+                description "mt-rj";
+            }
+            enum "mu" {
+                value 9;
+                description "mu";
+            }
+            enum "sg" {
+                value 10;
+                description "sg";
+            }
+            enum "optical_pigtail" {
+                value 11;
+                description "optical_pigtail";
+            }
+            enum "hssdcII" {
+                value 12;
+                description "hssdcII";
+            }
+            enum "copper_pigtail" {
+                value 13;
+                description "copper_pigtail";
+            }
+        }
+    }
+    typedef devmSysWorkType {
+        type enumeration {
+            enum "unknown" {
+                value 0;
+                description "Unknown.";
+            }
+            enum "redundant" {
+                value 1;
+                description "Redundant mode.";
+            }
+            enum "non-redundant" {
+                value 2;
+                description "Non-redundant mode.";
+            }
+        }
+    }
+    typedef devmCmuAlmMode {
+        type enumeration {
+            enum "open" {
+                value 0;
+                description "open.";
+            }
+            enum "close" {
+                value 1;
+                description "close.";
+            }
+            enum "undo" {
+                value 2;
+                description "undo.";
+            }
+        }
+    }
+    typedef devmCmuSwitchFog {
+        type enumeration {
+            enum "fog" {
+                value 0;
+                description "fog.";
+            }
+            enum "unknown" {
+                value 1;
+                description "Unknown.";
+            }
+        }
+    }
+    typedef devmAnalogType {
+        type enumeration {
+            enum "unknown" {
+                value 0;
+                description "Unknown.";
+            }
+            enum "current" {
+                value 1;
+                description "current.";
+            }
+            enum "voltage" {
+                value 2;
+                description "voltage.";
+            }
+        }
+    }
+    typedef devmAnalogObjectType {
+        type enumeration {
+            enum "unknown" {
+                value 0;
+                description "Unknown.";
+            }
+            enum "temperature" {
+                value 1;
+                description "temperature.";
+            }
+            enum "humidity" {
+                value 2;
+                description "humidity.";
+            }
+        }
+    }
+    typedef devmProductType {
+        type enumeration {
+            enum "unknown" {
+                value 0;
+                description "";
+            }
+            enum "single" {
+                value 1;
+                description "";
+            }
+            enum "ccc-0" {
+                value 2;
+                description "BTB";
+            }
+            enum "ccc-1" {
+                value 3;
+                description "1T4";
+            }
+            enum "ccc-2" {
+                value 4;
+                description "2T8";
+            }
+        }
+    }
+    typedef devmIdLightState {
+        type enumeration {
+            enum "notSupported" {
+                value 0;
+                description "notSupported.";
+            }
+            enum "normal" {
+                value 1;
+                description "normal.";
+            }
+            enum "underRepair" {
+                value 2;
+                description "underRepair.";
+            }
+        }
+    }
+    typedef devmUsbLightState {
+        type enumeration {
+            enum "ledDim" {
+                value 0;
+                description "";
+            }
+            enum "redLight" {
+                value 1;
+                description "";
+            }
+            enum "greenLight" {
+                value 2;
+                description "";
+            }
+            enum "redBlink" {
+                value 3;
+                description "";
+            }
+            enum "greenBlink" {
+                value 4;
+                description "";
+            }
+        }
+    }
+    typedef devmPowerModeType {
+        type enumeration {
+            enum "userDefined" {
+                value 0;
+                description "User Defined Mode.";
+            }
+            enum "standard" {
+                value 1;
+                description "Standard Mode.";
+            }
+            enum "basic" {
+                value 2;
+                description "Basic Mode.";
+            }
+            enum "deep" {
+                value 3;
+                description "Deep Mode.";
+            }
+        }
+    }
+    typedef devmPowerCycleType {
+        type enumeration {
+            enum "fifteenMinutes" {
+                value 0;
+                description "Fifteen Minutes.";
+            }
+            enum "thirtyMinutes" {
+                value 1;
+                description "Thirty Minutes.";
+            }
+            enum "oneHour" {
+                value 2;
+                description "One Hour.";
+            }
+            enum "oneDay" {
+                value 3;
+                description "One Day.";
+            }
+            enum "oneWeek" {
+                value 4;
+                description "One Week.";
+            }
+            enum "oneMonth" {
+                value 5;
+                description "One Month.";
+            }
+        }
+    }
+    typedef devmBoardStateType {
+        type enumeration {
+            enum "on" {
+                value 0;
+                description "On.";
+            }
+            enum "off" {
+                value 1;
+                description "Off.";
+            }
+            enum "unknown" {
+                value 2;
+                description "Unknown.";
+            }
+        }
+    }
+    typedef devmPowerStateType {
+        type enumeration {
+            enum "supply" {
+                value 0;
+                description "Supply.";
+            }
+            enum "notSupply" {
+                value 1;
+                description "Not Supply.";
+            }
+            enum "sleep" {
+                value 2;
+                description "Sleep.";
+            }
+            enum "unknown" {
+                value 3;
+                description "Unknown.";
+            }
+        }
+    }
+    typedef devmLedStatusType {
+        type enumeration {
+            enum "on" {
+                value 0;
+                description "Light up always.";
+            }
+            enum "off" {
+                value 1;
+                description "Resume.";
+            }
+            enum "1" {
+                value 2;
+                description "1 Minute.";
+            }
+            enum "5" {
+                value 3;
+                description "5 Minutes.";
+            }
+            enum "10" {
+                value 4;
+                description "10 Minutes.";
+            }
+            enum "30" {
+                value 5;
+                description "30 Minutes.";
+            }
+            enum "60" {
+                value 6;
+                description "60 Minutes.";
+            }
+        }
+    }
+    typedef devmProtectType {
+        type enumeration {
+            enum "mainBoardProtect" {
+                value 0;
+                description "Main control board protection.";
+            }
+        }
+    }
+}
